@@ -1,5 +1,4 @@
-from .fixture import get_function_name as get_fixture_name
-from .fixture import get_zopelayer_state, LAYERS, get_layer_name
+from gocept.pytestlayer import fixture
 import inspect
 import pytest
 import unittest
@@ -18,19 +17,22 @@ def pytest_pycollect_makeitem(collector, name, obj):
     except TypeError:
         isunit = False
     if isunit and hasattr(obj, 'layer'):
-        if obj.layer not in LAYERS:
+        if obj.layer not in fixture.LAYERS:
             raise RuntimeError(
                 'There is no fixture for layer `%(layer_name)s`.\n'
                 'You have to create it using:\n'
                 'globals().update(gocept.pytestlayer.fixture.create('
                 '%(layer_name)s)\n'
                 'in `conftest.py`.' % {
-                    'layer_name': get_layer_name(obj.layer)})
-        pytest.mark.usefixtures(get_fixture_name(obj.layer))(obj)
+                    'layer_name': fixture.get_layer_name(obj.layer)})
+        pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
+
+def pytest_sessionstart(session):
+    session.zopelayer_state = fixture.ZopeLayerState()
 
 
 def pytest_runtest_teardown(item, nextitem):
-    state = get_zopelayer_state(item.session)
+    state = item.session.zopelayer_state
 
     if hasattr(nextitem, 'cls') and hasattr(nextitem.cls, 'layer'):
         state.keep = state.current & set(inspect.getmro(nextitem.cls.layer))

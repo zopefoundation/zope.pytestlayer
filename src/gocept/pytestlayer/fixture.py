@@ -8,14 +8,8 @@ class ZopeLayerState(object):
         self.keep = set()
 
 
-def get_zopelayer_state(session):
-    if not hasattr(session, 'zopelayer_state'):
-        session.zopelayer_state = ZopeLayerState()
-    return session.zopelayer_state
-
-
 def class_fixture(request, layer):
-    state = get_zopelayer_state(request.session)
+    state = request.session.zopelayer_state
 
     if layer not in state.current:
         layer.setUp()
