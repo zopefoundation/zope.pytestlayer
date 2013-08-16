@@ -14,12 +14,12 @@ class FooLayer(object):
 
     @classmethod
     def tearDown(cls):
-        log.info('tearDown foo')
+        log.info('\ntearDown foo')
         del cls.layer_foo
 
     @classmethod
     def testSetUp(cls):
-        log.info('testSetUp foo')
+        log.info('\ntestSetUp foo')
         cls.test_foo = 'test foo'
 
     @classmethod
@@ -35,3 +35,9 @@ class FooTest(unittest.TestCase):
     def test_dummy(self):
         self.assertEqual('layer foo', self.layer.layer_foo)
         self.assertEqual('test foo', self.layer.test_foo)
+
+
+class UnitTest(unittest.TestCase):
+
+    def test_dummy(self):
+        self.assertFalse(hasattr(self, 'layer'))
