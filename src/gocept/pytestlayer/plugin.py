@@ -1,4 +1,4 @@
-from .fixture import get_function_name as get_fixture_name, get_zopelayer_state
+from gocept.pytestlayer import fixture
 import inspect
 import pytest
 import unittest
@@ -16,11 +16,15 @@ def pytest_pycollect_makeitem(collector, name, obj):
     except TypeError:
         isunit = False
     if isunit and hasattr(obj, 'layer'):
-        pytest.mark.usefixtures(get_fixture_name(obj.layer))(obj)
+        pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
+
+
+def pytest_sessionstart(session):
+    session.zopelayer_state = fixture.ZopeLayerState()
 
 
 def pytest_runtest_teardown(item, nextitem):
-    state = get_zopelayer_state(item.session)
+    state = item.session.zopelayer_state
 
     if hasattr(nextitem, 'cls') and hasattr(nextitem.cls, 'layer'):
         state.keep = state.current & set(inspect.getmro(nextitem.cls.layer))
