@@ -36,17 +36,18 @@ def function_fixture(request, layer):
 
 TEMPLATE = """\
 import pytest
-from gocept.pytestlayer.fixture import class_fixture, function_fixture, seen
+from gocept.pytestlayer.fixture import (
+    class_fixture, function_fixture, LAYERS)
 
 @pytest.fixture(scope='class')
 def {class_name}(request{base_class_names}):
     "Depends on {base_class_names}"
-    class_fixture(request, seen['{layer_name}'])
+    class_fixture(request, LAYERS['{layer_name}'])
 
 @pytest.fixture(scope='function')
 def {function_name}(request, {class_name}{base_function_names}):
     "Depends on {base_function_names}"
-    function_fixture(request, seen['{layer_name}'])
+    function_fixture(request, LAYERS['{layer_name}'])
 """
 
 
@@ -67,7 +68,22 @@ def get_class_name(layer):
     return 'zope_layer_class_' + make_identifier(get_layer_name(layer))
 
 
-seen = {'__builtin__.object': object}
+class Layers(dict):
+    """Layers where fixtures are created for."""
+
+    def add(self, layer):
+        self[get_layer_name(layer)] = layer
+
+    def __contains__(self, layer_or_layer_name):
+        if not isinstance(layer_or_layer_name, basestring):
+            layer_name = get_layer_name(layer_or_layer_name)
+        else:
+            layer_name = layer_or_layer_name
+        return super(Layers, self).__contains__(layer_name)
+
+
+LAYERS = Layers()
+LAYERS.add(object)  # We do not need to create a fixture for `object`
 
 
 def create(*layers):
@@ -80,15 +96,14 @@ def create(*layers):
 
 def _create_single(layer):
     """Actually create a fixtures for a single layer and its bases."""
-    layer_name = get_layer_name(layer)
-    if layer_name in seen:
+    if layer in LAYERS:
         return {}
-    seen[layer_name] = layer
+    LAYERS.add(layer)
 
     class_name = get_class_name(layer)
     function_name = get_function_name(layer)
     code = TEMPLATE.format(
-        layer_name=layer_name,
+        layer_name=get_layer_name(layer),
         class_name=class_name,
         function_name=function_name,
         base_class_names=''.join(
