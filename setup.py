@@ -22,7 +22,6 @@ setup(
     install_requires=[
         'pytest',
         'setuptools',
-        'zope.dottedname',
     ],
 
     extras_require={

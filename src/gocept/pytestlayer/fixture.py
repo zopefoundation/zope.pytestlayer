@@ -1,5 +1,4 @@
 import re
-import zope.dottedname.resolve
 
 
 def fixture(request, layer, scope):
@@ -30,9 +29,11 @@ def {function_name}(request, {class_name}{base_function_names}):
 def get_layer_name(layer):
     return '%s.%s' % (layer.__module__, layer.__name__)
 
+
 def make_identifier(string):
     # Replaces things between words into underscores:
-    return re.sub('\W|^(?=\d)','_', string)
+    return re.sub('\W|^(?=\d)', '_', string)
+
 
 def get_function_name(layer):
     return 'zope_layer_function_' + make_identifier(get_layer_name(layer))
