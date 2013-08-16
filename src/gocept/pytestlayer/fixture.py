@@ -1,9 +1,32 @@
 import re
 
 
+class ZopeLayerState(object):
+
+    def __init__(self):
+        self.current = set()
+        self.keep = set()
+
+
+def get_zopelayer_state(session):
+    if not hasattr(session, 'zopelayer_state'):
+        session.zopelayer_state = ZopeLayerState()
+    return session.zopelayer_state
+
+
 def class_fixture(request, layer):
-    layer.setUp()
-    request.addfinalizer(layer.tearDown)
+    state = get_zopelayer_state(request.session)
+
+    if layer not in state.current:
+        layer.setUp()
+        state.current.add(layer)
+
+    def conditional_teardown():
+        if layer not in state.keep:
+            layer.tearDown()
+            state.current.remove(layer)
+
+    request.addfinalizer(conditional_teardown)
 
 
 def function_fixture(request, layer):
