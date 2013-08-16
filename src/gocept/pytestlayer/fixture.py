@@ -1,4 +1,5 @@
 import re
+import time
 
 
 class ZopeLayerState(object):
@@ -8,17 +9,41 @@ class ZopeLayerState(object):
         self.keep = set()
 
 
+def timed(request, func, text):
+    write = bool(request.config.option.verbose)
+    reporter = request.config.pluginmanager.getplugin(
+        'terminalreporter')
+    if write:
+        reporter.ensure_newline()
+        reporter.write(text)
+        start = time.time()
+    func()
+    if write:
+        time_taken = time.time() - start
+        reporter.write("{:.3f}".format(time_taken), green=1, bold=1)
+        reporter.write_line(" seconds.")
+
+
 def class_fixture(request, layer):
     state = request.session.zopelayer_state
+    reporter = request.config.pluginmanager.getplugin(
+        'terminalreporter')
+    layer_name = get_layer_name(layer)
 
-    if layer not in state.current:
+    def setUp():
         layer.setUp()
         state.current.add(layer)
 
+    if layer not in state.current:
+        timed(request, setUp, "Set up {} in ".format(layer_name))
+
+    def tearDown():
+        layer.tearDown()
+        state.current.remove(layer)
+
     def conditional_teardown():
         if layer not in state.keep:
-            layer.tearDown()
-            state.current.remove(layer)
+            timed(request, tearDown, "Tear down {} in ".format(layer_name))
 
     request.addfinalizer(conditional_teardown)
 
