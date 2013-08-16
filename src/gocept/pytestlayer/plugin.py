@@ -38,3 +38,15 @@ def pytest_runtest_teardown(item, nextitem):
         state.keep = state.current & set(inspect.getmro(nextitem.cls.layer))
     else:
         state.keep.clear()
+
+
+def pytest_ignore_collect(path, config):
+    for arg in config.args:
+        if arg.endswith('/gocept.pytestlayer'):
+            # We are running our own tests, so do not ignore anything:
+            return
+    if 'gocept/pytestlayer/tests' in path.strpath:
+        # Ignore our own tests when testing another package because we need
+        # `capturelog` which is only defined as a test dependency of
+        # gocept.pytestlayer:
+        return True
