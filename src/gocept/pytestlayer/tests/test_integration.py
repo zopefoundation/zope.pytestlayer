@@ -13,8 +13,8 @@ def run_pytest(name):
     return [line.rstrip() + '\n' for line in raw_output.splitlines()]
 
 
-def stripped(lines):
-    return ''.join(line for line in lines[2:-1] if line != '\n')
+def stripped(lines, start=2):
+    return ''.join(line for line in lines[start:-1] if line != '\n')
 
 
 def test_single_layer():
@@ -126,15 +126,9 @@ tearDown bar
 def test_nice_error_message_if_no_fixture_for_layer():
     lines = run_pytest('missing_fixture')
     assert """\
-plugins: gocept.pytestlayer, capturelog
-collecting ... collected 0 items / 1 errors
-==================================== ERRORS ====================================
- ERROR collecting src/gocept/pytestlayer/tests/fixture/missing_fixture/test.py _
-src/gocept/pytestlayer/plugin.py:27: in pytest_pycollect_makeitem
->                       'layer_name': get_layer_name(obj.layer)})
 E               RuntimeError: There is no fixture for layer `missing_fixture.test.FooLayer`.
 E               You have to create it using:
 E               globals().update(gocept.pytestlayer.fixture.create(missing_fixture.test.FooLayer)
 E               in `conftest.py`.
-""" == stripped(lines)
+""" == stripped(lines, start=9)
     assert '=== 1 error in ' in lines[-1]
