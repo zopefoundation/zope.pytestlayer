@@ -5,6 +5,7 @@ import pytest
 import unittest
 
 
+@pytest.mark.tryfirst
 def pytest_pycollect_makeitem(collector, name, obj):
     # this works because of two things:
     # * this plugin is called before the pytest unittest collector (if it
