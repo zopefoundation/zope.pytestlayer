@@ -20,7 +20,9 @@ setup(
     version='0.1.dev0',
 
     install_requires=[
+        'pytest',
         'setuptools',
+        'zope.dottedname',
     ],
 
     extras_require={
@@ -31,6 +33,9 @@ setup(
     entry_points={
         'console_scripts': [
             # 'binary-name = gocept.pytestlayer.module:function'
+        ],
+        'pytest11': [
+            'zopelayer = gocept.pytestlayer.plugin',
         ],
     },
 
