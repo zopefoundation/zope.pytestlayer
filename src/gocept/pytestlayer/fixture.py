@@ -1,28 +1,29 @@
 import re
 
 
-def fixture(request, layer, scope):
-    if scope == 'class':
-        setup, teardown = 'setUp', 'tearDown'
-    elif scope == 'function':
-        setup, teardown = 'testSetUp', 'testTearDown'
-    getattr(layer, setup)()
-    request.addfinalizer(getattr(layer, teardown))
+def class_fixture(request, layer):
+    layer.setUp()
+    request.addfinalizer(layer.tearDown)
+
+
+def function_fixture(request, layer):
+    layer.testSetUp()
+    request.addfinalizer(layer.testTearDown)
 
 
 TEMPLATE = """\
 import pytest
-from gocept.pytestlayer.fixture import fixture, seen
+from gocept.pytestlayer.fixture import class_fixture, function_fixture, seen
 
 @pytest.fixture(scope='class')
 def {class_name}(request{base_class_names}):
     "Depends on {base_class_names}"
-    fixture(request, seen['{layer_name}'], 'class')
+    class_fixture(request, seen['{layer_name}'])
 
 @pytest.fixture(scope='function')
 def {function_name}(request, {class_name}{base_function_names}):
     "Depends on {base_function_names}"
-    fixture(request, seen['{layer_name}'], 'function')
+    function_fixture(request, seen['{layer_name}'])
 """
 
 
