@@ -106,7 +106,7 @@ def _create_single(layer):
         base_function_names=''.join(
             ', ' + get_function_name(base)
             for base in layer.__bases__ if base is not object),
-        )
+    )
     ns = {}
     exec code in ns
 

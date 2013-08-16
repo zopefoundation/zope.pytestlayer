@@ -27,6 +27,7 @@ def pytest_pycollect_makeitem(collector, name, obj):
                     'layer_name': fixture.get_layer_name(obj.layer)})
         pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
 
+
 def pytest_sessionstart(session):
     session.zopelayer_state = fixture.ZopeLayerState()
 
