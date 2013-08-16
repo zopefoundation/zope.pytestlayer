@@ -2,8 +2,7 @@ import re
 import zope.dottedname.resolve
 
 
-def fixture(request, layer_name, scope):
-    layer = zope.dottedname.resolve.resolve(layer_name)
+def fixture(request, layer, scope):
     if scope == 'class':
         setup, teardown = 'setUp', 'tearDown'
     elif scope == 'function':
@@ -14,15 +13,17 @@ def fixture(request, layer_name, scope):
 
 TEMPLATE = """\
 import pytest
-from gocept.pytestlayer.fixture import fixture
+from gocept.pytestlayer.fixture import fixture, seen
 
 @pytest.fixture(scope='class')
 def {class_name}(request{base_class_names}):
-    fixture(request, '{layer_name}', 'class')
+    "Depends on {base_class_names}"
+    fixture(request, seen['{layer_name}'], 'class')
 
 @pytest.fixture(scope='function')
 def {function_name}(request, {class_name}{base_function_names}):
-    fixture(request, '{layer_name}', 'function')
+    "Depends on {base_function_names}"
+    fixture(request, seen['{layer_name}'], 'function')
 """
 
 
@@ -41,15 +42,15 @@ def get_class_name(layer):
     return 'zope_layer_class_' + make_identifier(get_layer_name(layer))
 
 
-seen = set([object])
+seen = {'__builtin__.object': object}
 
 
 def create(layer):
-    if layer in seen:
-        return {}
-    seen.add(layer)
-
     layer_name = get_layer_name(layer)
+    if layer_name in seen:
+        return {}
+    seen[layer_name] = layer
+
     class_name = get_class_name(layer)
     function_name = get_function_name(layer)
     code = TEMPLATE.format(
