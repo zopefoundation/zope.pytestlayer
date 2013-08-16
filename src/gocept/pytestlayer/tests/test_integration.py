@@ -131,6 +131,12 @@ def test_order_by_layer():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 4 items
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:81: FooTest.test_dummy
+setUp foo
+testSetUp foo
+PASSED
+testTearDown foo
+tearDown foo
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:92: BarTest.test_dummy
 setUp bar
 testSetUp bar
@@ -140,14 +146,8 @@ src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:116: Bar2Test.test_d
 testSetUp bar
 PASSED
 testTearDown bar
-tearDown bar
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:81: FooTest.test_dummy
-setUp foo
-testSetUp foo
-PASSED
-testTearDown foo
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:103: FooBarTest.test_dummy
-setUp bar
+setUp foo
 setUp foobar
 testSetUp foo
 testSetUp bar

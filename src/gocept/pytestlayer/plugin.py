@@ -30,13 +30,15 @@ def pytest_pycollect_makeitem(collector, name, obj):
 
 def pytest_collection_modifyitems(session, config, items):
     items_by_layer = {}
+    layers_in_order = []
     for item in items:
         if hasattr(item, 'cls') and hasattr(item.cls, 'layer'):
             layer = item.cls.layer
+            layers_in_order.append(layer)
         else:
             layer = None
         items_by_layer.setdefault(layer, []).append(item)
-    ordered_layers = order_by_bases(filter(bool, items_by_layer))
+    ordered_layers = order_by_bases(layers_in_order)
     items[:] = items_by_layer.get(None, [])
     for layer in ordered_layers:
         items.extend(items_by_layer.get(layer, []))
