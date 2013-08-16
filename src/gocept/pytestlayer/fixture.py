@@ -70,7 +70,16 @@ def get_class_name(layer):
 seen = {'__builtin__.object': object}
 
 
-def create(layer):
+def create(*layers):
+    """Create fixtures for given layers and their bases."""
+    ns = {}
+    for layer in layers:
+        ns.update(_create_single(layer))
+    return ns
+
+
+def _create_single(layer):
+    """Actually create a fixtures for a single layer and its bases."""
     layer_name = get_layer_name(layer)
     if layer_name in seen:
         return {}
@@ -88,12 +97,11 @@ def create(layer):
         base_function_names=''.join(
             ', ' + get_function_name(base)
             for base in layer.__bases__ if base is not object),
-    )
-
+        )
     ns = {}
     exec code in ns
 
-    for base in layer.__bases__:
-        ns.update(create(base))
+    # Recurse into bases:
+    ns.update(create(*layer.__bases__))
 
     return ns
