@@ -121,3 +121,20 @@ testTearDown bar
 tearDown bar
 """ == stripped(lines)
     assert '=== 3 passed in ' in lines[-1]
+
+
+def test_nice_error_message_if_no_fixture_for_layer():
+    lines = run_pytest('missing_fixture')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 0 items / 1 errors
+==================================== ERRORS ====================================
+ ERROR collecting src/gocept/pytestlayer/tests/fixture/missing_fixture/test.py _
+src/gocept/pytestlayer/plugin.py:27: in pytest_pycollect_makeitem
+>                       'layer_name': get_layer_name(obj.layer)})
+E               RuntimeError: There is no fixture for layer `missing_fixture.test.FooLayer`.
+E               You have to create it using:
+E               globals().update(gocept.pytestlayer.fixture.create(missing_fixture.test.FooLayer)
+E               in `conftest.py`.
+""" == stripped(lines)
+    assert '=== 1 error in ' in lines[-1]

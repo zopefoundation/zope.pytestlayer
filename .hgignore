@@ -1,7 +1,10 @@
 syntax: glob
 
+*.egg-info
+*.pyc
 .installed.cfg
 .mr.developer.cfg
+__pycache__
 bin
 build
 develop-eggs
