@@ -1,4 +1,5 @@
 import os.path
+import pytest
 import subprocess
 import sys
 
@@ -37,13 +38,13 @@ def test_with_and_without_layer():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:42: UnitTest.test_dummy PASSED
 src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:35: FooTest.test_dummy
 setUp foo
 testSetUp foo
 PASSED
 testTearDown foo
 tearDown foo
-src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:42: UnitTest.test_dummy PASSED
 """ == stripped(lines)
     assert '=== 2 passed in ' in lines[-1]
 
@@ -92,6 +93,8 @@ tearDown bar
     assert '=== 2 passed in ' in lines[-1]
 
 
+@pytest.mark.xfail(
+    reason='ordering by layers does not optimize for fewer set-ups')
 def test_keep_layer_across_test_classes():
     lines = run_pytest('keep_layer_across_test_classes')
     assert """\
@@ -121,6 +124,43 @@ testTearDown bar
 tearDown bar
 """ == stripped(lines)
     assert '=== 3 passed in ' in lines[-1]
+
+
+def test_order_by_layer():
+    lines = run_pytest('order_by_layer')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 4 items
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:92: BarTest.test_dummy
+setUp bar
+testSetUp bar
+PASSED
+testTearDown bar
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:116: Bar2Test.test_dummy
+testSetUp bar
+PASSED
+testTearDown bar
+tearDown bar
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:81: FooTest.test_dummy
+setUp foo
+testSetUp foo
+PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:103: FooBarTest.test_dummy
+setUp bar
+setUp foobar
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+tearDown foobar
+tearDown bar
+tearDown foo
+""" == stripped(lines)
+    assert '=== 4 passed in ' in lines[-1]
 
 
 def test_nice_error_message_if_no_fixture_for_layer():

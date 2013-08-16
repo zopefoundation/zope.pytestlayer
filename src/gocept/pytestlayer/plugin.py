@@ -28,6 +28,44 @@ def pytest_pycollect_makeitem(collector, name, obj):
         pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
 
 
+def pytest_collection_modifyitems(session, config, items):
+    items_by_layer = {}
+    for item in items:
+        if hasattr(item, 'cls') and hasattr(item.cls, 'layer'):
+            layer = item.cls.layer
+        else:
+            layer = None
+        items_by_layer.setdefault(layer, []).append(item)
+    ordered_layers = order_by_bases(filter(bool, items_by_layer))
+    items[:] = items_by_layer.get(None, [])
+    for layer in ordered_layers:
+        items.extend(items_by_layer.get(layer, []))
+
+
+def order_by_bases(layers):
+    """Order the layers from least to most specific (bottom to top)
+    """
+    gathered = []
+    for layer in reversed(layers):
+        gather_layers(layer, gathered)
+    gathered.reverse()
+    seen = set()
+    result = []
+    for layer in gathered:
+        if layer not in seen:
+            seen.add(layer)
+            if layer in layers:
+                result.append(layer)
+    return result
+
+
+def gather_layers(layer, result):
+    if layer is not object:
+        result.append(layer)
+    for b in layer.__bases__:
+        gather_layers(b, result)
+
+
 def pytest_sessionstart(session):
     session.zopelayer_state = fixture.ZopeLayerState()
 
