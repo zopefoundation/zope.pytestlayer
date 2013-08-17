@@ -11,8 +11,7 @@ class ZopeLayerState(object):
 
 def timed(request, func, text):
     write = bool(request.config.option.verbose)
-    reporter = request.config.pluginmanager.getplugin(
-        'terminalreporter')
+    reporter = request.config.pluginmanager.getplugin('terminalreporter')
     if write:
         reporter.ensure_newline()
         reporter.write(text)
@@ -26,8 +25,6 @@ def timed(request, func, text):
 
 def class_fixture(request, layer):
     state = request.session.zopelayer_state
-    reporter = request.config.pluginmanager.getplugin(
-        'terminalreporter')
     layer_name = get_layer_name(layer)
 
     def setUp():
