@@ -10,14 +10,14 @@ class ZopeLayerState(object):
 
 
 def timed(request, func, text):
-    write = bool(request.config.option.verbose)
+    verbose = request.config.option.verbose > 0
     reporter = request.config.pluginmanager.getplugin('terminalreporter')
-    if write:
+    if verbose:
         reporter.ensure_newline()
         reporter.write(text)
         start = time.time()
     func()
-    if write:
+    if verbose:
         time_taken = time.time() - start
         reporter.write("{:.3f}".format(time_taken), green=1, bold=1)
         reporter.write_line(" seconds.")
