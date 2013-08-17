@@ -10,13 +10,13 @@ This package is compatible with Python version 2.7.
 Quick start
 ===========
 
-* Write a `conftest.py` creating fixtures for your layers::
+* Make sure your test files follow the `conventions of py.test's test
+  discovery`_
 
-    from gocept.pytestlayer.fixture import create
-    from .testing import Layer1, Layer2
+  .. _`conventions of py.test's test discovery`:
+     http://pytest.org/latest/goodpractises.html#python-test-discovery
 
-    pytest_plugins = ('zopelayer')
-    globals().update(create(Layer1, Layer2))
+  In particular, a file named ``tests.py`` will not be recognised.
 
 * Add a buildout section to create the py.test runner::
 
@@ -28,3 +28,15 @@ Quick start
     eggs = gocept.pytestlayer
            pytest
            <YOUR PACKAGE HERE>
+
+* Write a ``conftest.py`` creating fixtures for your layers::
+
+    from gocept.pytestlayer.fixture import create
+    from .testing import Layer1, Layer2
+
+    pytest_plugins = ('zopelayer')
+    globals().update(create(Layer1, Layer2))
+
+  As long as there are any fixtures missing, the plugin will tell you about
+  layers that need to be included. Calling ``py.test -x`` will make this
+  process faster (as it makes the runner stop at the first error).
