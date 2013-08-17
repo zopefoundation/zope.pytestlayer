@@ -32,15 +32,15 @@ def class_fixture(request, layer):
     layer_name = get_layer_name(layer)
 
     if layer not in state.current:
-        with timer(request, "Set up {} in ".format(layer_name)):
-            if hasattr(layer, 'setUp'):
+        if hasattr(layer, 'setUp'):
+            with timer(request, "Set up {} in ".format(layer_name)):
                 layer.setUp()
             state.current.add(layer)
 
     def conditional_teardown():
         if layer not in state.keep:
-            with timer(request, "Tear down {} in ".format(layer_name)):
-                if hasattr(layer, 'tearDown'):
+            if hasattr(layer, 'tearDown'):
+                with timer(request, "Tear down {} in ".format(layer_name)):
                     layer.tearDown()
                 state.current.remove(layer)
 
@@ -132,7 +132,7 @@ def _create_single(layer):
         class_fixture=class_fixture,
         function_fixture=function_fixture,
         layer=layer,
-        )
+    )
     ns = {}
     exec code in globs, ns
 
