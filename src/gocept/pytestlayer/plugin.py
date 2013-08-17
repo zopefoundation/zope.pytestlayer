@@ -52,9 +52,8 @@ def order_by_bases(layers):
     """Order the layers from least to most specific (bottom to top)
     """
     gathered = []
-    for layer in reversed(layers):
+    for layer in layers:
         gather_layers(layer, gathered)
-    gathered.reverse()
     seen = set()
     result = []
     for layer in gathered:
@@ -66,10 +65,10 @@ def order_by_bases(layers):
 
 
 def gather_layers(layer, result):
-    if layer is not object:
-        result.append(layer)
     for b in layer.__bases__:
         gather_layers(b, result)
+    if layer is not object:
+        result.append(layer)
 
 
 def pytest_sessionstart(session):
