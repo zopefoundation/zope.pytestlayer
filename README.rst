@@ -2,10 +2,12 @@
 The gocept.pytestlayer distribution
 ===================================
 
-Integration of zope.testrunner-style test layers into the py.test framework
+Integration of zope.testrunner-style test layers into the `py.test`_
+framework
 
 This package is compatible with Python version 2.7.
 
+.. _`py.test` : http://pytest.org
 
 Quick start
 ===========
@@ -18,7 +20,7 @@ Quick start
 
   In particular, a file named ``tests.py`` will not be recognised.
 
-* Add a buildout section to create the py.test runner::
+* Add a buildout section to create the `py.test` runner::
 
     [buildout]
     parts += pytest
