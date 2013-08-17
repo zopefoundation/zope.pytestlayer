@@ -173,6 +173,19 @@ Tear down order_by_layer.test.FooLayer in N.NNN seconds.
     assert '=== 4 passed in ' in lines[-1]
 
 
+def test_works_even_without_any_setup_or_teardown_methods():
+    lines = run_pytest('no_setup_or_teardown')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 1 items
+src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test.py:NN: FooTest.test_dummy
+Set up no_setup_or_teardown.test.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test.py:NN: FooTest.test_dummy PASSED
+Tear down no_setup_or_teardown.test.FooLayer in N.NNN seconds.
+""" == stripped(lines)
+    assert '=== 1 passed in ' in lines[-1]
+
+
 def test_nice_error_message_if_no_fixture_for_layer():
     lines = run_pytest('missing_fixture')
     assert """\

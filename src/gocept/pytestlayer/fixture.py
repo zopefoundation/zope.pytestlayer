@@ -28,14 +28,16 @@ def class_fixture(request, layer):
     layer_name = get_layer_name(layer)
 
     def setUp():
-        layer.setUp()
+        if hasattr(layer, 'setUp'):
+            layer.setUp()
         state.current.add(layer)
 
     if layer not in state.current:
         timed(request, setUp, "Set up {} in ".format(layer_name))
 
     def tearDown():
-        layer.tearDown()
+        if hasattr(layer, 'tearDown'):
+            layer.tearDown()
         state.current.remove(layer)
 
     def conditional_teardown():
@@ -46,8 +48,11 @@ def class_fixture(request, layer):
 
 
 def function_fixture(request, layer):
-    layer.testSetUp()
-    request.addfinalizer(layer.testTearDown)
+    if hasattr(layer, 'testSetUp'):
+        layer.testSetUp()
+
+    if hasattr(layer, 'testTearDown'):
+        request.addfinalizer(layer.testTearDown)
 
 
 TEMPLATE = """\
