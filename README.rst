@@ -43,3 +43,7 @@ Quick start
   As long as there are any fixtures missing, the plugin will tell you about
   layers that need to be included. Calling ``py.test -x`` will make this
   process faster (as it makes the runner stop at the first error).
+
+  Make sure to put the ``conftest.py`` inside a directory that is a parent of
+  all directories that contain tests that use layers, so it is found by pytest
+  whenever needed.
