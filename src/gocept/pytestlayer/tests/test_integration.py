@@ -195,3 +195,10 @@ E               globals().update(gocept.pytestlayer.fixture.create(missing_fixtu
 E               in `conftest.py`.
 """ == stripped(lines, start=9)
     assert '=== 1 error in ' in lines[-1]
+
+
+def test_nice_error_message_if_layer_is_not_found_in_module():
+    lines = run_pytest('layer_missing_in_module')
+    assert """\
+RuntimeError: The layer `layer_missing_in_module.test.FooLayer` is not found its module's namespace.""" in stripped(lines)
+    assert '=== 1 error in ' in lines[-1]

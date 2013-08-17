@@ -18,13 +18,18 @@ def pytest_pycollect_makeitem(collector, name, obj):
         isunit = False
     if isunit and hasattr(obj, 'layer'):
         if obj.layer not in fixture.LAYERS:
+            layer_name = fixture.get_layer_name(obj.layer)
+            if obj.layer.__class__ in fixture.LAYERS:
+                raise RuntimeError(
+                    "The layer `%s` is not found its module's namespace." %
+                    layer_name)
             raise RuntimeError(
                 'There is no fixture for layer `%(layer_name)s`.\n'
                 'You have to create it using:\n'
                 'globals().update(gocept.pytestlayer.fixture.create('
                 '%(layer_name)s))\n'
                 'in `conftest.py`.' % {
-                    'layer_name': fixture.get_layer_name(obj.layer)})
+                    'layer_name': layer_name})
         pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
 
 
