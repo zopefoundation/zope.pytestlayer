@@ -17,15 +17,15 @@ def run_pytest(name):
          os.path.join(os.path.dirname(__file__), 'fixture', name, 'test.py')],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
-    raw_output = process.stdout.read()
-    return [line.rstrip() + '\n' for line in raw_output.splitlines()]
-
-
-def stripped(lines, start=2):
-    output = ''.join(line for line in lines[start:-1] if line != '\n')
+    output = process.stdout.read()
     for pattern, replacement in normalizers:
         output = re.sub(pattern, replacement, output)
-    return output
+    return output.splitlines(True)
+
+
+def join(lines, start=2):
+    return '\n'.join(
+        line.rstrip() for line in lines[start:-1] if line.strip()) + '\n'
 
 
 def test_single_layer():
@@ -39,7 +39,7 @@ testSetUp foo
 src/gocept/pytestlayer/tests/fixture/single_layer/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
 Tear down single_layer.test.FooLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 1 passed in ' in lines[-1]
 
 
@@ -55,7 +55,7 @@ testSetUp foo
 src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
 Tear down with_and_without_layer.test.FooLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 2 passed in ' in lines[-1]
 
 
@@ -78,7 +78,7 @@ testTearDown bar
 testTearDown foo
 Tear down two_dependent_layers.test.BarLayer in N.NNN seconds.
 Tear down two_dependent_layers.test.FooLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 2 passed in ' in lines[-1]
 
 
@@ -99,7 +99,7 @@ testSetUp bar
 src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:NN: BarTest.test_dummy PASSED
 testTearDown bar
 Tear down two_independent_layers.test.BarLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 2 passed in ' in lines[-1]
 
 
@@ -132,7 +132,7 @@ testSetUp bar
 src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: BarTest.test_dummy PASSED
 testTearDown bar
 Tear down keep_layer_across_test_classes.test.BarLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 3 passed in ' in lines[-1]
 
 
@@ -169,7 +169,7 @@ testTearDown foo
 Tear down order_by_layer.test.FooBarLayer in N.NNN seconds.
 Tear down order_by_layer.test.BarLayer in N.NNN seconds.
 Tear down order_by_layer.test.FooLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 4 passed in ' in lines[-1]
 
 
@@ -182,7 +182,7 @@ src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test.py:NN: FooTest.te
 Set up no_setup_or_teardown.test.FooLayer in N.NNN seconds.
 src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test.py:NN: FooTest.test_dummy PASSED
 Tear down no_setup_or_teardown.test.FooLayer in N.NNN seconds.
-""" == stripped(lines)
+""" == join(lines)
     assert '=== 1 passed in ' in lines[-1]
 
 
@@ -194,12 +194,13 @@ E               You have to create it using:
 E                   from gocept.pytestlayer import fixture
 E                   globals().update(fixture.create("missing_fixture.test.FooLayer"))
 E               in `conftest.py`.
-""" == stripped(lines, start=9)
+""" == join(lines, start=9)
     assert '=== 1 error in ' in lines[-1]
 
 
 def test_nice_error_message_if_layer_is_not_found_in_module():
     lines = run_pytest('layer_missing_in_module')
     assert """\
-RuntimeError: The layer `layer_missing_in_module.test.FooLayer` is not found its module's namespace.""" in stripped(lines)
+RuntimeError: The layer `layer_missing_in_module.test.FooLayer` is not found its module's namespace.
+""" in join(lines)
     assert '=== 1 error in ' in lines[-1]

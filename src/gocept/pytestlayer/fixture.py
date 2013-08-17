@@ -1,3 +1,4 @@
+import contextlib
 import pytest
 import re
 import time
@@ -11,14 +12,15 @@ class ZopeLayerState(object):
         self.keep = set()
 
 
-def timed(request, func, text):
+@contextlib.contextmanager
+def timer(request, text):
     verbose = request.config.option.verbose > -1
     reporter = request.config.pluginmanager.getplugin('terminalreporter')
     if verbose:
         reporter.ensure_newline()
         reporter.write(text)
         start = time.time()
-    func()
+    yield
     if verbose:
         time_taken = time.time() - start
         reporter.write("{:.3f}".format(time_taken), green=1, bold=1)
@@ -29,22 +31,18 @@ def class_fixture(request, layer):
     state = request.session.zopelayer_state
     layer_name = get_layer_name(layer)
 
-    def setUp():
-        if hasattr(layer, 'setUp'):
-            layer.setUp()
-        state.current.add(layer)
-
     if layer not in state.current:
-        timed(request, setUp, "Set up {} in ".format(layer_name))
-
-    def tearDown():
-        if hasattr(layer, 'tearDown'):
-            layer.tearDown()
-        state.current.remove(layer)
+        with timer(request, "Set up {} in ".format(layer_name)):
+            if hasattr(layer, 'setUp'):
+                layer.setUp()
+            state.current.add(layer)
 
     def conditional_teardown():
         if layer not in state.keep:
-            timed(request, tearDown, "Tear down {} in ".format(layer_name))
+            with timer(request, "Tear down {} in ".format(layer_name)):
+                if hasattr(layer, 'tearDown'):
+                    layer.tearDown()
+                state.current.remove(layer)
 
     request.addfinalizer(conditional_teardown)
 
