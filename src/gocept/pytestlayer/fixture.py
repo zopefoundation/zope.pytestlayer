@@ -1,4 +1,3 @@
-import importlib
 import pytest
 import re
 import time
@@ -72,7 +71,7 @@ def {function_name}(request, {class_name}{base_function_names}):
 
 
 def get_layer_name(layer):
-    module = importlib.import_module(layer.__module__)
+    module = zope.dottedname.resolve.resolve(layer.__module__)
     for key, value in module.__dict__.iteritems():
         if value is layer:
             name = key
