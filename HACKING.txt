@@ -3,7 +3,8 @@ Developing gocept.pytestlayer
 =============================
 
 :Author:
-    `gocept <http://gocept.com/>`_ <mail@gocept.com>
+    `gocept <http://gocept.com/>`_ <mail@gocept.com>,
+    `Godefroid Chapelle`_ <gotcha@bubblenet.be>
 
 :Online documentation:
     http://pythonhosted.org/gocept.pytestlayer/
