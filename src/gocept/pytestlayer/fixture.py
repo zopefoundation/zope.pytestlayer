@@ -79,7 +79,7 @@ def get_layer_name(layer):
     else:
         # As per zope.testrunner conventions, a layer is assumed to have a
         # __name__ even if it's not a class.
-        name = layer.__name__  
+        name = layer.__name__
     return '%s.%s' % (layer.__module__, name)
 
 
