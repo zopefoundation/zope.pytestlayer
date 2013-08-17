@@ -1,3 +1,4 @@
+import pytest
 import re
 import time
 
@@ -56,19 +57,15 @@ def function_fixture(request, layer):
 
 
 TEMPLATE = """\
-import pytest
-from gocept.pytestlayer.fixture import (
-    class_fixture, function_fixture, LAYERS)
-
 @pytest.fixture(scope='class')
 def {class_name}(request{base_class_names}):
     "Depends on {base_class_names}"
-    class_fixture(request, LAYERS['{layer_name}'])
+    class_fixture(request, layer)
 
 @pytest.fixture(scope='function')
 def {function_name}(request, {class_name}{base_function_names}):
     "Depends on {base_function_names}"
-    function_fixture(request, LAYERS['{layer_name}'])
+    function_fixture(request, layer)
 """
 
 
@@ -124,7 +121,6 @@ def _create_single(layer):
     class_name = get_class_name(layer)
     function_name = get_function_name(layer)
     code = TEMPLATE.format(
-        layer_name=get_layer_name(layer),
         class_name=class_name,
         function_name=function_name,
         base_class_names=''.join(
@@ -134,8 +130,15 @@ def _create_single(layer):
             ', ' + get_function_name(base)
             for base in layer.__bases__ if base is not object),
     )
+
+    globs = dict(
+        pytest=pytest,
+        class_fixture=class_fixture,
+        function_fixture=function_fixture,
+        layer=layer,
+        )
     ns = {}
-    exec code in ns
+    exec code in globs, ns
 
     # Recurse into bases:
     ns.update(create(*layer.__bases__))
