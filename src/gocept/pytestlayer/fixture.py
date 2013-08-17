@@ -1,3 +1,4 @@
+import importlib
 import pytest
 import re
 import time
@@ -70,7 +71,16 @@ def {function_name}(request, {class_name}{base_function_names}):
 
 
 def get_layer_name(layer):
-    return '%s.%s' % (layer.__module__, layer.__name__)
+    module = importlib.import_module(layer.__module__)
+    for key, value in module.__dict__.iteritems():
+        if value is layer:
+            name = key
+            break
+    else:
+        # As per zope.testrunner conventions, a layer is assumed to have a
+        # __name__ even if it's not a class.
+        name = layer.__name__  
+    return '%s.%s' % (layer.__module__, name)
 
 
 def make_identifier(string):
