@@ -12,7 +12,7 @@ class ZopeLayerState(object):
 
 
 def timed(request, func, text):
-    verbose = request.config.option.verbose > 0
+    verbose = request.config.option.verbose > -1
     reporter = request.config.pluginmanager.getplugin('terminalreporter')
     if verbose:
         reporter.ensure_newline()
