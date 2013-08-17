@@ -86,21 +86,7 @@ def get_class_name(layer):
     return 'zope_layer_class_' + make_identifier(get_layer_name(layer))
 
 
-class Layers(dict):
-    """Layers where fixtures are created for."""
-
-    def add(self, layer):
-        self[get_layer_name(layer)] = layer
-
-    def __contains__(self, layer_or_layer_name):
-        if not isinstance(layer_or_layer_name, basestring):
-            layer_name = get_layer_name(layer_or_layer_name)
-        else:
-            layer_name = layer_or_layer_name
-        return super(Layers, self).__contains__(layer_name)
-
-
-LAYERS = Layers()
+LAYERS = set()
 LAYERS.add(object)  # We do not need to create a fixture for `object`
 
 
