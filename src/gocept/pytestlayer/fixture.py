@@ -2,6 +2,7 @@ import importlib
 import pytest
 import re
 import time
+import zope.dottedname.resolve
 
 
 class ZopeLayerState(object):
@@ -104,6 +105,8 @@ def create(*layers):
     """Create fixtures for given layers and their bases."""
     ns = {}
     for layer in layers:
+        if isinstance(layer, basestring):
+            layer = zope.dottedname.resolve.resolve(layer)
         ns.update(_create_single(layer))
     return ns
 
