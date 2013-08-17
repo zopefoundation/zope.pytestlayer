@@ -9,12 +9,10 @@ class FooLayer(object):
 
     @classmethod
     def setUp(cls):
-        log.info('\nsetUp foo')
         cls.layer_foo = 'layer foo'
 
     @classmethod
     def tearDown(cls):
-        log.info('tearDown foo')
         del cls.layer_foo
 
     @classmethod
@@ -32,12 +30,10 @@ class BarLayer(FooLayer):
 
     @classmethod
     def setUp(cls):
-        log.info('\nsetUp bar')
         cls.layer_bar = 'layer bar'
 
     @classmethod
     def tearDown(cls):
-        log.info('tearDown bar')
         del cls.layer_bar
 
     @classmethod

@@ -1,7 +1,14 @@
 import os.path
 import pytest
+import re
 import subprocess
 import sys
+
+
+normalizers = [
+    ('\d+\.\d+ seconds', 'N.NNN seconds'),
+    ('\.py:\d+: ', '.py:NN: '),
+]
 
 
 def run_pytest(name):
@@ -15,7 +22,10 @@ def run_pytest(name):
 
 
 def stripped(lines, start=2):
-    return ''.join(line for line in lines[start:-1] if line != '\n')
+    output = ''.join(line for line in lines[start:-1] if line != '\n')
+    for pattern, replacement in normalizers:
+        output = re.sub(pattern, replacement, output)
+    return output
 
 
 def test_single_layer():
@@ -23,12 +33,12 @@ def test_single_layer():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 1 items
-src/gocept/pytestlayer/tests/fixture/single_layer/test.py:35: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/single_layer/test.py:NN: FooTest.test_dummy
+Set up single_layer.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/single_layer/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-tearDown foo
+Tear down single_layer.test.FooLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 1 passed in ' in lines[-1]
 
@@ -38,13 +48,13 @@ def test_with_and_without_layer():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:42: UnitTest.test_dummy PASSED
-src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:35: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:NN: UnitTest.test_dummy PASSED
+src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:NN: FooTest.test_dummy
+Set up with_and_without_layer.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-tearDown foo
+Tear down with_and_without_layer.test.FooLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 2 passed in ' in lines[-1]
 
@@ -54,20 +64,20 @@ def test_two_dependent_layers():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:58: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:NN: FooTest.test_dummy
+Set up two_dependent_layers.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:69: BarTest.test_dummy
-setUp bar
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:NN: BarTest.test_dummy
+Set up two_dependent_layers.test.BarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
-PASSED
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test.py:NN: BarTest.test_dummy PASSED
 testTearDown bar
 testTearDown foo
-tearDown bar
-tearDown foo
+Tear down two_dependent_layers.test.BarLayer in N.NNN seconds.
+Tear down two_dependent_layers.test.FooLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 2 passed in ' in lines[-1]
 
@@ -77,18 +87,18 @@ def test_two_independent_layers():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:58: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:NN: FooTest.test_dummy
+Set up two_independent_layers.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-tearDown foo
-src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:69: BarTest.test_dummy
-setUp bar
+Tear down two_independent_layers.test.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:NN: BarTest.test_dummy
+Set up two_independent_layers.test.BarLayer in N.NNN seconds.
 testSetUp bar
-PASSED
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test.py:NN: BarTest.test_dummy PASSED
 testTearDown bar
-tearDown bar
+Tear down two_independent_layers.test.BarLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 2 passed in ' in lines[-1]
 
@@ -100,28 +110,28 @@ def test_keep_layer_across_test_classes():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 3 items
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:81: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: FooTest.test_dummy
+Set up keep_layer_across_test_classes.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:92: FooBarTest.test_dummy
-setUp bar
-setUp foobar
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: FooBarTest.test_dummy
+Set up keep_layer_across_test_classes.test.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
 testSetUp foobar
-PASSED
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: FooBarTest.test_dummy PASSED
 testTearDown foobar
 testTearDown bar
 testTearDown foo
-tearDown foobar
-tearDown foo
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:105: BarTest.test_dummy
+Tear down keep_layer_across_test_classes.test.FooBarLayer in N.NNN seconds.
+Tear down keep_layer_across_test_classes.test.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: BarTest.test_dummy
+Set up keep_layer_across_test_classes.test.BarLayer in N.NNN seconds.
 testSetUp bar
-PASSED
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test.py:NN: BarTest.test_dummy PASSED
 testTearDown bar
-tearDown bar
+Tear down keep_layer_across_test_classes.test.BarLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 3 passed in ' in lines[-1]
 
@@ -131,34 +141,34 @@ def test_order_by_layer():
     assert """\
 plugins: gocept.pytestlayer, capturelog
 collecting ... collected 4 items
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:81: FooTest.test_dummy
-setUp foo
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: FooTest.test_dummy
+Set up order_by_layer.test.FooLayer in N.NNN seconds.
 testSetUp foo
-PASSED
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-tearDown foo
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:92: BarTest.test_dummy
-setUp bar
+Tear down order_by_layer.test.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: BarTest.test_dummy
+Set up order_by_layer.test.BarLayer in N.NNN seconds.
+testSetUp bar
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: BarTest.test_dummy PASSED
+testTearDown bar
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: Bar2Test.test_dummy
 testSetUp bar
 PASSED
 testTearDown bar
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:116: Bar2Test.test_dummy
-testSetUp bar
-PASSED
-testTearDown bar
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:103: FooBarTest.test_dummy
-setUp foo
-setUp foobar
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: FooBarTest.test_dummy
+Set up order_by_layer.test.FooLayer in N.NNN seconds.
+Set up order_by_layer.test.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
 testSetUp foobar
-PASSED
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: FooBarTest.test_dummy PASSED
 testTearDown foobar
 testTearDown bar
 testTearDown foo
-tearDown foobar
-tearDown bar
-tearDown foo
+Tear down order_by_layer.test.FooBarLayer in N.NNN seconds.
+Tear down order_by_layer.test.BarLayer in N.NNN seconds.
+Tear down order_by_layer.test.FooLayer in N.NNN seconds.
 """ == stripped(lines)
     assert '=== 4 passed in ' in lines[-1]
 
