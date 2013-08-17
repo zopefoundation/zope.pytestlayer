@@ -33,11 +33,12 @@ Quick start
 
 * Write a ``conftest.py`` creating fixtures for your layers::
 
-    from gocept.pytestlayer.fixture import create
-    from .testing import Layer1, Layer2
+    from gocept.pytestlayer import fixture
 
-    pytest_plugins = ('zopelayer')
-    globals().update(create(Layer1, Layer2))
+    globals().update(fixture.create(
+        "mypackage.testing.Layer1",
+        "mypackage.testing.Layer2",
+        ))
 
   As long as there are any fixtures missing, the plugin will tell you about
   layers that need to be included. Calling ``py.test -x`` will make this

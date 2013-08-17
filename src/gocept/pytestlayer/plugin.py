@@ -26,10 +26,9 @@ def pytest_pycollect_makeitem(collector, name, obj):
             raise RuntimeError(
                 'There is no fixture for layer `%(layer_name)s`.\n'
                 'You have to create it using:\n'
-                'globals().update(gocept.pytestlayer.fixture.create('
-                '%(layer_name)s))\n'
-                'in `conftest.py`.' % {
-                    'layer_name': layer_name})
+                '    from gocept.pytestlayer import fixture\n'
+                '    globals().update(fixture.create("%(layer_name)s"))\n'
+                'in `conftest.py`.' % {'layer_name': layer_name})
         pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
 
 
