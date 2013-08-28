@@ -14,7 +14,7 @@ class ZopeLayerState(object):
 
 @contextlib.contextmanager
 def timer(request, text):
-    verbose = request.config.option.verbose > -1
+    verbose = request.config.option.verbose > 0
     reporter = request.config.pluginmanager.getplugin('terminalreporter')
     if verbose:
         reporter.ensure_newline()
