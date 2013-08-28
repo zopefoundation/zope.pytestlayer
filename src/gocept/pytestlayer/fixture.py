@@ -87,11 +87,15 @@ def make_identifier(string):
 
 
 def get_function_name(layer):
-    return 'zope_layer_function_' + make_identifier(get_layer_name(layer))
+    return 'zope_layer_function_{}_{}'.format(
+        make_identifier(get_layer_name(layer)),
+        id(layer))
 
 
 def get_class_name(layer):
-    return 'zope_layer_class_' + make_identifier(get_layer_name(layer))
+    return 'zope_layer_class_{}_{}'.format(
+        make_identifier(get_layer_name(layer)),
+        id(layer))
 
 
 LAYERS = set()

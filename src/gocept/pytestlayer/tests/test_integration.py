@@ -201,3 +201,19 @@ def test_nice_error_message_if_layer_is_not_found_in_module():
 RuntimeError: The layer `layer_missing_in_module.test.FooLayer` is not found its module's namespace.
 """ in join(lines)
     assert '=== 1 error in ' in lines[-1]
+
+def test_creating_different_fixtures_for_layers_with_the_same_name():
+    lines = run_pytest('layers_with_same_name')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test.py:NN: FooTest.test_dummy
+Set up layers_with_same_name.test.TestLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test.py:NN: FooTest.test_dummy PASSED
+Tear down layers_with_same_name.test.TestLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test.py:NN: BarTest.test_dummy
+Set up layers_with_same_name.test.TestLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test.py:NN: BarTest.test_dummy PASSED
+Tear down layers_with_same_name.test.TestLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 2 passed in ' in lines[-1]
