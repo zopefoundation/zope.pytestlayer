@@ -12,24 +12,37 @@ def pytest_pycollect_makeitem(collector, name, obj):
     #   detected a unittest test case)
     # * usefixtures works in-place
     # * as long as we return None the original unittest collector is called
+    layer = query_layer(obj)
+    if layer is not None:
+        raise_if_unknown_layer(layer)
+        fixture_name = fixture.get_function_fixture_name(layer)
+        pytest.mark.usefixtures(fixture_name)(obj)
+
+
+def query_layer(obj):
     try:
         isunit = issubclass(obj, unittest.TestCase)
     except TypeError:
         isunit = False
     if isunit and hasattr(obj, 'layer'):
-        if obj.layer not in fixture.LAYERS:
-            layer_name = fixture.get_layer_name(obj.layer)
-            if obj.layer.__class__ in fixture.LAYERS:
-                raise RuntimeError(
-                    "The layer `%s` is not found its module's namespace." %
-                    layer_name)
+        return obj.layer
+
+
+def raise_if_unknown_layer(layer):
+    'complaining about unregistered layers'
+
+    if layer not in fixture.LAYERS:
+        layer_name = fixture.get_layer_name(layer)
+        if layer.__class__ in fixture.LAYERS:
             raise RuntimeError(
-                'There is no fixture for layer `%(layer_name)s`.\n'
-                'You have to create it using:\n'
-                '    from gocept.pytestlayer import fixture\n'
-                '    globals().update(fixture.create("%(layer_name)s"))\n'
-                'in `conftest.py`.' % {'layer_name': layer_name})
-        pytest.mark.usefixtures(fixture.get_function_name(obj.layer))(obj)
+                "The layer `%s` is not found its module's namespace." %
+                layer_name)
+        raise RuntimeError(
+            'There is no fixture for layer `%(layer_name)s`.\n'
+            'You have to create it using:\n'
+            '    from gocept.pytestlayer import fixture\n'
+            '    globals().update(fixture.create("%(layer_name)s"))\n'
+            'in `conftest.py`.' % {'layer_name': layer_name})
 
 
 def pytest_collection_modifyitems(session, config, items):

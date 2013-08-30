@@ -186,12 +186,12 @@ src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test.py:NN: FooTest.te
 def test_nice_error_message_if_no_fixture_for_layer():
     lines = run_pytest('missing_fixture')
     assert """\
-E               RuntimeError: There is no fixture for layer `missing_fixture.test.FooLayer`.
-E               You have to create it using:
-E                   from gocept.pytestlayer import fixture
-E                   globals().update(fixture.create("missing_fixture.test.FooLayer"))
-E               in `conftest.py`.
-""" == join(lines, start=9)
+E           RuntimeError: There is no fixture for layer `missing_fixture.test.FooLayer`.
+E           You have to create it using:
+E               from gocept.pytestlayer import fixture
+E               globals().update(fixture.create("missing_fixture.test.FooLayer"))
+E           in `conftest.py`.
+""" == join(lines, start=11)
     assert '=== 1 error in ' in lines[-1]
 
 

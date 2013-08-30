@@ -55,19 +55,6 @@ def function_fixture(request, layer):
         request.addfinalizer(layer.testTearDown)
 
 
-TEMPLATE = """\
-@pytest.fixture(scope='class')
-def {class_name}(request{base_class_names}):
-    "Depends on {base_class_names}"
-    class_fixture(request, layer)
-
-@pytest.fixture(scope='function')
-def {function_name}(request, {class_name}{base_function_names}):
-    "Depends on {base_function_names}"
-    function_fixture(request, layer)
-"""
-
-
 def get_layer_name(layer):
     module = zope.dottedname.resolve.resolve(layer.__module__)
     for key, value in module.__dict__.iteritems():
@@ -86,13 +73,13 @@ def make_identifier(string):
     return re.sub('\W|^(?=\d)', '_', string)
 
 
-def get_function_name(layer):
+def get_function_fixture_name(layer):
     return 'zope_layer_function_{}_{}'.format(
         make_identifier(get_layer_name(layer)),
         id(layer))
 
 
-def get_class_name(layer):
+def get_class_fixture_name(layer):
     return 'zope_layer_class_{}_{}'.format(
         make_identifier(get_layer_name(layer)),
         id(layer))
@@ -112,23 +99,43 @@ def create(*layers):
     return ns
 
 
+TEMPLATE = """\
+@pytest.fixture(scope='class')
+def {class_fixture_name}(request{class_fixture_dependencies}):
+    "Depends on {class_fixture_dependencies}"
+    class_fixture(request, layer)
+
+@pytest.fixture(scope='function')
+def {function_fixture_name}(request{function_fixture_dependencies}):
+    "Depends on {function_fixture_dependencies}"
+    function_fixture(request, layer)
+"""
+
+
 def _create_single(layer):
     """Actually create a fixtures for a single layer and its bases."""
     if layer in LAYERS:
         return {}
     LAYERS.add(layer)
 
-    class_name = get_class_name(layer)
-    function_name = get_function_name(layer)
+    class_fixture_name = get_class_fixture_name(layer)
+    function_fixture_name = get_function_fixture_name(layer)
+    class_fixture_dependencies = [
+        ', ' + get_class_fixture_name(base)
+        for base in layer.__bases__
+        if base is not object
+    ]
+    function_fixture_dependencies = [
+        ', ' + get_function_fixture_name(base)
+        for base in layer.__bases__
+        if base is not object
+    ]
+    function_fixture_dependencies.insert(0, ', ' + class_fixture_name)
     code = TEMPLATE.format(
-        class_name=class_name,
-        function_name=function_name,
-        base_class_names=''.join(
-            ', ' + get_class_name(base)
-            for base in layer.__bases__ if base is not object),
-        base_function_names=''.join(
-            ', ' + get_function_name(base)
-            for base in layer.__bases__ if base is not object),
+        class_fixture_name=class_fixture_name,
+        function_fixture_name=function_fixture_name,
+        class_fixture_dependencies=''.join(class_fixture_dependencies),
+        function_fixture_dependencies=''.join(function_fixture_dependencies),
     )
 
     globs = dict(
