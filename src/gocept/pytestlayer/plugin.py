@@ -11,11 +11,13 @@ def pytest_pycollect_makeitem(collector, name, obj):
     #   wasn't, it wouldn't be called at all after the pytest collector has
     #   detected a unittest test case)
     # * usefixtures works in-place
-    # * as long as we return None the original unittest collector is called
     layer = query_layer(obj)
     if layer is not None:
         fixture_name = fixture.get_function_fixture_name(layer)
         pytest.mark.usefixtures(fixture_name)(obj)
+        py_unittest = collector.session.config.pluginmanager.getplugin(
+            'unittest')
+        return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
 
 
 def query_layer(obj):
