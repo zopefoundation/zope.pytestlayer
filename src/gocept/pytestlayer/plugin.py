@@ -14,7 +14,6 @@ def pytest_pycollect_makeitem(collector, name, obj):
     # * as long as we return None the original unittest collector is called
     layer = query_layer(obj)
     if layer is not None:
-        raise_if_unknown_layer(layer)
         fixture_name = fixture.get_function_fixture_name(layer)
         pytest.mark.usefixtures(fixture_name)(obj)
 
@@ -25,7 +24,9 @@ def query_layer(obj):
     except TypeError:
         isunit = False
     if isunit and hasattr(obj, 'layer'):
-        return obj.layer
+        layer = obj.layer
+        raise_if_unknown_layer(layer)
+        return layer
 
 
 def raise_if_unknown_layer(layer):

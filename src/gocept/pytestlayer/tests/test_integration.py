@@ -191,7 +191,7 @@ E           You have to create it using:
 E               from gocept.pytestlayer import fixture
 E               globals().update(fixture.create("missing_fixture.test.FooLayer"))
 E           in `conftest.py`.
-""" == join(lines, start=11)
+""" == join(lines, start=13)
     assert '=== 1 error in ' in lines[-1]
 
 
