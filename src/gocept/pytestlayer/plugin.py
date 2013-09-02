@@ -1,6 +1,7 @@
+import types
 import inspect
-import pytest
 import unittest
+import pytest
 from gocept.pytestlayer import fixture
 from gocept.pytestlayer import layered
 
@@ -12,7 +13,7 @@ def pytest_pycollect_makeitem(collector, name, obj):
     #   wasn't, it wouldn't be called at all after the pytest collector has
     #   detected a unittest test case)
     # * usefixtures works in-place
-    suite = layered.query_layered_testsuite(obj)
+    suite = query_testsuite(obj)
     if suite is not None:
         return layered.LayeredTestSuite(name, parent=collector)
     else:
@@ -21,12 +22,11 @@ def pytest_pycollect_makeitem(collector, name, obj):
             return collect_with_layer(collector, name, obj, layer)
 
 
-def collect_with_layer(collector, name, obj, layer):
-    fixture_name = fixture.get_function_fixture_name(layer)
-    usefixtures = pytest.mark.usefixtures(fixture_name)
-    usefixtures(obj)
-    py_unittest = layered.get_py_unittest(collector)
-    return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+def query_testsuite(obj):
+    if (isinstance(obj, types.FunctionType) and obj.__name__ == 'test_suite'):
+        suite = obj()
+        if isinstance(suite, unittest.TestSuite):
+            return suite
 
 
 def query_layer(obj):
@@ -59,6 +59,14 @@ def raise_if_unknown_layer(layer):
             '    from gocept.pytestlayer import fixture\n'
             '    globals().update(fixture.create("%(layer_name)s"))\n'
             'in `conftest.py`.' % {'layer_name': layer_name})
+
+
+def collect_with_layer(collector, name, obj, layer):
+    fixture_name = fixture.get_function_fixture_name(layer)
+    usefixtures = pytest.mark.usefixtures(fixture_name)
+    usefixtures(obj)
+    py_unittest = get_py_unittest(collector)
+    return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
 
 
 def pytest_collection_modifyitems(session, config, items):
@@ -128,3 +136,7 @@ def pytest_ignore_collect(path, config):
         # `capturelog` which is only defined as a test dependency of
         # gocept.pytestlayer:
         return True
+
+
+def get_py_unittest(collector):
+    return collector.session.config.pluginmanager.getplugin('unittest')

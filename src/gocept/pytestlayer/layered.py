@@ -1,14 +1,7 @@
-import types
 import unittest
 import pytest
 import fixture
-
-
-def query_layered_testsuite(obj):
-    if (isinstance(obj, types.FunctionType) and obj.__name__ == 'test_suite'):
-        suite = obj()
-        if isinstance(suite, unittest.TestSuite):
-            return suite
+import _pytest
 
 
 class LayeredTestSuite(pytest.Class):
@@ -16,45 +9,40 @@ class LayeredTestSuite(pytest.Class):
     def collect(self):
         suite = self.obj()
         for item, layer in walk_suite(suite):
-            yield LayeredTestCaseInstance(str(item), item, self, layer)
+            yield LayeredTestCaseInstance(item, self, layer)
 
 
 class LayeredTestCaseInstance(pytest.Collector):
 
-    def __init__(self, name, obj, parent, layer):
-        self.name = name
+    def __init__(self, obj, parent, layer):
+        super(pytest.Collector, self).__init__('', parent=parent)
+        # store testcase instance and layer
+        # to pass them to function
         self.obj = obj
         self.layer = layer
-        super(pytest.Collector, self).__init__(name, parent=parent)
 
     def collect(self):
-        py_unittest = get_py_unittest(self)
-        yield LayeredTestCaseFunction(
-            py_unittest.TestCaseFunction('runTest', parent=self),
-            self.layer
-        )
+        yield LayeredTestCaseFunction('runTest', parent=self)
 
     def reportinfo(self):
         pass
 
 
-class LayeredTestCaseFunction(pytest.Function):
+class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
 
-    def __init__(self, context, layer):
-        self.context = context
-        self.layer = layer
-
-    def __getattr__(self, name):
-        return getattr(self.context, name)
+    def __init__(self, name, parent):
+        super(LayeredTestCaseFunction, self).__init__(name, parent=parent)
+        self.layer = self.parent.layer
 
     def setup(self):
-        self.context._testcase = self.parent.obj
+        self._testcase = self.parent.obj
         if hasattr(self, "_request"):
+            # call function fixture (testSetUp)
             fixture_name = fixture.get_function_fixture_name(self.layer)
             self._request.getfuncargvalue(fixture_name)
 
     def reportinfo(self):
-        return 'test_suite', None, self.context.parent.obj.shortDescription()
+        return 'test_suite', None, self.parent.obj.shortDescription()
 
 
 def walk_suite(suite):
@@ -66,7 +54,3 @@ def walk_suite(suite):
             else:
                 for result in walk_suite(item):
                     yield result
-
-
-def get_py_unittest(collector):
-    return collector.session.config.pluginmanager.getplugin('unittest')
