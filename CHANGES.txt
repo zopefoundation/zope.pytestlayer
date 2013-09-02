@@ -5,10 +5,12 @@ Change log for gocept.pytestlayer
 1.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- ``plone.testing.layered`` test suites support.
+  [gotcha]
 
 
 1.0 (2013-08-28)
 ================
 
-* Initial release.
+- Initial release.
+  [tlotze, icemac, gotcha]
