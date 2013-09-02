@@ -1,0 +1,10 @@
+Test layered suite
+------------------
+
+    >>> layer
+    <class 'shared_with_layered_suite.test.FooLayer'>
+
+    >>> layer.layer_foo
+    'layer foo'
+    >>> layer.test_foo
+    'test foo'

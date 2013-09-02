@@ -1,0 +1,14 @@
+Test layered suite
+------------------
+
+    >>> layer
+    <class 'order_with_layered_suite.test.FooLayer'>
+
+    >>> layer.layer_foo
+    'layer foo'
+    >>> layer.test_foo
+    'test foo'
+    >>> hasattr(layer, 'layer_bar')
+    False
+    >>> hasattr(layer, 'test_bar')
+    False

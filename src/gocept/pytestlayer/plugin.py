@@ -1,5 +1,6 @@
 from gocept.pytestlayer import fixture
 import inspect
+import types
 import pytest
 import unittest
 
@@ -11,24 +12,104 @@ def pytest_pycollect_makeitem(collector, name, obj):
     #   wasn't, it wouldn't be called at all after the pytest collector has
     #   detected a unittest test case)
     # * usefixtures works in-place
-    layer = query_layer(obj)
-    if layer is not None:
-        fixture_name = fixture.get_function_fixture_name(layer)
-        pytest.mark.usefixtures(fixture_name)(obj)
-        py_unittest = collector.session.config.pluginmanager.getplugin(
-            'unittest')
-        return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+    suite = query_test_suite(obj)
+    if suite is not None:
+        return UnitTestSuite(name, parent=collector)
+    else:
+        layer = query_layer(obj)
+        if layer is not None:
+            return collect_with_layer(collector, name, obj, layer)
+
+
+def query_test_suite(obj):
+    if (isinstance(obj, types.FunctionType) and obj.__name__ == 'test_suite'):
+        suite = obj()
+        if isinstance(suite, unittest.TestSuite):
+            return suite
+
+
+class UnitTestSuite(pytest.Class):
+    nofuncargs = True  # marker for fixturemanager.getfixtureinfo()
+
+    def collect(self):
+        suite = self.obj()
+        for item, layer in walk_suite(suite):
+            yield UnitTestInstance(str(item), item, self, layer)
+
+
+class UnitTestInstance(pytest.Collector):
+
+    def __init__(self, name, obj, parent, layer):
+        self.name = name
+        self.obj = obj
+        self.layer = layer
+        super(pytest.Collector, self).__init__(name, parent=parent)
+
+    def collect(self):
+        py_unittest = get_py_unittest(self)
+        yield UnitTestFunction(
+            py_unittest.TestCaseFunction('runTest', parent=self),
+            self.layer
+        )
+
+    def reportinfo(self):
+        pass
+
+
+class UnitTestFunction(pytest.Function):
+    def __init__(self, context, layer):
+        self.context = context
+        self.layer = layer
+
+    def __getattr__(self, name):
+        return getattr(self.context, name)
+
+    def setup(self):
+        self.context._testcase = self.parent.obj
+        if hasattr(self, "_request"):
+            fixture_name = fixture.get_function_fixture_name(self.layer)
+            self._request.getfuncargvalue(fixture_name)
+
+    def reportinfo(self):
+        return 'test_suite', None, self.context.parent.obj.shortDescription()
+
+
+def walk_suite(suite):
+    if isinstance(suite, unittest.TestSuite):
+        has_layer = hasattr(suite, 'layer')
+        for item in suite:
+            if isinstance(item, unittest.TestCase) and has_layer:
+                yield item, suite.layer
+            else:
+                for result in walk_suite(item):
+                    yield result
+
+
+def collect_with_layer(collector, name, obj, layer):
+    fixture_name = fixture.get_function_fixture_name(layer)
+    usefixtures = pytest.mark.usefixtures(fixture_name)
+    usefixtures(obj)
+    py_unittest = get_py_unittest(collector)
+    return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+
+
+def get_py_unittest(collector):
+    return collector.session.config.pluginmanager.getplugin('unittest')
 
 
 def query_layer(obj):
+    if has_layer(obj):
+        layer = obj.layer
+        raise_if_unknown_layer(layer)
+        return layer
+
+
+def has_layer(obj):
     try:
         isunit = issubclass(obj, unittest.TestCase)
     except TypeError:
         isunit = False
-    if isunit and hasattr(obj, 'layer'):
-        layer = obj.layer
-        raise_if_unknown_layer(layer)
-        return layer
+    return isunit and hasattr(obj, 'layer')
 
 
 def raise_if_unknown_layer(layer):
@@ -54,6 +135,9 @@ def pytest_collection_modifyitems(session, config, items):
     for item in items:
         if hasattr(item, 'cls') and hasattr(item.cls, 'layer'):
             layer = item.cls.layer
+            layers_in_order.append(layer)
+        elif hasattr(item, 'layer'):
+            layer = item.layer
             layers_in_order.append(layer)
         else:
             layer = None
@@ -96,6 +180,8 @@ def pytest_runtest_teardown(item, nextitem):
 
     if hasattr(nextitem, 'cls') and hasattr(nextitem.cls, 'layer'):
         state.keep = state.current & set(inspect.getmro(nextitem.cls.layer))
+    elif hasattr(nextitem, 'layer'):
+        state.keep = state.current & set(inspect.getmro(nextitem.layer))
     else:
         state.keep.clear()
 

@@ -1,0 +1,14 @@
+Test layered suite
+------------------
+
+    >>> layer
+    <class 'two_dependent_layered_suites.test.BarLayer'>
+
+    >>> layer.layer_foo
+    'layer foo'
+    >>> layer.test_foo
+    'test foo'
+    >>> layer.layer_bar
+    'layer bar'
+    >>> layer.test_bar
+    'test bar'

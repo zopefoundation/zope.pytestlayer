@@ -43,6 +43,40 @@ Tear down single_layer.test.FooLayer in N.NNN seconds.
     assert '=== 1 passed in ' in lines[-1]
 
 
+def test_single_layered_suite():
+    lines = run_pytest('single_layered_suite')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 1 items
+src/gocept/pytestlayer/tests/fixture/single_layered_suite/test.py <- test_suite: Doctest: doctest.txt
+Set up single_layered_suite.test.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/single_layered_suite/test.py <- test_suite: Doctest: doctest.txt PASSED
+testTearDown foo
+Tear down single_layered_suite.test.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 1 passed in ' in lines[-1]
+
+
+def test_shared_with_layered_suite():
+    lines = run_pytest('shared_with_layered_suite')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test.py:NN: FooTest.test_dummy
+Set up shared_with_layered_suite.test.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test.py <- test_suite: Doctest: doctest.txt
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test.py <- test_suite: Doctest: doctest.txt PASSED
+testTearDown foo
+Tear down shared_with_layered_suite.test.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 2 passed in ' in lines[-1]
+
+
 def test_with_and_without_layer():
     lines = run_pytest('with_and_without_layer')
     assert """\
@@ -78,6 +112,29 @@ testTearDown bar
 testTearDown foo
 Tear down two_dependent_layers.test.BarLayer in N.NNN seconds.
 Tear down two_dependent_layers.test.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 2 passed in ' in lines[-1]
+
+
+def test_two_dependent_layered_suites():
+    lines = run_pytest('two_dependent_layered_suites')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test.py <- test_suite: Doctest: foo.txt
+Set up two_dependent_layered_suites.test.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test.py <- test_suite: Doctest: foo.txt PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test.py <- test_suite: Doctest: bar.txt
+Set up two_dependent_layered_suites.test.BarLayer in N.NNN seconds.
+testSetUp foo
+testSetUp bar
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test.py <- test_suite: Doctest: bar.txt PASSED
+testTearDown bar
+testTearDown foo
+Tear down two_dependent_layered_suites.test.BarLayer in N.NNN seconds.
+Tear down two_dependent_layered_suites.test.FooLayer in N.NNN seconds.
 """ == join(lines)
     assert '=== 2 passed in ' in lines[-1]
 
@@ -154,7 +211,7 @@ src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: BarTest.test_dum
 testTearDown bar
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: Bar2Test.test_dummy
 testSetUp bar
-PASSED
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: Bar2Test.test_dummy PASSED
 testTearDown bar
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test.py:NN: FooBarTest.test_dummy
 Set up order_by_layer.test.FooLayer in N.NNN seconds.
@@ -171,6 +228,55 @@ Tear down order_by_layer.test.BarLayer in N.NNN seconds.
 Tear down order_by_layer.test.FooLayer in N.NNN seconds.
 """ == join(lines)
     assert '=== 4 passed in ' in lines[-1]
+
+
+def test_order_with_layered_suite():
+    lines = run_pytest('order_with_layered_suite')
+    assert """\
+plugins: gocept.pytestlayer, capturelog
+collecting ... collected 6 items
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: FooTest.test_dummy
+Set up order_with_layered_suite.test.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py <- test_suite: Doctest: foo.txt
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py <- test_suite: Doctest: foo.txt PASSED
+testTearDown foo
+Tear down order_with_layered_suite.test.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: BarTest.test_dummy
+Set up order_with_layered_suite.test.BarLayer in N.NNN seconds.
+testSetUp bar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: BarTest.test_dummy PASSED
+testTearDown bar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: Bar2Test.test_dummy
+testSetUp bar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: Bar2Test.test_dummy PASSED
+testTearDown bar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: FooBarTest.test_dummy
+Set up order_with_layered_suite.test.FooLayer in N.NNN seconds.
+Set up order_with_layered_suite.test.FooBarLayer in N.NNN seconds.
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py:NN: FooBarTest.test_dummy PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py <- test_suite: Doctest: foobar.txt
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test.py <- test_suite: Doctest: foobar.txt PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+Tear down order_with_layered_suite.test.FooBarLayer in N.NNN seconds.
+Tear down order_with_layered_suite.test.BarLayer in N.NNN seconds.
+Tear down order_with_layered_suite.test.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 6 passed in ' in lines[-1]
 
 
 def test_works_even_without_any_setup_or_teardown_methods():

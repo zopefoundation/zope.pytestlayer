@@ -47,12 +47,25 @@ def class_fixture(request, layer):
     request.addfinalizer(conditional_teardown)
 
 
+def ensure_new_line(request):
+    verbose = request.config.option.verbose > 0
+    reporter = request.config.pluginmanager.getplugin('terminalreporter')
+    if verbose:
+        reporter.ensure_newline()
+
+
 def function_fixture(request, layer):
     if hasattr(layer, 'testSetUp'):
+        ensure_new_line(request)
         layer.testSetUp()
 
     if hasattr(layer, 'testTearDown'):
-        request.addfinalizer(layer.testTearDown)
+
+        def function_tear_down():
+            ensure_new_line(request)
+            layer.testTearDown()
+
+        request.addfinalizer(function_tear_down)
 
 
 def get_layer_name(layer):

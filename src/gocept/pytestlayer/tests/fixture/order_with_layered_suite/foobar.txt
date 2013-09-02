@@ -1,0 +1,14 @@
+Test layered suite
+------------------
+
+    >>> layer
+    <class 'order_with_layered_suite.test.FooBarLayer'>
+
+    >>> layer.layer_foo
+    'layer foo'
+    >>> layer.test_foo
+    'test foo'
+    >>> layer.layer_bar
+    'layer bar'
+    >>> layer.test_bar
+    'test bar'
