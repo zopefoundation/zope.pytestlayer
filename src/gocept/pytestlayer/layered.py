@@ -12,7 +12,6 @@ def query_layered_testsuite(obj):
 
 
 class LayeredTestSuite(pytest.Class):
-    nofuncargs = True  # marker for fixturemanager.getfixtureinfo()
 
     def collect(self):
         suite = self.obj()
@@ -21,7 +20,6 @@ class LayeredTestSuite(pytest.Class):
 
 
 class LayeredTestCaseInstance(pytest.Collector):
-    nofuncargs = True  # marker for fixturemanager.getfixtureinfo()
 
     def __init__(self, name, obj, parent, layer):
         self.name = name
@@ -41,7 +39,6 @@ class LayeredTestCaseInstance(pytest.Collector):
 
 
 class LayeredTestCaseFunction(pytest.Function):
-    nofuncargs = True  # marker for fixturemanager.getfixtureinfo()
 
     def __init__(self, context, layer):
         self.context = context
