@@ -28,6 +28,7 @@ def timer(request, text):
 
 
 def class_fixture(request, layer):
+    decorate_layer(layer, request)
     state = request.session.zopelayer_state
     layer_name = get_layer_name(layer)
 
@@ -39,6 +40,7 @@ def class_fixture(request, layer):
 
     def conditional_teardown():
         if layer not in state.keep:
+            decorate_layer(layer, request)
             if hasattr(layer, 'tearDown'):
                 with timer(request, "Tear down {} in ".format(layer_name)):
                     layer.tearDown()
@@ -47,22 +49,20 @@ def class_fixture(request, layer):
     request.addfinalizer(conditional_teardown)
 
 
-def ensure_new_line(request):
-    verbose = request.config.option.verbose > 0
-    reporter = request.config.pluginmanager.getplugin('terminalreporter')
-    if verbose:
-        reporter.ensure_newline()
+def decorate_layer(layer, request):
+    if not hasattr(layer, 'pytest_request'):
+        setattr(layer, 'pytest_request', request)
 
 
 def function_fixture(request, layer):
+    decorate_layer(layer, request)
     if hasattr(layer, 'testSetUp'):
-        ensure_new_line(request)
         layer.testSetUp()
 
     if hasattr(layer, 'testTearDown'):
 
         def function_tear_down():
-            ensure_new_line(request)
+            decorate_layer(layer, request)
             layer.testTearDown()
 
         request.addfinalizer(function_tear_down)

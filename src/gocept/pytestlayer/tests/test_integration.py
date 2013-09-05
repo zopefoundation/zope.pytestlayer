@@ -13,7 +13,7 @@ normalizers = [
 
 def run_pytest(name):
     process = subprocess.Popen(
-        [sys.argv[0], '-s', '-v',
+        [sys.argv[0], '-v',
          os.path.join(os.path.dirname(__file__), 'fixture', name, 'test.py')],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)

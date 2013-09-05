@@ -1,8 +1,5 @@
-import logging
 import unittest
 
-log = logging.getLogger('zopelayer')
-log.addHandler(logging.StreamHandler())
 
 class Layer(object):
 
@@ -18,10 +15,10 @@ class Layer(object):
         del self.set_up_value
 
 
-
 FooLayer = Layer('foo-layer')
 BarLayer = Layer('bar-layer')
 FooBarLayer = Layer('foobar-layer', bases=(FooLayer, BarLayer))
+
 
 class FooTest(unittest.TestCase):
 

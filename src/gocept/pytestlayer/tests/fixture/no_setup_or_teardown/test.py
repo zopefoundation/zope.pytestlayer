@@ -1,8 +1,4 @@
-import logging
 import unittest
-
-log = logging.getLogger('zopelayer')
-log.addHandler(logging.StreamHandler())
 
 
 class FooLayer(object):

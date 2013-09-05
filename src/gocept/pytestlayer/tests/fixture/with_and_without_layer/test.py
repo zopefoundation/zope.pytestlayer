@@ -1,8 +1,5 @@
-import logging
 import unittest
-
-log = logging.getLogger('zopelayer')
-log.addHandler(logging.StreamHandler())
+from gocept.pytestlayer.testing import log_to_terminal
 
 
 class FooLayer(object):
@@ -17,12 +14,12 @@ class FooLayer(object):
 
     @classmethod
     def testSetUp(cls):
-        log.info('\ntestSetUp foo')
+        log_to_terminal(cls.pytest_request, '\ntestSetUp foo')
         cls.test_foo = 'test foo'
 
     @classmethod
     def testTearDown(cls):
-        log.info('\ntestTearDown foo')
+        log_to_terminal(cls.pytest_request, '\ntestTearDown foo')
         del cls.test_foo
 
 

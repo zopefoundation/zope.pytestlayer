@@ -1,10 +1,7 @@
-import logging
 import unittest
 import doctest
 from plone.testing import layered
-
-log = logging.getLogger('zopelayer')
-log.addHandler(logging.StreamHandler())
+from gocept.pytestlayer.testing import log_to_terminal
 
 
 class FooLayer(object):
@@ -19,12 +16,12 @@ class FooLayer(object):
 
     @classmethod
     def testSetUp(cls):
-        log.info('\ntestSetUp foo')
+        log_to_terminal(cls.pytest_request, '\ntestSetUp foo')
         cls.test_foo = 'test foo'
 
     @classmethod
     def testTearDown(cls):
-        log.info('\ntestTearDown foo')
+        log_to_terminal(cls.pytest_request, '\ntestTearDown foo')
         del cls.test_foo
 
 
@@ -40,12 +37,12 @@ class BarLayer(object):
 
     @classmethod
     def testSetUp(cls):
-        log.info('\ntestSetUp bar')
+        log_to_terminal(cls.pytest_request, '\ntestSetUp bar')
         cls.test_bar = 'test bar'
 
     @classmethod
     def testTearDown(cls):
-        log.info('\ntestTearDown bar')
+        log_to_terminal(cls.pytest_request, '\ntestTearDown bar')
         del cls.test_bar
 
 
@@ -61,12 +58,12 @@ class FooBarLayer(FooLayer, BarLayer):
 
     @classmethod
     def testSetUp(cls):
-        log.info('\ntestSetUp foobar')
+        log_to_terminal(cls.pytest_request, '\ntestSetUp foobar')
         cls.test_foobar = 'test foobar'
 
     @classmethod
     def testTearDown(cls):
-        log.info('\ntestTearDown foobar')
+        log_to_terminal(cls.pytest_request, '\ntestTearDown foobar')
         del cls.test_foobar
 
 
