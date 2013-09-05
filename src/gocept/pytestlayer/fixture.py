@@ -102,7 +102,7 @@ LAYERS = set()
 LAYERS.add(object)  # We do not need to create a fixture for `object`
 
 
-def create(*layers):
+def _create(*layers):
     """Create fixtures for given layers and their bases."""
     ns = {}
     for layer in layers:
@@ -110,6 +110,10 @@ def create(*layers):
             layer = zope.dottedname.resolve.resolve(layer)
         ns.update(_create_single(layer))
     return ns
+
+
+def create(*layers):
+    return {}
 
 
 TEMPLATE = """\
