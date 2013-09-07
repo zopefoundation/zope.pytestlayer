@@ -43,6 +43,25 @@ Tear down single_layer.test_core.FooLayer in N.NNN seconds.
     assert '=== 1 passed in ' in lines[-1]
 
 
+def test_single_layer_with_unattached_base_layer():
+    lines = run_pytest('single_layer_with_unattached_base_layer')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 1 items
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy
+Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+Set up single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
+testSetUp bar
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+testTearDown bar
+Tear down single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
+Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 1 passed in ' in lines[-1]
+
+
 def test_single_layer_in_two_modules():
     lines = run_pytest('single_layer_in_two_modules')
     assert """\
