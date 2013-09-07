@@ -43,6 +43,25 @@ Tear down single_layer.test_core.FooLayer in N.NNN seconds.
     assert '=== 1 passed in ' in lines[-1]
 
 
+def test_single_layer_in_two_modules():
+    lines = run_pytest('single_layer_in_two_modules')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_core.py:NN: FooTest.test_dummy
+Set up single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_core.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_second_module.py:NN: FooTest.test_dummy
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_second_module.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+Tear down single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 2 passed in ' in lines[-1]
+
+
 def test_single_layered_suite():
     lines = run_pytest('single_layered_suite')
     assert """\

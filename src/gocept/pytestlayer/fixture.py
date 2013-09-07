@@ -176,10 +176,7 @@ def parsefactories(collector, layer):
         name = get_function_fixture_name(layer)
         module = imp.new_module(name)
         module.__dict__.update(ns)
-        collector.session._fixturemanager.parsefactories(
-            module,
-            collector.nodeid
-        )
+        collector.session._fixturemanager.parsefactories(module, '')
 
 
 def raise_if_bad_layer(layer):
