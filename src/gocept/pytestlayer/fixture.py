@@ -2,6 +2,7 @@ import contextlib
 import pytest
 import re
 import time
+import imp
 import zope.dottedname.resolve
 
 
@@ -50,8 +51,7 @@ def class_fixture(request, layer):
 
 
 def decorate_layer(layer, request):
-    if not hasattr(layer, 'pytest_request'):
-        setattr(layer, 'pytest_request', request)
+    setattr(layer, 'pytest_request', request)
 
 
 def function_fixture(request, layer):
@@ -102,7 +102,7 @@ LAYERS = set()
 LAYERS.add(object)  # We do not need to create a fixture for `object`
 
 
-def create(*layers):
+def _create(*layers):
     """Create fixtures for given layers and their bases."""
     ns = {}
     for layer in layers:
@@ -110,6 +110,10 @@ def create(*layers):
             layer = zope.dottedname.resolve.resolve(layer)
         ns.update(_create_single(layer))
     return ns
+
+
+def create(*layers):
+    return {}
 
 
 TEMPLATE = """\
@@ -161,6 +165,29 @@ def _create_single(layer):
     exec code in globs, ns
 
     # Recurse into bases:
-    ns.update(create(*layer.__bases__))
+    ns.update(_create(*layer.__bases__))
 
     return ns
+
+
+def parsefactories(collector, layer):
+    ns = _create(layer)
+    if ns:
+        name = get_function_fixture_name(layer)
+        module = imp.new_module(name)
+        module.__dict__.update(ns)
+        collector.session._fixturemanager.parsefactories(
+            module,
+            collector.nodeid
+        )
+
+
+def raise_if_bad_layer(layer):
+    'complaining about bad layers'
+
+    if not hasattr(layer, '__bases__'):
+        raise RuntimeError(
+            "The layer {0} has no __bases__ attribute."
+            " Layers may be of two sorts: class or instance with __bases__"
+            " attribute.".format(repr(layer))
+        )

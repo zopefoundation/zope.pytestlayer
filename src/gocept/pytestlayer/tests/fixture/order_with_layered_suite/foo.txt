@@ -2,7 +2,7 @@ Test layered suite
 ------------------
 
     >>> layer
-    <class 'order_with_layered_suite.test.FooLayer'>
+    <class 'order_with_layered_suite.test_core.FooLayer'>
 
     >>> layer.layer_foo
     'layer foo'
