@@ -4,7 +4,6 @@ import unittest
 import pytest
 from gocept.pytestlayer import fixture
 from gocept.pytestlayer import layered
-from gocept.pytestlayer import layermodule
 
 
 @pytest.mark.tryfirst
@@ -14,13 +13,15 @@ def pytest_pycollect_makeitem(collector, name, obj):
     #   wasn't, it wouldn't be called at all after the pytest collector has
     #   detected a unittest test case)
     # * usefixtures works in-place
+
     suite = query_testsuite(obj)
     if suite is not None:
         return layered.LayeredTestSuite(name, parent=collector)
     else:
         layer = query_layer(obj)
         if layer is not None:
-            return layermodule.LayerModule(name, obj, collector, layer)
+            fixture.parsefactories(collector, layer)
+            return collect_with_layer(collector, name, obj, layer)
 
 
 def query_testsuite(obj):
@@ -33,7 +34,7 @@ def query_testsuite(obj):
 def query_layer(obj):
     if has_layer(obj):
         layer = obj.layer
-        #raise_if_unknown_layer(layer)
+        fixture.raise_if_bad_layer(layer)
         return layer
 
 
@@ -43,24 +44,6 @@ def has_layer(obj):
     except TypeError:
         isunit = False
     return isunit and hasattr(obj, 'layer')
-
-
-def raise_if_unknown_layer(layer):
-    'complaining about unregistered layers'
-
-    if layer not in fixture.LAYERS:
-        layer_name = fixture.get_layer_name(layer)
-        if layer.__class__ in fixture.LAYERS:
-            raise RuntimeError(
-                "The layer `%s` is not found its module's namespace." %
-                layer_name
-            )
-        raise RuntimeError(
-            'There is no fixture for layer `%(layer_name)s`.\n'
-            'You have to create it using:\n'
-            '    from gocept.pytestlayer import fixture\n'
-            '    globals().update(fixture.create("%(layer_name)s"))\n'
-            'in `conftest.py`.' % {'layer_name': layer_name})
 
 
 def pytest_collection_modifyitems(session, config, items):
@@ -120,13 +103,13 @@ def pytest_runtest_teardown(item, nextitem):
         state.keep.clear()
 
 
-def pytest_ignore_collect(path, config):
-    for arg in config.args:
-        if arg.endswith('/gocept.pytestlayer'):
-            # We are running our own tests, so do not ignore anything:
-            return
-    if 'gocept/pytestlayer/tests' in path.strpath:
-        # Ignore our own tests when testing another package because we need
-        # `capturelog` which is only defined as a test dependency of
-        # gocept.pytestlayer:
-        return True
+def collect_with_layer(collector, name, obj, layer):
+    fixture_name = fixture.get_function_fixture_name(layer)
+    usefixtures = pytest.mark.usefixtures(fixture_name)
+    usefixtures(obj)
+    py_unittest = get_py_unittest(collector)
+    return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+
+
+def get_py_unittest(collector):
+    return collector.session.config.pluginmanager.getplugin('unittest')

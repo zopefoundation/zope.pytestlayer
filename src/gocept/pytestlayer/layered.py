@@ -9,6 +9,7 @@ class LayeredTestSuite(pytest.Class):
     def collect(self):
         suite = self.obj()
         for item, layer in walk_suite(suite):
+            fixture.parsefactories(self.parent, layer)
             yield LayeredTestCaseInstance(item, self, layer)
 
 
@@ -50,6 +51,7 @@ def walk_suite(suite):
         has_layer = hasattr(suite, 'layer')
         for item in suite:
             if isinstance(item, unittest.TestCase) and has_layer:
+                fixture.raise_if_bad_layer(suite.layer)
                 yield item, suite.layer
             else:
                 for result in walk_suite(item):
