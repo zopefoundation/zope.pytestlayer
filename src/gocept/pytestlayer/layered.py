@@ -32,8 +32,14 @@ class LayeredTestCaseInstance(pytest.Collector):
 class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
 
     def __init__(self, name, parent):
-        super(LayeredTestCaseFunction, self).__init__(name, parent=parent)
+        description = get_description(parent)
+        keywords = get_keywords(description)
+        super(LayeredTestCaseFunction, self).__init__(
+            name, parent=parent,
+            keywords=keywords
+        )
         self.layer = self.parent.layer
+        self.tc_description = description
 
     def setup(self):
         self._testcase = self.parent.obj
@@ -43,7 +49,21 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
             self._request.getfuncargvalue(fixture_name)
 
     def reportinfo(self):
-        return 'test_suite', None, self.parent.obj.shortDescription()
+        return ('test_suite', None, self.tc_description)
+
+
+def get_description(collector):
+    description = str(collector.obj)
+    fspath = collector.session.fspath.strpath
+    return description.replace(fspath, '')
+
+
+def get_keywords(description):
+    words = [word for word in description.split()]
+    keywords = {}
+    for word in words:
+        keywords[word] = True
+    return keywords
 
 
 def walk_suite(suite):
