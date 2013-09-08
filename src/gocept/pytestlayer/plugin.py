@@ -108,7 +108,9 @@ def collect_with_layer(collector, name, obj, layer):
     usefixtures = pytest.mark.usefixtures(fixture_name)
     usefixtures(obj)
     py_unittest = get_py_unittest(collector)
-    return py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+    result = py_unittest.pytest_pycollect_makeitem(collector, name, obj)
+    result.keywords.update({fixture.get_layer_name(layer): True})
+    return result
 
 
 def get_py_unittest(collector):

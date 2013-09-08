@@ -21,6 +21,7 @@ class LayeredTestCaseInstance(pytest.Collector):
         # to pass them to function
         self.obj = obj
         self.layer = layer
+        self.keywords.update({fixture.get_layer_name(layer): True})
 
     def collect(self):
         yield LayeredTestCaseFunction('runTest', parent=self)
