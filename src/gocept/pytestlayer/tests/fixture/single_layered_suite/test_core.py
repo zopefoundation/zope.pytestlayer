@@ -16,12 +16,12 @@ class FooLayer(object):
 
     @classmethod
     def testSetUp(cls):
-        log_to_terminal(cls.pytest_request, '\ntestSetUp foo')
+        log_to_terminal(cls.pytest_request, 'testSetUp foo')
         cls.test_foo = 'test foo'
 
     @classmethod
     def testTearDown(cls):
-        log_to_terminal(cls.pytest_request, '\ntestTearDown foo')
+        log_to_terminal(cls.pytest_request, 'testTearDown foo')
         del cls.test_foo
 
 
