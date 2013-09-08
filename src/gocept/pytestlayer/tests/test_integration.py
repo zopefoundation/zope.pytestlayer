@@ -11,10 +11,14 @@ normalizers = [
 ]
 
 
-def run_pytest(name):
+def run_pytest(name, *args):
+    cmd = [
+        sys.argv[0], '-v',
+        os.path.join(os.path.dirname(__file__), 'fixture', name)
+        ]
+    cmd.extend(args)
     process = subprocess.Popen(
-        [sys.argv[0], '-v',
-         os.path.join(os.path.dirname(__file__), 'fixture', name)],
+        cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
     output = process.stdout.read()
@@ -23,9 +27,9 @@ def run_pytest(name):
     return output.splitlines(True)
 
 
-def join(lines, start=2):
+def join(lines, start=2, end=1):
     return '\n'.join(
-        line.rstrip() for line in lines[start:-1] if line.strip()) + '\n'
+        line.rstrip() for line in lines[start:-end] if line.strip()) + '\n'
 
 
 def test_single_layer():
@@ -315,6 +319,50 @@ Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
     assert '=== 6 passed in ' in lines[-1]
+
+
+def test_order_with_layered_suite_select_layer():
+    lines = run_pytest('order_with_layered_suite', '-k', 'FooLayer')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 6 items
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy
+Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foo.txt
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foo.txt PASSED
+testTearDown foo
+Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+""" == join(lines, end=2)
+    assert "4 tests deselected by '-kFooLayer" in lines[-2]
+    assert '2 passed, 4 deselected in' in lines[-1]
+
+
+def test_order_with_layered_suite_select_doctest():
+    lines = run_pytest('order_with_layered_suite', '-k', 'foobar and txt')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 6 items
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt
+Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+Set up order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
+Set up order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
+Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
+Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+""" == join(lines, end=2)
+    assert "5 tests deselected by '-kfoobar and txt" in lines[-2]
+    assert '1 passed, 5 deselected in' in lines[-1]
 
 
 def test_works_even_without_any_setup_or_teardown_methods():
