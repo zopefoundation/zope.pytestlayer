@@ -188,3 +188,16 @@ def raise_if_bad_layer(layer):
             " Layers may be of two sorts: class or instance with __bases__"
             " attribute.".format(repr(layer))
         )
+
+
+KEYWORDS_BY_LAYER = {object: {}}
+
+
+def get_keywords(layer):
+    if layer in KEYWORDS_BY_LAYER:
+        return KEYWORDS_BY_LAYER[layer]
+    keywords = {get_layer_name(layer): True}
+    for base_layer in layer.__bases__:
+        keywords.update(get_keywords(base_layer))
+    KEYWORDS_BY_LAYER[layer] = keywords
+    return keywords

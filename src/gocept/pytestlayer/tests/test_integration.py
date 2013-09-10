@@ -66,6 +66,27 @@ Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN se
     assert '=== 1 passed in ' in lines[-1]
 
 
+def test_single_layer_with_unattached_base_layer_select_layer():
+    lines = run_pytest(
+        'single_layer_with_unattached_base_layer', '-k', 'BarLayer'
+    )
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 1 items
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy
+Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+Set up single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
+testSetUp bar
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy PASSED
+testTearDown foo
+testTearDown bar
+Tear down single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
+Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 1 passed in ' in lines[-1]
+
+
 def test_single_layer_in_two_modules():
     lines = run_pytest('single_layer_in_two_modules')
     assert """\
@@ -335,10 +356,30 @@ src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- te
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foo.txt PASSED
 testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy
+Set up order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
+Set up order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt
+testSetUp foo
+testSetUp bar
+testSetUp foobar
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt PASSED
+testTearDown foobar
+testTearDown bar
+testTearDown foo
+Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
+Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines, end=2)
-    assert "4 tests deselected by '-kFooLayer" in lines[-2]
-    assert '2 passed, 4 deselected in' in lines[-1]
+    assert "2 tests deselected by '-kFooLayer" in lines[-2]
+    assert '4 passed, 2 deselected in' in lines[-1]
 
 
 def test_order_with_layered_suite_select_doctest():
