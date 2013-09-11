@@ -24,7 +24,7 @@ def timer(request, text):
     yield
     if verbose:
         time_taken = time.time() - start
-        reporter.write("{:.3f}".format(time_taken), green=1, bold=1)
+        reporter.write("{0:.3f}".format(time_taken), green=1, bold=1)
         reporter.write_line(" seconds.")
 
 
@@ -35,7 +35,8 @@ def class_fixture(request, layer):
 
     if layer not in state.current:
         if hasattr(layer, 'setUp'):
-            with timer(request, "Set up {} in ".format(layer_name)):
+            print layer_name
+            with timer(request, "Set up {0} in ".format(layer_name)):
                 layer.setUp()
             state.current.add(layer)
 
@@ -43,7 +44,7 @@ def class_fixture(request, layer):
         if layer not in state.keep:
             decorate_layer(layer, request)
             if hasattr(layer, 'tearDown'):
-                with timer(request, "Tear down {} in ".format(layer_name)):
+                with timer(request, "Tear down {0} in ".format(layer_name)):
                     layer.tearDown()
                 state.current.remove(layer)
 
@@ -87,15 +88,17 @@ def make_identifier(string):
 
 
 def get_function_fixture_name(layer):
-    return 'zope_layer_function_{}_{}'.format(
-        make_identifier(get_layer_name(layer)),
-        id(layer))
+    return get_fixture_name(layer, scope='function')
 
 
 def get_class_fixture_name(layer):
-    return 'zope_layer_class_{}_{}'.format(
-        make_identifier(get_layer_name(layer)),
-        id(layer))
+    return get_fixture_name(layer, scope='class')
+
+
+def get_fixture_name(layer, scope):
+    name = make_identifier(get_layer_name(layer))
+    layerid = id(layer)
+    return 'zope_layer_{scope}_{name}_{layerid}'.format(**locals())
 
 
 LAYERS = set()

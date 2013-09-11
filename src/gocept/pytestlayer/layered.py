@@ -41,9 +41,9 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
         )
         self.layer = self.parent.layer
         self.tc_description = description
+        self._testcase = self.parent.obj
 
     def setup(self):
-        self._testcase = self.parent.obj
         if hasattr(self, "_request"):
             # call function fixture (testSetUp)
             fixture_name = fixture.get_function_fixture_name(self.layer)
