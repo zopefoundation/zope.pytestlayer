@@ -11,6 +11,22 @@ normalizers = [
 ]
 
 
+@pytest.fixture('module')
+def where(request):
+    '''
+    Add a normalizer that depends on the session.
+    to make tests results independent from the place where pytest is started
+    '''
+    relative = request.fspath.relto(request.session.fspath)
+    from_src = os.path.join(
+        'src', 'gocept', 'pytestlayer', 'tests', 'test_integration.py'
+    )
+    root = re.escape(relative.replace(from_src, ''))
+    normalizers.append(
+        (root, '')
+    )
+
+
 def run_pytest(name, *args):
     cmd = [
         sys.argv[0], '-v',
@@ -32,7 +48,7 @@ def join(lines, start=2, end=1):
         line.rstrip() for line in lines[start:-end] if line.strip()) + '\n'
 
 
-def test_single_layer():
+def test_single_layer(where):
     lines = run_pytest('single_layer')
     assert """\
 plugins: gocept.pytestlayer
@@ -47,7 +63,7 @@ Tear down single_layer.test_core.FooLayer in N.NNN seconds.
     assert '=== 1 passed in ' in lines[-1]
 
 
-def test_single_layer_with_unattached_base_layer():
+def test_single_layer_with_unattached_base_layer(where):
     lines = run_pytest('single_layer_with_unattached_base_layer')
     assert """\
 plugins: gocept.pytestlayer
@@ -66,7 +82,7 @@ Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN se
     assert '=== 1 passed in ' in lines[-1]
 
 
-def test_single_layer_with_unattached_base_layer_select_layer():
+def test_single_layer_with_unattached_base_layer_select_layer(where):
     lines = run_pytest(
         'single_layer_with_unattached_base_layer', '-k', 'BarLayer'
     )
@@ -87,7 +103,7 @@ Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN se
     assert '=== 1 passed in ' in lines[-1]
 
 
-def test_single_layer_in_two_modules():
+def test_single_layer_in_two_modules(where):
     lines = run_pytest('single_layer_in_two_modules')
     assert """\
 plugins: gocept.pytestlayer
@@ -106,7 +122,7 @@ Tear down single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_single_layered_suite():
+def test_single_layered_suite(where):
     lines = run_pytest('single_layered_suite')
     assert """\
 plugins: gocept.pytestlayer
@@ -121,7 +137,7 @@ Tear down single_layered_suite.test_core.FooLayer in N.NNN seconds.
     assert '=== 1 passed in ' in lines[-1]
 
 
-def test_shared_with_layered_suite():
+def test_shared_with_layered_suite(where):
     lines = run_pytest('shared_with_layered_suite')
     assert """\
 plugins: gocept.pytestlayer
@@ -140,7 +156,7 @@ Tear down shared_with_layered_suite.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_with_and_without_layer():
+def test_with_and_without_layer(where):
     lines = run_pytest('with_and_without_layer')
     assert """\
 plugins: gocept.pytestlayer
@@ -156,7 +172,7 @@ Tear down with_and_without_layer.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_two_dependent_layers():
+def test_two_dependent_layers(where):
     lines = run_pytest('two_dependent_layers')
     assert """\
 plugins: gocept.pytestlayer
@@ -179,7 +195,7 @@ Tear down two_dependent_layers.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_two_dependent_layered_suites():
+def test_two_dependent_layered_suites(where):
     lines = run_pytest('two_dependent_layered_suites')
     assert """\
 plugins: gocept.pytestlayer
@@ -202,7 +218,7 @@ Tear down two_dependent_layered_suites.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_two_independent_layers():
+def test_two_independent_layers(where):
     lines = run_pytest('two_independent_layers')
     assert """\
 plugins: gocept.pytestlayer
@@ -225,7 +241,7 @@ Tear down two_independent_layers.test_core.BarLayer in N.NNN seconds.
 
 @pytest.mark.xfail(
     reason='ordering by layers does not optimize for fewer set-ups')
-def test_keep_layer_across_test_classes():
+def test_keep_layer_across_test_classes(where):
     lines = run_pytest('keep_layer_across_test_classes')
     assert """\
 plugins: gocept.pytestlayer
@@ -256,7 +272,7 @@ Tear down keep_layer_across_test_classes.test_core.BarLayer in N.NNN seconds.
     assert '=== 3 passed in ' in lines[-1]
 
 
-def test_order_by_layer():
+def test_order_by_layer(where):
     lines = run_pytest('order_by_layer')
     assert """\
 plugins: gocept.pytestlayer
@@ -293,7 +309,7 @@ Tear down order_by_layer.test_core.FooLayer in N.NNN seconds.
     assert '=== 4 passed in ' in lines[-1]
 
 
-def test_order_with_layered_suite():
+def test_order_with_layered_suite(where):
     lines = run_pytest('order_with_layered_suite')
     assert """\
 plugins: gocept.pytestlayer
@@ -342,7 +358,7 @@ Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
     assert '=== 6 passed in ' in lines[-1]
 
 
-def test_order_with_layered_suite_select_layer():
+def test_order_with_layered_suite_select_layer(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'FooLayer')
     assert """\
 plugins: gocept.pytestlayer
@@ -382,7 +398,7 @@ Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
     assert '4 passed, 2 deselected in' in lines[-1]
 
 
-def test_order_with_layered_suite_select_doctest():
+def test_order_with_layered_suite_select_doctest(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'foobar and txt')
     assert """\
 plugins: gocept.pytestlayer
@@ -406,7 +422,7 @@ Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
     assert '1 passed, 5 deselected in' in lines[-1]
 
 
-def test_works_even_without_any_setup_or_teardown_methods():
+def test_works_even_without_any_setup_or_teardown_methods(where):
     lines = run_pytest('no_setup_or_teardown')
     assert """\
 plugins: gocept.pytestlayer
@@ -416,14 +432,14 @@ src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test_core.py:NN: FooTe
     assert '=== 1 passed in ' in lines[-1]
 
 
-def test_nice_error_message_if_layer_has_no_bases():
+def test_nice_error_message_if_layer_has_no_bases(where):
     lines = run_pytest('bad_layer')
     assert """\
 has no __bases__ attribute. Layers may be of two sorts: class or instance with __bases__ attribute.\
 """ in join(lines)
     assert '=== 1 error in ' in lines[-1]
 
-def test_creating_different_fixtures_for_layers_with_the_same_name():
+def test_creating_different_fixtures_for_layers_with_the_same_name(where):
     lines = run_pytest('layers_with_same_name')
     assert """\
 plugins: gocept.pytestlayer
