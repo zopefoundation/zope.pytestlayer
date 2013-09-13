@@ -31,10 +31,5 @@ Quick start
            pytest
            <YOUR PACKAGE HERE>
 
-* Write a ``conftest.py`` to explicitely use the plugin::
-    
-    pytest_plugins = ('zopelayer', )
-
-  Make sure to put the ``conftest.py`` inside a directory that is a parent of
-  all directories that contain tests that use layers, so it is found by pytest
-  whenever needed.
+`gocept.pytestlayer` registers itself as a `py.test` plugin. This way, nothing
+more is needed to run an existing Zope or Plone test suite.
