@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-1.1 (unreleased)
+2.0 (2013-09-19)
 ================
 
 - Remove need to explicitely create fixtures.
