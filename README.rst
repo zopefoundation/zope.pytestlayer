@@ -5,8 +5,8 @@ The gocept.pytestlayer distribution
 Integration of zope.testrunner-style test layers into the `py.test`_
 framework
 
-This package is compatible with Python version 2.7. (To run its tests
-successfully you sould use at lest Python 2.7.4 because of a bug in earlier
+This package is compatible with Python versions 2.6 and 2.7. (To run its tests
+successfully you should use at least Python 2.7.4 because of a bug in earlier
 Python 2.7 versions.)
 
 .. _`py.test` : http://pytest.org
