@@ -40,7 +40,12 @@ def run_pytest(name, *args):
     output = process.stdout.read()
     for pattern, replacement in normalizers:
         output = re.sub(pattern, replacement, output)
-    return output.splitlines(True)
+    lines = output.splitlines(True)
+    # Sometimes the output ends with an escape sequence so omitting them to
+    # make tests happy:
+    if lines[-1] == '\x1b[?1034h':
+        lines.pop(-1)
+    return lines
 
 
 def join(lines, start=2, end=1):

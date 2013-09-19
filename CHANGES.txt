@@ -11,6 +11,9 @@ Change log for gocept.pytestlayer
 - ``plone.testing.layered`` test suites support.
   [gotcha]
 
+- Made tests a bit more robust.
+  [icemac]
+
 
 1.0 (2013-08-28)
 ================
