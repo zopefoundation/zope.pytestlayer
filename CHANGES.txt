@@ -5,10 +5,10 @@ Change log for gocept.pytestlayer
 1.1 (unreleased)
 ================
 
-- remove need to explicitely create fixtures.
+- Remove need to explicitely create fixtures.
   [gotcha]
 
-- ``plone.testing.layered`` test suites support.
+- Add ``plone.testing.layered`` test suites support.
   [gotcha]
 
 - Made tests a bit more robust.
