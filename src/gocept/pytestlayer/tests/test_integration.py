@@ -29,9 +29,9 @@ def where(request):
 
 def run_pytest(name, *args):
     cmd = [
-        sys.argv[0], '-v',
+        sys.argv[0], '-vs',
         os.path.join(os.path.dirname(__file__), 'fixture', name)
-        ]
+    ]
     cmd.extend(args)
     process = subprocess.Popen(
         cmd,
@@ -58,7 +58,7 @@ def test_single_layer(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 1 items
-src/gocept/pytestlayer/tests/fixture/single_layer/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/single_layer/test_core.py:NN: FooTest.test_dummy single_layer.test_core.FooLayer
 Set up single_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/single_layer/test_core.py:NN: FooTest.test_dummy PASSED
@@ -73,8 +73,9 @@ def test_single_layer_with_unattached_base_layer(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 1 items
-src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy single_layer_with_unattached_base_layer.test_core.BarLayer
 Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+single_layer_with_unattached_base_layer.test_core.FooLayer
 Set up single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp bar
 testSetUp foo
@@ -94,8 +95,9 @@ def test_single_layer_with_unattached_base_layer_select_layer(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 1 items
-src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy single_layer_with_unattached_base_layer.test_core.BarLayer
 Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
+single_layer_with_unattached_base_layer.test_core.FooLayer
 Set up single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp bar
 testSetUp foo
@@ -113,7 +115,7 @@ def test_single_layer_in_two_modules(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_core.py:NN: FooTest.test_dummy single_layer_in_two_modules.test_core.FooLayer
 Set up single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_core.py:NN: FooTest.test_dummy PASSED
@@ -132,7 +134,7 @@ def test_single_layered_suite(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 1 items
-src/gocept/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/single_layered_suite/doctest.txt
+src/gocept/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/single_layered_suite/doctest.txt single_layered_suite.test_core.FooLayer
 Set up single_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/single_layered_suite/doctest.txt PASSED
@@ -147,14 +149,14 @@ def test_shared_with_layered_suite(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py:NN: FooTest.test_dummy shared_with_layered_suite.test_core.FooLayer
 Set up shared_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/doctest.txt
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/mydoctest.txt
 testSetUp foo
-src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/doctest.txt PASSED
+src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/mydoctest.txt PASSED
 testTearDown foo
 Tear down shared_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
@@ -167,7 +169,7 @@ def test_with_and_without_layer(where):
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
 src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test_core.py:NN: UnitTest.test_dummy PASSED
-src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test_core.py:NN: FooTest.test_dummy with_and_without_layer.test_core.FooLayer
 Set up with_and_without_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test_core.py:NN: FooTest.test_dummy PASSED
@@ -182,12 +184,12 @@ def test_two_dependent_layers(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test_core.py:NN: FooTest.test_dummy two_dependent_layers.test_core.FooLayer
 Set up two_dependent_layers.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test_core.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/two_dependent_layers/test_core.py:NN: BarTest.test_dummy two_dependent_layers.test_core.BarLayer
 Set up two_dependent_layers.test_core.BarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -205,12 +207,12 @@ def test_two_dependent_layered_suites(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/foo.txt
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/foo.txt two_dependent_layered_suites.test_core.FooLayer
 Set up two_dependent_layered_suites.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/foo.txt PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/bar.txt
+src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/two_dependent_layered_suites/bar.txt two_dependent_layered_suites.test_core.BarLayer
 Set up two_dependent_layered_suites.test_core.BarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -228,13 +230,13 @@ def test_two_independent_layers(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: FooTest.test_dummy two_independent_layers.test_core.FooLayer
 Set up two_independent_layers.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
 Tear down two_independent_layers.test_core.FooLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: BarTest.test_dummy two_independent_layers.test_core.BarLayer
 Set up two_independent_layers.test_core.BarLayer in N.NNN seconds.
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: BarTest.test_dummy PASSED
@@ -251,12 +253,12 @@ def test_keep_layer_across_test_classes(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 3 items
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: FooTest.test_dummy order_by_layer.test_core.FooLayer
 Set up keep_layer_across_test_classes.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: FooBarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: FooBarTest.test_dummy order_by_layer.test_core.BarLayer
 Set up keep_layer_across_test_classes.test_core.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -267,7 +269,7 @@ testTearDown bar
 testTearDown foo
 Tear down keep_layer_across_test_classes.test_core.FooBarLayer in N.NNN seconds.
 Tear down keep_layer_across_test_classes.test_core.FooLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: BarTest.test_dummy order_by_layer.test_core.FooLayer
 Set up keep_layer_across_test_classes.test_core.BarLayer in N.NNN seconds.
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py:NN: BarTest.test_dummy PASSED
@@ -282,13 +284,13 @@ def test_order_by_layer(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 4 items
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: FooTest.test_dummy order_by_layer.test_core.FooLayer
 Set up order_by_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: FooTest.test_dummy PASSED
 testTearDown foo
 Tear down order_by_layer.test_core.FooLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: BarTest.test_dummy order_by_layer.test_core.BarLayer
 Set up order_by_layer.test_core.BarLayer in N.NNN seconds.
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: BarTest.test_dummy PASSED
@@ -297,8 +299,9 @@ src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: Bar2Test.te
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: Bar2Test.test_dummy PASSED
 testTearDown bar
-src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: FooBarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_by_layer/test_core.py:NN: FooBarTest.test_dummy order_by_layer.test_core.FooLayer
 Set up order_by_layer.test_core.FooLayer in N.NNN seconds.
+order_by_layer.test_core.FooBarLayer
 Set up order_by_layer.test_core.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -319,7 +322,7 @@ def test_order_with_layered_suite(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 6 items
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy PASSED
@@ -329,7 +332,7 @@ testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foo.txt PASSED
 testTearDown foo
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: BarTest.test_dummy order_with_layered_suite.test_core.BarLayer
 Set up order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: BarTest.test_dummy PASSED
@@ -338,8 +341,9 @@ src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: B
 testSetUp bar
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: Bar2Test.test_dummy PASSED
 testTearDown bar
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+order_with_layered_suite.test_core.FooBarLayer
 Set up order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -368,7 +372,7 @@ def test_order_with_layered_suite_select_layer(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 6 items
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy PASSED
@@ -377,8 +381,9 @@ src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- te
 testSetUp foo
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foo.txt PASSED
 testTearDown foo
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooBarTest.test_dummy order_with_layered_suite.test_core.BarLayer
 Set up order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
+order_with_layered_suite.test_core.FooBarLayer
 Set up order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -408,9 +413,11 @@ def test_order_with_layered_suite_select_doctest(where):
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 6 items
-src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt
+src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
+order_with_layered_suite.test_core.BarLayer
 Set up order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
+order_with_layered_suite.test_core.FooBarLayer
 Set up order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 testSetUp foo
 testSetUp bar
@@ -444,18 +451,24 @@ has no __bases__ attribute. Layers may be of two sorts: class or instance with _
 """ in join(lines)
     assert '=== 1 error in ' in lines[-1]
 
+
 def test_creating_different_fixtures_for_layers_with_the_same_name(where):
     lines = run_pytest('layers_with_same_name')
     assert """\
 plugins: gocept.pytestlayer
 collecting ... collected 2 items
-src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: FooTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: FooTest.test_dummy layers_with_same_name.test_core.TestLayer
 Set up layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: FooTest.test_dummy PASSED
 Tear down layers_with_same_name.test_core.TestLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: BarTest.test_dummy
+src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: BarTest.test_dummy layers_with_same_name.test_core.TestLayer
 Set up layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: BarTest.test_dummy PASSED
 Tear down layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 """ == join(lines)
     assert '=== 2 passed in ' in lines[-1]
+
+
+def test_selection_of_doctest_names(where):
+    lines = run_pytest('single_layered_suite', '-k', 'mydoctest')
+    assert "1 tests deselected by '-kmydoctest'" in join(lines)

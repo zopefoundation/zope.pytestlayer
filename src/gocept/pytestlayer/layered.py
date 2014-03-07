@@ -16,12 +16,13 @@ class LayeredTestSuite(pytest.Class):
 class LayeredTestCaseInstance(pytest.Collector):
 
     def __init__(self, obj, parent, layer):
-        super(pytest.Collector, self).__init__('', parent=parent)
+        testname = repr(obj)  # fantastic doctest API :(
+        super(pytest.Collector, self).__init__(testname, parent=parent)
         # store testcase instance and layer
         # to pass them to function
         self.obj = obj
         self.layer = layer
-        self.keywords.update(fixture.get_keywords(layer))
+        self.extra_keyword_matches.update(fixture.get_keywords(layer))
 
     def collect(self):
         yield LayeredTestCaseFunction('runTest', parent=self)
