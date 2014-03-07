@@ -42,7 +42,7 @@ def test_suite():
     suite.addTests([
         layered(
             doctest.DocFileSuite(
-                'doctest.txt',
+                'mydoctest.txt',
                 optionflags=OPTIONFLAGS,
             ),
             layer=FooLayer,
