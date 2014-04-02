@@ -47,7 +47,8 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
     def setup(self):
         if hasattr(self, "_request"):
             # call function fixture (testSetUp)
-            fixture_name = fixture.get_function_fixture_name(self.layer)
+            fixture_name = fixture.get_fixture_name(
+                self.layer, scope='function')
             self._request.getfuncargvalue(fixture_name)
 
     def reportinfo(self):

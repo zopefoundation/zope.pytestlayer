@@ -87,14 +87,6 @@ def make_identifier(string):
     return re.sub('\W|^(?=\d)', '_', string)
 
 
-def get_function_fixture_name(layer):
-    return get_fixture_name(layer, scope='function')
-
-
-def get_class_fixture_name(layer):
-    return get_fixture_name(layer, scope='class')
-
-
 def get_fixture_name(layer, scope):
     name = make_identifier(get_layer_name(layer))
     layerid = id(layer)
@@ -172,7 +164,7 @@ def _create_single(layer):
 def parsefactories(collector, layer):
     ns = _create(layer)
     if ns:
-        name = get_function_fixture_name(layer)
+        name = get_fixture_name(layer, scope='function')
         module = imp.new_module(name)
         module.__dict__.update(ns)
         collector.session._fixturemanager.parsefactories(module, '')
