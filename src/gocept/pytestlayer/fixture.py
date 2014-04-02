@@ -28,27 +28,36 @@ def timer(request, text):
         reporter.write_line(" seconds.")
 
 
-def class_fixture(request, layer):
+def setup_layer(layer, request):
     decorate_layer(layer, request)
     state = request.session.zopelayer_state
     layer_name = get_layer_name(layer)
+    if hasattr(layer, 'setUp'):
+        print layer_name
+        with timer(request, "Set up {0} in ".format(layer_name)):
+            layer.setUp()
+        state.current.add(layer)
 
+
+def teardown_layer(layer, request):
+    decorate_layer(layer, request)
+    state = request.session.zopelayer_state
+    layer_name = get_layer_name(layer)
+    if hasattr(layer, 'tearDown'):
+        with timer(request, "Tear down {0} in ".format(layer_name)):
+            layer.tearDown()
+        state.current.remove(layer)
+
+
+def class_fixture(request, layer):
+    state = request.session.zopelayer_state
     if layer not in state.current:
-        if hasattr(layer, 'setUp'):
-            print layer_name
-            with timer(request, "Set up {0} in ".format(layer_name)):
-                layer.setUp()
-            state.current.add(layer)
+        setup_layer(layer, request)
 
-    def conditional_teardown():
+    def maybe_teardown():
         if layer not in state.keep:
-            decorate_layer(layer, request)
-            if hasattr(layer, 'tearDown'):
-                with timer(request, "Tear down {0} in ".format(layer_name)):
-                    layer.tearDown()
-                state.current.remove(layer)
-
-    request.addfinalizer(conditional_teardown)
+            teardown_layer(layer, request)
+    request.addfinalizer(maybe_teardown)
 
 
 def decorate_layer(layer, request):
