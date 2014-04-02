@@ -101,8 +101,8 @@ def get_fixture_name(layer, scope):
     return 'zope_layer_{scope}_{name}_{layerid}'.format(**locals())
 
 
-LAYERS = set()
-LAYERS.add(object)  # We do not need to create a fixture for `object`
+LAYERS = {}
+LAYERS[object] = {}  # We do not need to create a fixture for `object`
 
 
 def _create(*layers):
@@ -136,27 +136,23 @@ def _create_single(layer):
     """Actually create a fixtures for a single layer and its bases."""
     if layer in LAYERS:
         return {}
-    LAYERS.add(layer)
 
-    class_fixture_name = get_class_fixture_name(layer)
-    function_fixture_name = get_function_fixture_name(layer)
-    class_fixture_dependencies = [
-        ', ' + get_class_fixture_name(base)
-        for base in layer.__bases__
-        if base is not object
-    ]
-    function_fixture_dependencies = [
-        ', ' + get_function_fixture_name(base)
-        for base in layer.__bases__
-        if base is not object
-    ]
-    function_fixture_dependencies.insert(0, ', ' + class_fixture_name)
-    code = TEMPLATE.format(
-        class_fixture_name=class_fixture_name,
-        function_fixture_name=function_fixture_name,
-        class_fixture_dependencies=''.join(class_fixture_dependencies),
-        function_fixture_dependencies=''.join(function_fixture_dependencies),
-    )
+    LAYERS[layer] = {}
+    dependencies = {}
+    for scope in ['class', 'function']:
+        LAYERS[layer][scope] = get_fixture_name(layer, scope)
+        dependencies[scope] = [
+            ', ' + LAYERS.get(base, {}).get(
+                scope, get_fixture_name(base, scope))
+            for base in layer.__bases__ if base is not object]
+    dependencies['function'].insert(0, ', ' + LAYERS[layer]['class'])
+
+    fixtures = {}
+    for scope in ['class', 'function']:
+        fixtures['%s_fixture_name' % scope] = LAYERS[layer][scope]
+        fixtures['%s_fixture_dependencies' % scope] = ''.join(
+            dependencies[scope])
+    code = TEMPLATE.format(**fixtures)
 
     globs = dict(
         pytest=pytest,
