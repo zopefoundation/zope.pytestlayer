@@ -6,7 +6,7 @@ class Layer(object):
 
 
 def test_create_accepts_dotted_names_of_layers():
-    fixtures = sorted(fixture._create(
+    fixtures = sorted(fixture.create(
         'gocept.pytestlayer.tests.test_fixture.Layer').keys())
     assert 2 == len(fixtures)
     assert fixtures[0].startswith(

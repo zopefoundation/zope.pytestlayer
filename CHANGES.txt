@@ -8,6 +8,10 @@ Change log for gocept.pytestlayer
 - Update handling of keywords and doctest testnames for py.test-2.5.
   [wosc]
 
+- Re-introduce ``gocept.pytestlayer.fixture.create()`` method, to allow giving
+  created fixtures a non-random name, so other fixtures can depend on them.
+  [tlotze, wosc]
+
 
 2.0 (2013-09-19)
 ================
