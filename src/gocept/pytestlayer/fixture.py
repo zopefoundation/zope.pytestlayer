@@ -11,6 +11,7 @@ class ZopeLayerState(object):
     def __init__(self):
         self.current = set()
         self.keep = set()
+        self.keep_for_whole_session = set()
 
 
 @contextlib.contextmanager
@@ -49,19 +50,26 @@ def teardown_layer(layer, request):
         state.current.remove(layer)
 
 
+def session_fixture(request, layer):
+    state = request.session.zopelayer_state
+    if layer not in state.current:
+        setup_layer(layer, request)
+        state.keep_for_whole_session.add(layer)
+
+    def teardown():
+        teardown_layer(layer, request)
+    request.addfinalizer(teardown)
+
+
 def class_fixture(request, layer):
     state = request.session.zopelayer_state
     if layer not in state.current:
         setup_layer(layer, request)
 
     def maybe_teardown():
-        if layer not in state.keep:
+        if layer not in (state.keep | state.keep_for_whole_session):
             teardown_layer(layer, request)
     request.addfinalizer(maybe_teardown)
-
-
-def decorate_layer(layer, request):
-    setattr(layer, 'pytest_request', request)
 
 
 def function_fixture(request, layer):
@@ -76,6 +84,10 @@ def function_fixture(request, layer):
             layer.testTearDown()
 
         request.addfinalizer(function_tear_down)
+
+
+def decorate_layer(layer, request):
+    setattr(layer, 'pytest_request', request)
 
 
 def get_layer_name(layer):
@@ -110,8 +122,9 @@ def create(*layers, **kw):
     """Create fixtures for given layers and their bases.
 
     Fixture names will be generated automatically. For a single layer, you can
-    pass in kw arguments ``class_fixture_name`` and ``function_fixture_name``
-    instead.
+    pass in kw arguments ``session_fixture_name, ``class_fixture_name`` and
+    ``function_fixture_name`` instead.
+
     """
     if kw and len(layers > 1):
         raise ValueError(
@@ -126,7 +139,13 @@ def create(*layers, **kw):
     return ns
 
 
+SCOPES = ('session', 'class', 'function')
 TEMPLATE = """\
+@pytest.fixture(scope='session')
+def {session_fixture_name}(request{session_fixture_dependencies}):
+    "Depends on {session_fixture_dependencies}"
+    session_fixture(request, layer)
+
 @pytest.fixture(scope='class')
 def {class_fixture_name}(request{class_fixture_dependencies}):
     "Depends on {class_fixture_dependencies}"
@@ -146,7 +165,7 @@ def _create_single(layer, **kw):
 
     LAYERS[layer] = {}
     dependencies = {}
-    for scope in ['class', 'function']:
+    for scope in SCOPES:
         LAYERS[layer][scope] = kw.get(
             '%s_fixture_name' % scope, get_fixture_name(layer, scope))
         dependencies[scope] = [
@@ -156,18 +175,19 @@ def _create_single(layer, **kw):
     dependencies['function'].insert(0, ', ' + LAYERS[layer]['class'])
 
     fixtures = {}
-    for scope in ['class', 'function']:
+    for scope in SCOPES:
         fixtures['%s_fixture_name' % scope] = LAYERS[layer][scope]
         fixtures['%s_fixture_dependencies' % scope] = ''.join(
             dependencies[scope])
     code = TEMPLATE.format(**fixtures)
 
-    globs = dict(
-        pytest=pytest,
-        class_fixture=class_fixture,
-        function_fixture=function_fixture,
-        layer=layer,
-    )
+    globs = {
+        'pytest': pytest,
+        'layer': layer,
+    }
+    for scope in SCOPES:
+        globs['%s_fixture' % scope] = globals()['%s_fixture' % scope]
+
     ns = {}
     exec code in globs, ns
 
