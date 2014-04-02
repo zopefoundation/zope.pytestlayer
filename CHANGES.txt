@@ -12,6 +12,10 @@ Change log for gocept.pytestlayer
   created fixtures a non-random name, so other fixtures can depend on them.
   [tlotze, wosc]
 
+- Generate session-scoped fixtures from layers in addition to class-scoped
+  ones, if a session-scoped one is required somewhere, the class-scoped ones
+  are simply ignored. [tlotze, wosc]
+
 
 2.0 (2013-09-19)
 ================
