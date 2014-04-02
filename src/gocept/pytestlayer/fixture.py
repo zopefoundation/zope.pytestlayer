@@ -97,18 +97,24 @@ LAYERS = {}
 LAYERS[object] = {}  # We do not need to create a fixture for `object`
 
 
-def _create(*layers):
-    """Create fixtures for given layers and their bases."""
+def create(*layers, **kw):
+    """Create fixtures for given layers and their bases.
+
+    Fixture names will be generated automatically. For a single layer, you can
+    pass in kw arguments ``class_fixture_name`` and ``function_fixture_name``
+    instead.
+    """
+    if kw and len(layers > 1):
+        raise ValueError(
+            'Overriding layer names is only possible '
+            'for a single layer at a time')
+
     ns = {}
     for layer in layers:
         if isinstance(layer, basestring):
             layer = zope.dottedname.resolve.resolve(layer)
-        ns.update(_create_single(layer))
+        ns.update(_create_single(layer, **kw))
     return ns
-
-
-def create(*layers):
-    return {}
 
 
 TEMPLATE = """\
@@ -124,7 +130,7 @@ def {function_fixture_name}(request{function_fixture_dependencies}):
 """
 
 
-def _create_single(layer):
+def _create_single(layer, **kw):
     """Actually create a fixtures for a single layer and its bases."""
     if layer in LAYERS:
         return {}
@@ -132,7 +138,8 @@ def _create_single(layer):
     LAYERS[layer] = {}
     dependencies = {}
     for scope in ['class', 'function']:
-        LAYERS[layer][scope] = get_fixture_name(layer, scope)
+        LAYERS[layer][scope] = kw.get(
+            '%s_fixture_name' % scope, get_fixture_name(layer, scope))
         dependencies[scope] = [
             ', ' + LAYERS.get(base, {}).get(
                 scope, get_fixture_name(base, scope))
@@ -156,13 +163,13 @@ def _create_single(layer):
     exec code in globs, ns
 
     # Recurse into bases:
-    ns.update(_create(*layer.__bases__))
+    ns.update(create(*layer.__bases__))
 
     return ns
 
 
 def parsefactories(collector, layer):
-    ns = _create(layer)
+    ns = create(layer)
     if ns:
         name = get_fixture_name(layer, scope='function')
         module = imp.new_module(name)
