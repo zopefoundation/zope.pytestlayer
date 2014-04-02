@@ -126,7 +126,7 @@ def create(*layers, **kw):
     ``function_fixture_name`` instead.
 
     """
-    if kw and len(layers > 1):
+    if kw and len(layers) > 1:
         raise ValueError(
             'Overriding layer names is only possible '
             'for a single layer at a time')
