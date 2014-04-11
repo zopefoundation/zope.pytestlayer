@@ -472,3 +472,18 @@ Tear down layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 def test_selection_of_doctest_names(where):
     lines = run_pytest('single_layered_suite', '-k', 'mydoctest')
     assert "1 tests deselected by '-kmydoctest'" in join(lines)
+
+
+def test_fixture_create_allows_overriding_names(where):
+    lines = run_pytest('custom_fixture_name')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 1 items
+src/gocept/pytestlayer/tests/fixture/custom_fixture_name/test_core.py:NN: test_can_access_layer_via_fixture custom_fixture_name.test_core.FooLayer
+Set up custom_fixture_name.test_core.FooLayer in N.NNN seconds.
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/custom_fixture_name/test_core.py:NN: test_can_access_layer_via_fixture PASSED
+testTearDown foo
+Tear down custom_fixture_name.test_core.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 1 passed in ' in lines[-1]

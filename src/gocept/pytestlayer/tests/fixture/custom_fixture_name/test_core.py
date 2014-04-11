@@ -1,0 +1,28 @@
+from gocept.pytestlayer.testing import log_to_terminal
+import unittest
+
+
+class FooLayer(object):
+
+    @classmethod
+    def setUp(cls):
+        cls.layer_foo = 'layer foo'
+
+    @classmethod
+    def tearDown(cls):
+        del cls.layer_foo
+
+    @classmethod
+    def testSetUp(cls):
+        log_to_terminal(cls.pytest_request, 'testSetUp foo')
+        cls.test_foo = 'test foo'
+
+    @classmethod
+    def testTearDown(cls):
+        log_to_terminal(cls.pytest_request, 'testTearDown foo')
+        del cls.test_foo
+
+
+def test_can_access_layer_via_fixture(foo_layer):
+    assert 'layer foo' == foo_layer.layer_foo
+    assert 'test foo' == foo_layer.test_foo
