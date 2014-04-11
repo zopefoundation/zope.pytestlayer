@@ -491,3 +491,20 @@ testTearDown foo
 Tear down custom_fixture_name.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
     assert '=== 2 passed in ' in lines[-1]
+
+
+def test_if_session_fixture_is_used_class_fixtures_are_ignored(where):
+    lines = run_pytest('session_fixture')
+    assert """\
+plugins: gocept.pytestlayer
+collecting ... collected 2 items
+src/gocept/pytestlayer/tests/fixture/session_fixture/test_core.py:NN: test_can_access_layer_via_fixture session_fixture.test_core.FooLayer
+Set up session_fixture.test_core.FooLayer in N.NNN seconds.
+src/gocept/pytestlayer/tests/fixture/session_fixture/test_core.py:NN: test_can_access_layer_via_fixture PASSED
+src/gocept/pytestlayer/tests/fixture/session_fixture/test_core.py:NN: FooTest.test_accesses_fixture_with_generated_name_for_layer
+testSetUp foo
+src/gocept/pytestlayer/tests/fixture/session_fixture/test_core.py:NN: FooTest.test_accesses_fixture_with_generated_name_for_layer PASSED
+testTearDown foo
+Tear down session_fixture.test_core.FooLayer in N.NNN seconds.
+""" == join(lines)
+    assert '=== 2 passed in ' in lines[-1]
