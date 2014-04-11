@@ -59,6 +59,7 @@ def session_fixture(request, layer):
     def teardown():
         teardown_layer(layer, request)
     request.addfinalizer(teardown)
+    return layer
 
 
 def class_fixture(request, layer):
@@ -70,6 +71,7 @@ def class_fixture(request, layer):
         if layer not in (state.keep | state.keep_for_whole_session):
             teardown_layer(layer, request)
     request.addfinalizer(maybe_teardown)
+    return layer
 
 
 def function_fixture(request, layer):
@@ -84,6 +86,7 @@ def function_fixture(request, layer):
             layer.testTearDown()
 
         request.addfinalizer(function_tear_down)
+    return layer
 
 
 def decorate_layer(layer, request):
@@ -144,17 +147,17 @@ TEMPLATE = """\
 @pytest.fixture(scope='session')
 def {session_fixture_name}(request{session_fixture_dependencies}):
     "Depends on {session_fixture_dependencies}"
-    session_fixture(request, layer)
+    return session_fixture(request, layer)
 
 @pytest.fixture(scope='class')
 def {class_fixture_name}(request{class_fixture_dependencies}):
     "Depends on {class_fixture_dependencies}"
-    class_fixture(request, layer)
+    return class_fixture(request, layer)
 
 @pytest.fixture(scope='function')
 def {function_fixture_name}(request{function_fixture_dependencies}):
     "Depends on {function_fixture_dependencies}"
-    function_fixture(request, layer)
+    return function_fixture(request, layer)
 """
 
 
