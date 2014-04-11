@@ -104,7 +104,8 @@ def pytest_runtest_teardown(item, nextitem):
 
 
 def collect_with_layer(collector, name, obj, layer):
-    fixture_name = fixture.get_fixture_name(layer, scope='function')
+    fixture_name = fixture.LAYERS.get(layer, {}).get(
+        'function', fixture.get_fixture_name(layer, 'function'))
     usefixtures = pytest.mark.usefixtures(fixture_name)
     usefixtures(obj)
     py_unittest = get_py_unittest(collector)

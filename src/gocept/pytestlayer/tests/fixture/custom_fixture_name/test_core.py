@@ -26,3 +26,12 @@ class FooLayer(object):
 def test_can_access_layer_via_fixture(foo_layer):
     assert 'layer foo' == foo_layer.layer_foo
     assert 'test foo' == foo_layer.test_foo
+
+
+class FooTest(unittest.TestCase):
+
+    layer = FooLayer
+
+    def test_accesses_fixture_with_generated_name_for_layer(self):
+        self.assertEqual('layer foo', self.layer.layer_foo)
+        self.assertEqual('test foo', self.layer.test_foo)
