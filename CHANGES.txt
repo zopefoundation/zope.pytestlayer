@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-2.1 (unreleased)
+2.1 (2014-10-22)
 ================
 
 - Update handling of keywords and doctest testnames for py.test-2.5.

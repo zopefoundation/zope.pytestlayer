@@ -17,7 +17,7 @@ def project_path(*names):
 
 setup(
     name='gocept.pytestlayer',
-    version='2.1.dev0',
+    version='2.1',
 
     install_requires=[
         'pytest',
