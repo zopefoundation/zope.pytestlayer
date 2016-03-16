@@ -225,32 +225,6 @@ Tear down two_dependent_layered_suites.test_core.FooLayer in N.NNN seconds.
     assert '=== 2 passed in ' in lines[-1]
 
 
-def test_two_dependent_test_classes(where):
-    lines = run_pytest('two_dependent_test_classes')
-    assert """\
-plugins: gocept.pytestlayer
-collecting ... collected 3 items
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: FooTest.test_dummy two_dependent_test_classes.test_core.FooLayer
-Set up two_dependent_test_classes.test_core.FooLayer in N.NNN seconds.
-testSetUp foo
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: FooTest.test_dummy PASSED
-testTearDown foo
-Tear down two_dependent_test_classes.test_core.FooLayer in N.NNN seconds.
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: BarTest.test_dummy two_dependent_test_classes.test_core.FooLayer
-two_dependent_test_classes.test_core.BarLayer
-Set up two_dependent_test_classes.test_core.BarLayer in N.NNN seconds.
-testSetUp bar
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: BarTest.test_dummy PASSED
-testTearDown bar
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: BarTest.test_dummy2
-testSetUp bar
-src/gocept/pytestlayer/tests/fixture/two_dependent_test_classes/test_core.py:NN: BarTest.test_dummy2 PASSED
-testTearDown bar
-Tear down two_dependent_test_classes.test_core.BarLayer in N.NNN seconds.
-""" == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
-
-
 def test_two_independent_layers(where):
     lines = run_pytest('two_independent_layers')
     assert """\
