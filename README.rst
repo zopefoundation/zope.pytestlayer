@@ -33,5 +33,13 @@ Quick start
            pytest
            <YOUR PACKAGE HERE>
 
-`gocept.pytestlayer` registers itself as a `py.test` plugin. This way, nothing
+``gocept.pytestlayer`` registers itself as a ``py.test`` plugin. This way, nothing
 more is needed to run an existing Zope or Plone test suite.
+
+
+Not supported use cases
+=======================
+
+* Inheriting from a base class while changing the layer. See `issue #5`_
+
+.. _`issue #5` : https://bitbucket.org/gocept/gocept.pytestlayer/issues/5
