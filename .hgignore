@@ -2,11 +2,16 @@ syntax: glob
 
 *.egg-info
 *.pyc
+*.swp
+.coverage
+.cache
 .installed.cfg
 .mr.developer.cfg
 __pycache__
 bin
 build
+coverage-report
+coverage.xml
 develop-eggs
 dist
 doc/_api
@@ -16,4 +21,3 @@ local.cfg
 parts
 lib
 include
-*.swp
