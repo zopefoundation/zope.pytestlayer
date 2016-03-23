@@ -42,4 +42,10 @@ Not supported use cases
 
 * Inheriting from a base class while changing the layer. See `issue #5`_
 
+* Mixing classes inheriting ``unittest.TestCase`` and a ``test_suite()`` function (e. g. to create a ``DocTestSuite`` or a ``DocFileSuite``) in a single module (aka file).
+
+  * This is a limitation of the `py.test` test discovery which ignores the doctests in this case.
+
+  * Solution: Put the classes and ``test_suite()`` into different modules.
+
 .. _`issue #5` : https://bitbucket.org/gocept/gocept.pytestlayer/issues/5
