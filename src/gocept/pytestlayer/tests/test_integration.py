@@ -8,6 +8,11 @@ import sys
 normalizers = [
     ('\d+\.\d+ seconds', 'N.NNN seconds'),
     ('\.py:\d+: ', '.py:NN: '),
+    ('\.txt::runTest <- test_suite ', '.txt '),
+    ('\.py::(test_suite)::/', r'.py <- \1: /'),
+    ('\.py::(test)', r'.py:NN: \1'),
+    ('\.py::(.*Test)::', r'.py:NN: \1.'),
+    (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n')
 ]
 
 
@@ -22,15 +27,17 @@ def where(request):
         'src', 'gocept', 'pytestlayer', 'tests', 'test_integration.py'
     )
     root = re.escape(relative.replace(from_src, ''))
-    normalizers.append(
-        (root, '')
-    )
+    root_2 = str(request.session.fspath)
+    normalizers.extend([
+        (root, ''),
+        (root_2, '')
+    ])
 
 
 def run_pytest(name, *args):
     cmd = [
         sys.argv[0], '-vs',
-        os.path.join(os.path.dirname(__file__), 'fixture', name)
+        os.path.join(os.path.dirname(__file__), 'fixture', name),
     ]
     cmd.extend(args)
     process = subprocess.Popen(
@@ -48,7 +55,7 @@ def run_pytest(name, *args):
     return lines
 
 
-def join(lines, start=2, end=1):
+def join(lines, start=4, end=1):
     return '\n'.join(
         line.rstrip() for line in lines[start:-end] if line.strip()) + '\n'
 
