@@ -12,6 +12,7 @@ normalizers = [
     ('\.py::(test_suite)::/', r'.py <- \1: /'),
     ('\.py::(test)', r'.py:NN: \1'),
     ('\.py::(.*Test)::', r'.py:NN: \1.'),
+    # needed to omit all other loaded plugins.
     (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n')
 ]
 
