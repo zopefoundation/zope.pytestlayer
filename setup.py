@@ -12,7 +12,7 @@ def project_path(*names):
 
 setup(
     name='gocept.pytestlayer',
-    version='3.0',
+    version='3.1.dev0',
 
     install_requires=[
         'pytest',
