@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-3.0 (unreleased)
+3.0 (2016-04-14)
 ================
 
 - Claim compatibility with py.test 2.9.x.
