@@ -1,10 +1,4 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-# This should be only one line. If it must be multi-line, indent the second
-# line onwards to keep the PKG-INFO file format intact.
-"""Integration of zope.testrunner-style test layers into the py.test framework
-"""
+"""Integration of zope.testrunner-style test layers into py.test framework"""
 
 from setuptools import setup, find_packages
 import glob
@@ -12,6 +6,7 @@ import os.path
 
 
 def project_path(*names):
+    """Get a path."""
     return os.path.join(os.path.dirname(__file__), *names)
 
 
