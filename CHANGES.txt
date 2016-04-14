@@ -5,7 +5,7 @@ Change log for gocept.pytestlayer
 2.2 (unreleased)
 ================
 
-- Update testrunner to py.test 2.9.0
+- Claim compatiblity with py.test 2.9.x.
 
 
 2.1 (2014-10-22)
