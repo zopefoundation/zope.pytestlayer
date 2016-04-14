@@ -17,7 +17,7 @@ def project_path(*names):
 
 setup(
     name='gocept.pytestlayer',
-    version='2.2.dev0',
+    version='3.0.dev0',
 
     install_requires=[
         'pytest',
@@ -59,7 +59,6 @@ Natural Language :: English
 Operating System :: OS Independent
 Programming Language :: Python
 Programming Language :: Python :: 2
-Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Programming Language :: Python :: 2 :: Only
 Programming Language :: Python :: Implementation
@@ -72,14 +71,16 @@ Topic :: Software Development :: Testing
     description=__doc__.strip(),
     long_description='\n\n'.join(open(project_path(name)).read() for name in (
         'README.rst',
-        'HACKING.txt',
-        'CHANGES.txt',
+        'HACKING.rst',
+        'CHANGES.rst',
     )),
 
     namespace_packages=['gocept'],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    data_files=[('', glob.glob(project_path('*.txt')))],
+    data_files=[('',
+                 glob.glob(project_path('*.rst')),
+                 glob.glob(project_path('*.rst')))],
     zip_safe=False,
 )
