@@ -5,7 +5,7 @@ Change log for gocept.pytestlayer
 3.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- Use tox as testrunner.
 
 
 3.0 (2016-04-14)
