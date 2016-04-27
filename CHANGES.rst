@@ -5,6 +5,8 @@ Change log for gocept.pytestlayer
 3.1 (unreleased)
 ================
 
+- Support Python 3.4, 3.5 and PyPy.
+
 - Use tox as testrunner.
 
 

@@ -1,6 +1,6 @@
+from gocept.pytestlayer import fixture
 import unittest
 import pytest
-import fixture
 import _pytest
 
 
