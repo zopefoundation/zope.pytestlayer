@@ -1,0 +1,11 @@
+include *.py
+include *.rst
+include *.txt
+include .coveragerc
+include buildout.cfg
+include pytest.ini
+include tox.ini
+recursive-include doc *.py
+recursive-include doc *.rst
+recursive-include src *.py
+recursive-include src *.txt
