@@ -45,7 +45,7 @@ def run_pytest(name, *args):
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
-    output = process.stdout.read()
+    output = process.stdout.read().decode('latin-1')
     for pattern, replacement in normalizers:
         output = re.sub(pattern, replacement, output)
     lines = output.splitlines(True)

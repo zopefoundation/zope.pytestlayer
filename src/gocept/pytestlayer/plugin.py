@@ -1,9 +1,9 @@
 import types
-import inspect
 import unittest
 import pytest
 from gocept.pytestlayer import fixture
 from gocept.pytestlayer import layered
+from ._compat import getmro
 
 
 @pytest.mark.tryfirst
@@ -96,9 +96,9 @@ def pytest_runtest_teardown(item, nextitem):
     state = item.session.zopelayer_state
 
     if hasattr(nextitem, 'cls') and hasattr(nextitem.cls, 'layer'):
-        state.keep = state.current & set(inspect.getmro(nextitem.cls.layer))
+        state.keep = state.current & set(getmro(nextitem.cls.layer))
     elif hasattr(nextitem, 'layer'):
-        state.keep = state.current & set(inspect.getmro(nextitem.layer))
+        state.keep = state.current & set(getmro(nextitem.layer))
     else:
         state.keep.clear()
 

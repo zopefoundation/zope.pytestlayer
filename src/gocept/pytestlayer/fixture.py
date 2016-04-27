@@ -1,8 +1,9 @@
 import contextlib
+import imp
 import pytest
 import re
+import six
 import time
-import imp
 import zope.dottedname.resolve
 
 
@@ -34,7 +35,7 @@ def setup_layer(layer, request):
     state = request.session.zopelayer_state
     layer_name = get_layer_name(layer)
     if hasattr(layer, 'setUp'):
-        print layer_name
+        print(layer_name)
         with timer(request, "Set up {0} in ".format(layer_name)):
             layer.setUp()
         state.current.add(layer)
@@ -95,7 +96,7 @@ def decorate_layer(layer, request):
 
 def get_layer_name(layer):
     module = zope.dottedname.resolve.resolve(layer.__module__)
-    for key, value in module.__dict__.iteritems():
+    for key, value in module.__dict__.items():
         if value is layer:
             name = key
             break
@@ -136,7 +137,7 @@ def create(*layers, **kw):
 
     ns = {}
     for layer in layers:
-        if isinstance(layer, basestring):
+        if isinstance(layer, six.string_types):
             layer = zope.dottedname.resolve.resolve(layer)
         ns.update(_create_single(layer, **kw))
     return ns
@@ -192,7 +193,7 @@ def _create_single(layer, **kw):
         globs['%s_fixture' % scope] = globals()['%s_fixture' % scope]
 
     ns = {}
-    exec code in globs, ns
+    exec(code, globs, ns)
 
     # Recurse into bases:
     ns.update(create(*layer.__bases__))
