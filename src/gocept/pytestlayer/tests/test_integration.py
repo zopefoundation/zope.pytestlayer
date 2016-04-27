@@ -37,7 +37,7 @@ def where(request):
 
 def run_pytest(name, *args):
     cmd = [
-        sys.argv[0], '-vs',
+        sys.argv[0], '-vs', '-p', 'no:removestalebytecode',
         os.path.join(os.path.dirname(__file__), 'fixture', name),
     ]
     cmd.extend(args)
