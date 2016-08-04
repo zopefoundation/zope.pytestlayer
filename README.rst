@@ -36,6 +36,26 @@ Quick start
 ``gocept.pytestlayer`` registers itself as a ``py.test`` plugin. This way, nothing
 more is needed to run an existing Zope or Plone test suite.
 
+Advanced usage
+==============
+
+Version 2.1 reintroduced `fixture.create()` to be able to define the name of the generated to py.test fixtures. So it is possible to use them in function style tests.
+
+Example (Code has to be in `contest.py`!)::
+
+    from .testing import FUNCTIONAL_LAYER
+    import gocept.pytestlayer.fixture
+
+    globals().update(gocept.pytestlayer.fixture.create(
+        FUNCTIONAL_LAYER,
+        session_fixture_name='functional_session',
+        class_fixture_name='functional_class',
+        function_fixture_name='functional'))
+
+This creates three fixtures with the given names and the scopes in the argument name. The session and class fixtures run `setUp()` and `tearDown()` of the layer if it has not been run before while the function fixture runs `testSetUp()` and `testTearDown()` of the layer. The function fixture depends on the session one. The fixtures return the instance of the layer. So you can use the `functional` fixture like this::
+
+    def test_mymodule__my_function__1(functional):
+        assert functional['app'] is not None
 
 Not supported use cases
 =======================
