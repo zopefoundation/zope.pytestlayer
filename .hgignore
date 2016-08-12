@@ -22,3 +22,5 @@ local.cfg
 parts
 lib
 include
+.coverage.*
+junit-*.xml
