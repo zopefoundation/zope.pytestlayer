@@ -2,10 +2,10 @@
 Change log for gocept.pytestlayer
 =================================
 
-4.1 (unreleased)
+4.0.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- Fix tests to pass if ``pytest == 3.0`` is used for testing.
 
 
 4.0 (2016-04-27)
