@@ -38,6 +38,7 @@ def where(request):
 def run_pytest(name, *args):
     cmd = [
         sys.argv[0], '-vs', '-p', 'no:removestalebytecode',
+        '--disable-pytest-warnings',
         os.path.join(os.path.dirname(__file__), 'fixture', name),
     ]
     cmd.extend(args)
@@ -73,7 +74,7 @@ src/gocept/pytestlayer/tests/fixture/single_layer/test_core.py:NN: FooTest.test_
 testTearDown foo
 Tear down single_layer.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 1 passed in ' in lines[-1]
+    assert '=== 1 passed' in lines[-1]
 
 
 def test_single_layer_with_unattached_base_layer(where):
@@ -93,7 +94,7 @@ testTearDown bar
 Tear down single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
 Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 1 passed in ' in lines[-1]
+    assert '=== 1 passed' in lines[-1]
 
 
 def test_single_layer_with_unattached_base_layer_select_layer(where):
@@ -115,7 +116,7 @@ testTearDown bar
 Tear down single_layer_with_unattached_base_layer.test_core.FooLayer in N.NNN seconds.
 Tear down single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 1 passed in ' in lines[-1]
+    assert '=== 1 passed' in lines[-1]
 
 
 def test_single_layer_in_two_modules(where):
@@ -134,7 +135,7 @@ src/gocept/pytestlayer/tests/fixture/single_layer_in_two_modules/test_second_mod
 testTearDown foo
 Tear down single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_single_layered_suite(where):
@@ -149,7 +150,7 @@ src/gocept/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_s
 testTearDown foo
 Tear down single_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 1 passed in ' in lines[-1]
+    assert '=== 1 passed' in lines[-1]
 
 
 def test_shared_with_layered_suite(where):
@@ -168,7 +169,7 @@ src/gocept/pytestlayer/tests/fixture/shared_with_layered_suite/test_core.py <- t
 testTearDown foo
 Tear down shared_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_with_and_without_layer(where):
@@ -184,7 +185,7 @@ src/gocept/pytestlayer/tests/fixture/with_and_without_layer/test_core.py:NN: Foo
 testTearDown foo
 Tear down with_and_without_layer.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_two_dependent_layers(where):
@@ -207,7 +208,7 @@ testTearDown foo
 Tear down two_dependent_layers.test_core.BarLayer in N.NNN seconds.
 Tear down two_dependent_layers.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_two_dependent_layered_suites(where):
@@ -230,7 +231,7 @@ testTearDown foo
 Tear down two_dependent_layered_suites.test_core.BarLayer in N.NNN seconds.
 Tear down two_dependent_layered_suites.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_two_independent_layers(where):
@@ -251,7 +252,7 @@ src/gocept/pytestlayer/tests/fixture/two_independent_layers/test_core.py:NN: Bar
 testTearDown bar
 Tear down two_independent_layers.test_core.BarLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 @pytest.mark.xfail(
@@ -284,7 +285,7 @@ src/gocept/pytestlayer/tests/fixture/keep_layer_across_test_classes/test_core.py
 testTearDown bar
 Tear down keep_layer_across_test_classes.test_core.BarLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 3 passed in ' in lines[-1]
+    assert '=== 3 passed' in lines[-1]
 
 
 def test_order_by_layer(where):
@@ -322,7 +323,7 @@ Tear down order_by_layer.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_by_layer.test_core.BarLayer in N.NNN seconds.
 Tear down order_by_layer.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 4 passed in ' in lines[-1]
+    assert '=== 4 passed' in lines[-1]
 
 
 def test_order_with_layered_suite(where):
@@ -372,7 +373,7 @@ Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 6 passed in ' in lines[-1]
+    assert '=== 6 passed' in lines[-1]
 
 
 def test_order_with_layered_suite_select_layer(where):
@@ -412,8 +413,8 @@ Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines, end=2)
-    assert "2 tests deselected by '-kFooLayer" in lines[-2]
-    assert '4 passed, 2 deselected in' in lines[-1]
+    assert "2 tests deselected" in lines[-2]
+    assert '4 passed, 2 deselected' in lines[-1]
 
 
 def test_order_with_layered_suite_select_doctest(where):
@@ -438,8 +439,8 @@ Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines, end=2)
-    assert "5 tests deselected by '-kfoobar and txt" in lines[-2]
-    assert '1 passed, 5 deselected in' in lines[-1]
+    assert "5 tests deselected" in lines[-2]
+    assert '1 passed, 5 deselected' in lines[-1]
 
 
 def test_works_even_without_any_setup_or_teardown_methods(where):
@@ -449,7 +450,7 @@ plugins: gocept.pytestlayer
 collecting ... collected 1 items
 src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test_core.py:NN: FooTest.test_dummy PASSED
 """ == join(lines)
-    assert '=== 1 passed in ' in lines[-1]
+    assert '=== 1 passed' in lines[-1]
 
 
 def test_nice_error_message_if_layer_has_no_bases(where):
@@ -457,7 +458,7 @@ def test_nice_error_message_if_layer_has_no_bases(where):
     assert """\
 has no __bases__ attribute. Layers may be of two sorts: class or instance with __bases__ attribute.\
 """ in join(lines)
-    assert '=== 1 error in ' in lines[-1]
+    assert '1 error in ' in lines[-1]
 
 
 def test_creating_different_fixtures_for_layers_with_the_same_name(where):
@@ -474,12 +475,12 @@ Set up layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 src/gocept/pytestlayer/tests/fixture/layers_with_same_name/test_core.py:NN: BarTest.test_dummy PASSED
 Tear down layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_selection_of_doctest_names(where):
     lines = run_pytest('single_layered_suite', '-k', 'mydoctest')
-    assert "1 tests deselected by '-kmydoctest'" in join(lines)
+    assert "1 tests deselected" in join(lines)
 
 
 def test_fixture_create_allows_overriding_names(where):
@@ -498,7 +499,7 @@ src/gocept/pytestlayer/tests/fixture/custom_fixture_name/test_core.py:NN: FooTes
 testTearDown foo
 Tear down custom_fixture_name.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
 
 
 def test_if_session_fixture_is_used_class_fixtures_are_ignored(where):
@@ -515,4 +516,4 @@ src/gocept/pytestlayer/tests/fixture/session_fixture/test_core.py:NN: FooTest.te
 testTearDown foo
 Tear down session_fixture.test_core.FooLayer in N.NNN seconds.
 """ == join(lines)
-    assert '=== 2 passed in ' in lines[-1]
+    assert '=== 2 passed' in lines[-1]
