@@ -12,10 +12,10 @@ def project_path(*names):
 
 setup(
     name='gocept.pytestlayer',
-    version='4.1.dev0',
+    version='5.0.dev0',
 
     install_requires=[
-        'pytest',
+        'pytest>=3.0',
         'setuptools',
         'six',
         'zope.dottedname',
