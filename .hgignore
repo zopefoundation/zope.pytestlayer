@@ -3,8 +3,10 @@ syntax: glob
 *.egg-info
 *.pyc
 *.swp
-.coverage
+.DS_Store
 .cache
+.coverage
+.coverage.*
 .installed.cfg
 .mr.developer.cfg
 .tox/
@@ -17,10 +19,9 @@ develop-eggs
 dist
 doc/_api
 eggs
+include
+junit-*.xml
+lib
 local
 local.cfg
 parts
-lib
-include
-.coverage.*
-junit-*.xml
