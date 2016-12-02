@@ -6,7 +6,7 @@ import glob
 
 setup(
     name='gocept.pytestlayer',
-    version='5.1',
+    version='5.2.dev0',
 
     install_requires=[
         'pytest>=3.0',
