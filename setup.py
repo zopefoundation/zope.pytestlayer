@@ -35,7 +35,7 @@ setup(
     license='ZPL 2.1',
     url='https://bitbucket.org/gocept/gocept.pytestlayer/',
 
-    keywords='',
+    keywords='pytest py.test zope.testrunner layer fixture',
     classifiers="""\
 Development Status :: 4 - Beta
 Environment :: Console
