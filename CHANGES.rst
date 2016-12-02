@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-5.1 (unreleased)
+5.1 (2016-12-02)
 ================
 
 - Make installation process compatible with `setuptools >= 30.0`.
