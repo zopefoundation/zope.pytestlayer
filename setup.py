@@ -1,7 +1,6 @@
 """Integration of zope.testrunner-style test layers into py.test framework"""
 
 from setuptools import setup, find_packages
-import glob
 
 
 setup(
