@@ -12,6 +12,8 @@ normalizers = [
     ('\.py::(test_suite)::/', r'.py <- \1: /'),
     ('\.py::(test)', r'.py:NN: \1'),
     ('\.py::(.*Test)::', r'.py:NN: \1.'),
+    # Compatibility with pytest <= 3.1.2; can be removed if no longer supported
+    ('1 items', '1 item'),
     # needed to omit all other loaded plugins.
     (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n')
 ]
@@ -66,7 +68,7 @@ def test_single_layer(where):
     lines = run_pytest('single_layer')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 1 items
+collecting ... collected 1 item
 src/gocept/pytestlayer/tests/fixture/single_layer/test_core.py:NN: FooTest.test_dummy single_layer.test_core.FooLayer
 Set up single_layer.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
@@ -81,7 +83,7 @@ def test_single_layer_with_unattached_base_layer(where):
     lines = run_pytest('single_layer_with_unattached_base_layer')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 1 items
+collecting ... collected 1 item
 src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy single_layer_with_unattached_base_layer.test_core.BarLayer
 Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
 single_layer_with_unattached_base_layer.test_core.FooLayer
@@ -103,7 +105,7 @@ def test_single_layer_with_unattached_base_layer_select_layer(where):
     )
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 1 items
+collecting ... collected 1 item
 src/gocept/pytestlayer/tests/fixture/single_layer_with_unattached_base_layer/test_core.py:NN: FooTest.test_dummy single_layer_with_unattached_base_layer.test_core.BarLayer
 Set up single_layer_with_unattached_base_layer.test_core.BarLayer in N.NNN seconds.
 single_layer_with_unattached_base_layer.test_core.FooLayer
@@ -142,7 +144,7 @@ def test_single_layered_suite(where):
     lines = run_pytest('single_layered_suite')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 1 items
+collecting ... collected 1 item
 src/gocept/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/single_layered_suite/doctest.txt single_layered_suite.test_core.FooLayer
 Set up single_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
@@ -447,7 +449,7 @@ def test_works_even_without_any_setup_or_teardown_methods(where):
     lines = run_pytest('no_setup_or_teardown')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 1 items
+collecting ... collected 1 item
 src/gocept/pytestlayer/tests/fixture/no_setup_or_teardown/test_core.py:NN: FooTest.test_dummy PASSED
 """ == join(lines)
     assert '=== 1 passed' in lines[-1]
