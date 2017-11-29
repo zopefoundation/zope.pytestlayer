@@ -7,7 +7,7 @@ Change log for gocept.pytestlayer
 
 - Support Python 3.6 and PyPy3.
 
--  Fix tests to run with `pytest >= 3.1.3`.
+- Fix tests to run with `pytest >= 3.3.0`.
 
 
 5.1 (2016-12-02)

@@ -14,6 +14,9 @@ normalizers = [
     ('\.py::(.*Test)::', r'.py:NN: \1.'),
     # Compatibility with pytest <= 3.1.2; can be removed if no longer supported
     ('1 items', '1 item'),
+    # With pytest >= 3.3.0 progress is reported after a test result.
+    # matches [NNN%], [ NN%] and [  N%]
+    (r'PASSED \[\s*\d{1,3}%\]', 'PASSED'),
     # needed to omit all other loaded plugins.
     (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n')
 ]
