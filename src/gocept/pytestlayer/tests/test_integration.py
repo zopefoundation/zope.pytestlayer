@@ -385,7 +385,7 @@ def test_order_with_layered_suite_select_layer(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'FooLayer')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 6 items
+collecting ... collected 6 items / 2 deselected
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
@@ -418,7 +418,6 @@ Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines, end=2)
-    assert "2 tests deselected" in lines[-2]
     assert '4 passed, 2 deselected' in lines[-1]
 
 
@@ -426,7 +425,7 @@ def test_order_with_layered_suite_select_doctest(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'foobar and txt')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 6 items
+collecting ... collected 6 items / 5 deselected
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 order_with_layered_suite.test_core.BarLayer
@@ -444,7 +443,6 @@ Tear down order_with_layered_suite.test_core.FooBarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.BarLayer in N.NNN seconds.
 Tear down order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 """ == join(lines, end=2)
-    assert "5 tests deselected" in lines[-2]
     assert '1 passed, 5 deselected' in lines[-1]
 
 
@@ -485,7 +483,7 @@ Tear down layers_with_same_name.test_core.TestLayer in N.NNN seconds.
 
 def test_selection_of_doctest_names(where):
     lines = run_pytest('single_layered_suite', '-k', 'mydoctest')
-    assert "1 tests deselected" in join(lines)
+    assert "1 deselected" in join(lines)
 
 
 def test_fixture_create_allows_overriding_names(where):
