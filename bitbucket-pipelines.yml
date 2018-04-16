@@ -1,4 +1,4 @@
-image: themattrix/tox
+image: n42org/tox
 
 pipelines:
   default:
