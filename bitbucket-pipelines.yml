@@ -1,4 +1,4 @@
-image: n42org/tox
+image: saaj/snake-tank
 
 pipelines:
   default:
