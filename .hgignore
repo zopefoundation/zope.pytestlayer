@@ -9,6 +9,7 @@ syntax: glob
 .coverage.*
 .installed.cfg
 .mr.developer.cfg
+.pytest_cache/
 .tox/
 __pycache__
 bin
