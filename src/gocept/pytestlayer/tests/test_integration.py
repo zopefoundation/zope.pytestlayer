@@ -6,12 +6,13 @@ import sys
 
 
 normalizers = [
-    ('\d+\.\d+ seconds', 'N.NNN seconds'),
-    ('\.py:\d+: ', '.py:NN: '),
-    ('\.txt::runTest <- test_suite ', '.txt '),
-    ('\.py::(test_suite)::/', r'.py <- \1: /'),
-    ('\.py::(test)', r'.py:NN: \1'),
-    ('\.py::(.*Test)::', r'.py:NN: \1.'),
+    (r'\d+\.\d+ seconds', 'N.NNN seconds'),
+    (r'\.py:\d+: ', '.py:NN: '),
+    (r'\.txt::runTest <- test_suite ', '.txt '),
+    (r'\.txt::runTest ', '.txt '),
+    (r'\.py::(test_suite)::/', r'.py <- \1: /'),
+    (r'\.py::(test)', r'.py:NN: \1'),
+    (r'\.py::(.*Test)::', r'.py:NN: \1.'),
     # Compatibility with pytest <= 3.1.2; can be removed if no longer supported
     ('1 items', '1 item'),
     # With pytest >= 3.3.0 progress is reported after a test result.
