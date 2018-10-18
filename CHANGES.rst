@@ -11,6 +11,8 @@ Change log for gocept.pytestlayer
 
 - Release also as universal wheel.
 
+- Update to new pytest fixture API to avoid DeprecationWarnings. (#10)
+
 
 5.1 (2016-12-02)
 ================
