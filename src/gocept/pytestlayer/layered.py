@@ -49,7 +49,7 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
             # call function fixture (testSetUp)
             fixture_name = fixture.get_fixture_name(
                 self.layer, scope='function')
-            self._request.getfuncargvalue(fixture_name)
+            self._request.getfixturevalue(fixture_name)
 
     def reportinfo(self):
         return ('test_suite', None, self.tc_description)
