@@ -9,6 +9,8 @@ Change log for gocept.pytestlayer
 
 - Fix tests to run with `pytest >= 3.9.1`.
 
+- Release also as universal wheel.
+
 
 5.1 (2016-12-02)
 ================
