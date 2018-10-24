@@ -7,6 +7,8 @@ Change log for gocept.pytestlayer
 
 - Add support for Python 3.6, 3.7 and PyPy3.
 
+- Drop support for Python 3.4.
+
 - Fix tests to run with `pytest >= 3.9.1`.
 
 - Release also as universal wheel.
