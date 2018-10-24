@@ -4,10 +4,6 @@ source = gocept.pytestlayer
 
 [report]
 precision = 2
-omit = */interfaces.py
-       */interfaces/*
-       */tests.py
-       */tests/*
 
 [html]
 directory = coverage-report
