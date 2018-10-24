@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-6.0 (unreleased)
+6.0 (2018-10-24)
 ================
 
 - Add support for Python 3.6, 3.7 and PyPy3.
