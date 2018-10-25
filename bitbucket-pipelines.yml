@@ -4,4 +4,5 @@ pipelines:
   default:
     - step:
         script:
+          - pip install -U pip tox
           - tox
