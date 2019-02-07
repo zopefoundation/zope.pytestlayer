@@ -19,7 +19,13 @@ normalizers = [
     # matches [NNN%], [ NN%] and [  N%]
     (r'PASSED \[\s*\d{1,3}%\]', 'PASSED'),
     # needed to omit all other loaded plugins.
-    (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n')
+    (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n'),
+    # can be removed when python 2.7 / pypy2 is no longer supported
+    (r"""\
+========================== deprecated python version ===========================
+You are using Python 2.7.\d{1,2}, which will no longer be supported in pytest 5.0
+For more information, please read:
+  https://docs.pytest.org/en/latest/py27-py34-deprecation.html""", ''),
 ]
 
 
@@ -386,7 +392,7 @@ def test_order_with_layered_suite_select_layer(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'FooLayer')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 6 items / 2 deselected
+collecting ... collected 6 items / 2 deselected / 4 selected
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py:NN: FooTest.test_dummy order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 testSetUp foo
@@ -426,7 +432,7 @@ def test_order_with_layered_suite_select_doctest(where):
     lines = run_pytest('order_with_layered_suite', '-k', 'foobar and txt')
     assert """\
 plugins: gocept.pytestlayer
-collecting ... collected 6 items / 5 deselected
+collecting ... collected 6 items / 5 deselected / 1 selected
 src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/test_core.py <- test_suite: /src/gocept/pytestlayer/tests/fixture/order_with_layered_suite/foobar.txt order_with_layered_suite.test_core.FooLayer
 Set up order_with_layered_suite.test_core.FooLayer in N.NNN seconds.
 order_with_layered_suite.test_core.BarLayer
