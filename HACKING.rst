@@ -10,10 +10,10 @@ Developing gocept.pytestlayer
     http://pypi.python.org/pypi/gocept.pytestlayer/
 
 :Issues:
-    https://bitbucket.org/gocept/gocept.pytestlayer/issues
+    https://github.com/gocept/gocept.pytestlayer/issues
 
 :Source code:
-    https://bitbucket.org/gocept/gocept.pytestlayer/
+    https://github.com/gocept/gocept.pytestlayer
 
 :Current change log:
-    https://bitbucket.org/gocept/gocept.pytestlayer/raw/tip/CHANGES.rst
+    https://raw.githubusercontent.com/gocept/gocept.pytestlayer/master/CHANGES.rst

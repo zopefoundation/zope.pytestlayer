@@ -7,6 +7,8 @@ Change log for gocept.pytestlayer
 
 - Fix tests to run with `pytest >= 4.2.0`.
 
+- Migrate to Github.
+
 
 6.0 (2018-10-24)
 ================

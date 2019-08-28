@@ -1,0 +1,17 @@
+language: python
+dist: xenial
+python:
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7
+  - CPython
+  - PyPy
+install:
+  - pip install -U setuptools
+  - pip install -U pip tox
+  - tox
+script: tox
+after_success: 
+cache:
+  pip: true
