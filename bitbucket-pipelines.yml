@@ -1,9 +1,0 @@
-image: saaj/snake-tank
-
-pipelines:
-  default:
-    - step:
-        script:
-          - pip install -U setuptools
-          - pip install -U pip tox
-          - tox

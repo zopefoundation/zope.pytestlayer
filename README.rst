@@ -2,6 +2,19 @@
 The gocept.pytestlayer distribution
 ===================================
 
+.. image:: https://img.shields.io/pypi/v/gocept.pytestlayer.svg
+    :target: https://pypi.org/project/gocept.pytestlayer/
+
+.. image:: https://img.shields.io/pypi/pyversions/gocept.pytestlayer.svg
+    :target: https://pypi.org/project/gocept.pytestlayer/
+
+.. image:: https://travis-ci.com/gocept/gocept.pytestlayer.svg?branch=master
+    :target: https://travis-ci.com/gocept/gocept.pytestlayer
+
+.. image:: https://coveralls.io/repos/github/gocept/gocept.pytestlayer/badge.svg?branch=master
+    :target: https://coveralls.io/github/gocept/gocept.pytestlayer?branch=master
+
+
 Integration of zope.testrunner-style test layers into the `py.test`_
 framework
 
