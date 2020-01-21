@@ -9,7 +9,7 @@ python:
   - pypy3
 install:
   - pip install tox-travis coveralls
-script: tox -- -v
+script: tox -- -vv
 after_success:
   - coverage combine
   - coveralls
