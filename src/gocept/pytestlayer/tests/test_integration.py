@@ -29,7 +29,7 @@ For more information, please read:
 ]
 
 
-@pytest.fixture('module')
+@pytest.fixture(scope='module')
 def where(request):
     '''
     Add a normalizer that depends on the session.
