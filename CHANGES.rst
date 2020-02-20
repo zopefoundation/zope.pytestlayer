@@ -9,6 +9,8 @@ Change log for gocept.pytestlayer
 
 - Migrate to Github.
 
+- Do not break when rerunning a doctest using `pytest-rerunfailures`.
+
 
 6.0 (2018-10-24)
 ================
