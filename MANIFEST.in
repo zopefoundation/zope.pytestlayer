@@ -6,9 +6,6 @@ include buildout.cfg
 include pytest.ini
 include tox.ini
 
-include bitbucket-pipelines.yml
-exclude bitbucket-pipelines.yml
-
 recursive-include doc *.py
 recursive-include doc *.rst
 recursive-include src *.py
