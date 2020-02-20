@@ -11,6 +11,8 @@ Change log for gocept.pytestlayer
 
 - Do not break when rerunning a doctest using `pytest-rerunfailures`.
 
+- Add support for Python 3.8.
+
 
 6.0 (2018-10-24)
 ================
