@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-6.1 (unreleased)
+6.1 (2020-02-20)
 ================
 
 - Fix tests to run with `pytest >= 4.2.0`.

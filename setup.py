@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='gocept.pytestlayer',
-    version='6.1.dev0',
+    version='6.1',
 
     install_requires=[
         'pytest>=3.0',
