@@ -2,6 +2,12 @@
 Change log for gocept.pytestlayer
 =================================
 
+6.2 (unreleased)
+================
+
+- Nothing changed yet.
+
+
 6.1 (2020-02-20)
 ================
 
