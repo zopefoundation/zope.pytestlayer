@@ -73,7 +73,7 @@ This creates three fixtures with the given names and the scopes in the argument 
 Not supported use cases
 =======================
 
-* Inheriting from a base class while changing the layer. See `issue #5`_
+* Inheriting from a base class while changing the layer. See commit `f879f9e <https://github.com/gocept/gocept.pytestlayer/commit/f879f9eb21cbd41a843b5021bc1264e9462fb505>`_.
 
 * Mixing classes inheriting ``unittest.TestCase`` and a ``test_suite()`` function (e. g. to create a ``DocTestSuite`` or a ``DocFileSuite``) in a single module (aka file).
 
