@@ -45,6 +45,9 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
         self._testcase = self.parent.obj
 
     def setup(self):
+        # This is actually set in the base class, but as we want to modify
+        # `self._request` in our way, we do not make a super call here.
+        self._needs_explicit_tearDown = False
         if hasattr(self, "_request"):
             # call function fixture (testSetUp)
             fixture_name = fixture.get_fixture_name(
