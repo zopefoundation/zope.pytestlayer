@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-6.2 (unreleased)
+6.2 (2020-03-20)
 ================
 
 - Ensure compatibility with pytest > 5.4. We need a
