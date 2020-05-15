@@ -5,7 +5,8 @@ Change log for gocept.pytestlayer
 6.3 (unreleased)
 ================
 
-- Nothing changed yet.
+- Ensure compatibility with pytest > 5.4.2. We need a
+  ``_explicit_tearDown`` on our ``LayeredTestCaseFunction`` now.
 
 
 6.2 (2020-03-20)
