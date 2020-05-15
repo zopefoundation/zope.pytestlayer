@@ -47,7 +47,8 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
     def setup(self):
         # This is actually set in the base class, but as we want to modify
         # `self._request` in our way, we do not make a super call here.
-        self._needs_explicit_tearDown = False
+        # It has to be None or a bound method to be called during tearDown.
+        self._explicit_tearDown = None
         if hasattr(self, "_request"):
             # call function fixture (testSetUp)
             fixture_name = fixture.get_fixture_name(
