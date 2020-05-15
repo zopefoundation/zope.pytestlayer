@@ -7,8 +7,16 @@ setup(
     name='gocept.pytestlayer',
     version='6.3.dev0',
 
+    python_requires=', '.join([
+        '>=2.7',
+        '!=3.0.*',
+        '!=3.1.*',
+        '!=3.2.*',
+        '!=3.3.*',
+        '!=3.4.*',
+    ]),
     install_requires=[
-        'pytest>=3.0',
+        'pytest',
         'setuptools',
         'six',
         'zope.dottedname',
@@ -32,7 +40,7 @@ setup(
     author='gocept <mail@gocept.com>',
     author_email='mail@gocept.com',
     license='ZPL 2.1',
-    url='https://bitbucket.org/gocept/gocept.pytestlayer/',
+    url='https://github.com/gocept/gocept.pytestlayer/',
 
     keywords='pytest py.test zope.testrunner layer fixture',
     classifiers="""\
