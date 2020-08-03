@@ -16,7 +16,8 @@ def pytest_pycollect_makeitem(collector, name, obj):
 
     suite = query_testsuite(obj)
     if suite is not None:
-        return layered.LayeredTestSuite(name, parent=collector)
+        return layered.LayeredTestSuite.from_parent(
+            parent=collector, name=name)
     else:
         layer = query_layer(obj)
         if layer is not None:
