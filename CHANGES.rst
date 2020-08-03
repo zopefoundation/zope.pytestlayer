@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-7.0 (unreleased)
+7.0 (2020-08-03)
 ================
 
 Backwards imcompatible changes
