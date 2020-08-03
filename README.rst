@@ -19,7 +19,7 @@ Integration of zope.testrunner-style test layers into the `py.test`_
 framework
 
 This package is compatible with Python versions 3.6 - 3.8 including
-PyPy implementation.
+PyPy3.
 
 .. _`py.test` : http://pytest.org
 
