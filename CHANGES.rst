@@ -5,7 +5,10 @@ Change log for gocept.pytestlayer
 6.4 (unreleased)
 ================
 
-- Nothing changed yet.
+Features
+--------
+
+- Support ``pytest >= 6.0``. (#8)
 
 
 6.3 (2020-05-15)

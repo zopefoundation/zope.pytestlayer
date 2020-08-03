@@ -10,22 +10,26 @@ class LayeredTestSuite(pytest.Class):
         suite = self.obj()
         for item, layer in walk_suite(suite):
             fixture.parsefactories(self.parent, layer)
-            yield LayeredTestCaseInstance(item, self, layer)
+            yield LayeredTestCaseInstance.from_parent(
+                parent=self, obj=item, layer=layer)
 
 
 class LayeredTestCaseInstance(pytest.Collector):
 
-    def __init__(self, obj, parent, layer):
+    @classmethod
+    def from_parent(cls, parent, obj, layer, **kw):
         testname = repr(obj)  # fantastic doctest API :(
-        super(pytest.Collector, self).__init__(testname, parent=parent)
+        instance = super(pytest.Collector, cls).from_parent(
+            parent=parent, name=testname)
         # store testcase instance and layer
         # to pass them to function
-        self.obj = obj
-        self.layer = layer
-        self.extra_keyword_matches.update(fixture.get_keywords(layer))
+        instance.obj = obj
+        instance.layer = layer
+        instance.extra_keyword_matches.update(fixture.get_keywords(layer))
+        return instance
 
     def collect(self):
-        yield LayeredTestCaseFunction('runTest', parent=self)
+        yield LayeredTestCaseFunction.from_parent(parent=self, name='runTest')
 
     def reportinfo(self):
         pass
@@ -33,16 +37,19 @@ class LayeredTestCaseInstance(pytest.Collector):
 
 class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
 
-    def __init__(self, name, parent):
+    @classmethod
+    def from_parent(cls, parent, name, **kw):
         description = get_description(parent)
         keywords = get_keywords(description)
-        super(LayeredTestCaseFunction, self).__init__(
-            name, parent=parent,
-            keywords=keywords
+        function = super(LayeredTestCaseFunction, cls).from_parent(
+            parent=parent,
+            name=name,
+            keywords=keywords,
         )
-        self.layer = self.parent.layer
-        self.tc_description = description
-        self._testcase = self.parent.obj
+        function.layer = function.parent.layer
+        function.tc_description = description
+        function._testcase = function.parent.obj
+        return function
 
     def setup(self):
         # This is actually set in the base class, but as we want to modify
