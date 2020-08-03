@@ -2,8 +2,13 @@
 Change log for gocept.pytestlayer
 =================================
 
-6.4 (unreleased)
+7.0 (unreleased)
 ================
+
+Backwards imcompatible changes
+------------------------------
+
+- Drop support for Python 2.7 and 3.5 and ``pytest < 5.0``. (#8)
 
 Features
 --------

@@ -2,7 +2,6 @@ import contextlib
 import imp
 import pytest
 import re
-import six
 import time
 import zope.dottedname.resolve
 
@@ -26,7 +25,7 @@ def timer(request, text):
     yield
     if verbose:
         time_taken = time.time() - start
-        reporter.write("{0:.3f}".format(time_taken), green=1, bold=1)
+        reporter.write(f"{time_taken:.3f}", green=1, bold=1)
         reporter.write_line(" seconds.")
 
 
@@ -36,7 +35,7 @@ def setup_layer(layer, request):
     layer_name = get_layer_name(layer)
     if hasattr(layer, 'setUp'):
         print(layer_name)
-        with timer(request, "Set up {0} in ".format(layer_name)):
+        with timer(request, f"Set up {layer_name} in "):
             layer.setUp()
         state.current.add(layer)
 
@@ -46,7 +45,7 @@ def teardown_layer(layer, request):
     state = request.session.zopelayer_state
     layer_name = get_layer_name(layer)
     if hasattr(layer, 'tearDown'):
-        with timer(request, "Tear down {0} in ".format(layer_name)):
+        with timer(request, f"Tear down {layer_name} in "):
             layer.tearDown()
         state.current.remove(layer)
 
@@ -137,7 +136,7 @@ def create(*layers, **kw):
 
     ns = {}
     for layer in layers:
-        if isinstance(layer, six.string_types):
+        if isinstance(layer, str):
             layer = zope.dottedname.resolve.resolve(layer)
         ns.update(_create_single(layer, **kw))
     return ns
@@ -215,9 +214,9 @@ def raise_if_bad_layer(layer):
 
     if not hasattr(layer, '__bases__'):
         raise RuntimeError(
-            "The layer {0} has no __bases__ attribute."
+            "The layer {layer!r} has no __bases__ attribute."
             " Layers may be of two sorts: class or instance with __bases__"
-            " attribute.".format(repr(layer))
+            " attribute."
         )
 
 

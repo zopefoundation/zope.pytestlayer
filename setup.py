@@ -5,20 +5,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='gocept.pytestlayer',
-    version='6.4.dev0',
+    version='7.0.dev0',
 
     python_requires=', '.join([
-        '>=2.7',
-        '!=3.0.*',
-        '!=3.1.*',
-        '!=3.2.*',
-        '!=3.3.*',
-        '!=3.4.*',
+        '>=3.6',
     ]),
     install_requires=[
         'pytest',
         'setuptools',
-        'six',
         'zope.dottedname',
     ],
 
@@ -55,10 +49,7 @@ License :: OSI Approved :: Zope Public License
 Natural Language :: English
 Operating System :: OS Independent
 Programming Language :: Python
-Programming Language :: Python :: 2
-Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
-Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
 Programming Language :: Python :: 3.8
