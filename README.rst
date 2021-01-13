@@ -8,8 +8,8 @@ The gocept.pytestlayer distribution
 .. image:: https://img.shields.io/pypi/pyversions/gocept.pytestlayer.svg
     :target: https://pypi.org/project/gocept.pytestlayer/
 
-.. image:: https://travis-ci.com/gocept/gocept.pytestlayer.svg?branch=master
-    :target: https://travis-ci.com/gocept/gocept.pytestlayer
+.. image:: https://github.com/gocept/gocept.pytestlayer/workflows/tests/badge.svg
+    :target: https://github.com/gocept/gocept.pytestlayer/actions?query=workflow%3Atests
 
 .. image:: https://coveralls.io/repos/github/gocept/gocept.pytestlayer/badge.svg?branch=master
     :target: https://coveralls.io/github/gocept/gocept.pytestlayer?branch=master
@@ -81,5 +81,3 @@ Not supported use cases
   * Solution: Put the classes and ``test_suite()`` into different modules.
 
 * A ``doctest.DocFileSuite`` which does not have a ``layer`` is silently skipped. Use the built-in doctest abilities of py.test to run those tests.
-
-.. _`issue #5` : https://bitbucket.org/gocept/gocept.pytestlayer/issues/5

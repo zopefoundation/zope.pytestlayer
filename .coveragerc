@@ -4,6 +4,7 @@ source = gocept.pytestlayer
 
 [report]
 precision = 2
+fail_under = 98
 
 [html]
 directory = coverage-report
