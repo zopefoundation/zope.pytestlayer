@@ -108,7 +108,7 @@ def get_layer_name(layer):
 
 def make_identifier(string):
     # Replaces things between words into underscores:
-    return re.sub('\W|^(?=\d)', '_', string)
+    return re.sub(r'\W|^(?=\d)', '_', string)
 
 
 def get_fixture_name(layer, scope):

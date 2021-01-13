@@ -11,7 +11,7 @@ setup(
         '>=3.6',
     ]),
     install_requires=[
-        'pytest',
+        'pytest >= 6.0',
         'setuptools',
         'zope.dottedname',
     ],
