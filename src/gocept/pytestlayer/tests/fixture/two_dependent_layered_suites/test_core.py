@@ -1,7 +1,7 @@
-import unittest
-import doctest
-from plone.testing import layered
 from gocept.pytestlayer.testing import log_to_terminal
+from plone.testing import layered
+import doctest
+import unittest
 
 
 class FooLayer(object):
