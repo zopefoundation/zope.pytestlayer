@@ -1,9 +1,9 @@
-import types
-import unittest
-import pytest
+from ._compat import getmro
 from gocept.pytestlayer import fixture
 from gocept.pytestlayer import layered
-from ._compat import getmro
+import pytest
+import types
+import unittest
 
 
 @pytest.mark.tryfirst

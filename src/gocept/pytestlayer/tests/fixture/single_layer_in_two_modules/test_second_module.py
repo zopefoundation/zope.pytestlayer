@@ -1,5 +1,5 @@
-import unittest
 from .test_core import FooLayer
+import unittest
 
 
 class FooTest(unittest.TestCase):

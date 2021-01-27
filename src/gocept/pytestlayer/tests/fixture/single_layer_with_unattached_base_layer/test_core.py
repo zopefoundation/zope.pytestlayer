@@ -1,5 +1,5 @@
-import unittest
 from gocept.pytestlayer.testing import log_to_terminal
+import unittest
 
 
 class BarLayer(object):

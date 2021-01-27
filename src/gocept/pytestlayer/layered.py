@@ -1,7 +1,7 @@
 from gocept.pytestlayer import fixture
-import unittest
-import pytest
 import _pytest
+import pytest
+import unittest
 
 
 class LayeredTestSuite(pytest.Class):
