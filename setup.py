@@ -41,6 +41,7 @@ setup(
     classifiers="""\
 Development Status :: 4 - Beta
 Environment :: Console
+Framework :: Pytest
 Framework :: Plone
 Framework :: Zope2
 Framework :: Zope3
