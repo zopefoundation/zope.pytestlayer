@@ -7,6 +7,8 @@ Change log for gocept.pytestlayer
 
 - Use GitHub actions as CI.
 
+- Add support for Python 3.9.
+
 
 7.0 (2020-08-03)
 ================

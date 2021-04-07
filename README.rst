@@ -18,7 +18,7 @@ The gocept.pytestlayer distribution
 Integration of zope.testrunner-style test layers into the `py.test`_
 framework
 
-This package is compatible with Python versions 3.6 - 3.8 including
+This package is compatible with Python versions 3.6 - 3.9 including
 PyPy3.
 
 .. _`py.test` : http://pytest.org
