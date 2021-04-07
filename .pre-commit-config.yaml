@@ -16,7 +16,7 @@ repos:
           - id: flake8
             language_version: python3
             additional_dependencies: [flake8-typing-imports==1.9.0]
-            args: [--per-file-ignores=src/gocept/pytestlayer/tests/test_integration.py:E501]
+            args: ["--per-file-ignores=src/gocept/pytestlayer/tests/test_integration.py:E501"]
     - repo: https://github.com/pre-commit/mirrors-autopep8
       rev: v1.5.4
       hooks:
@@ -40,6 +40,6 @@ repos:
             language: python
             additional_dependencies: [pygments, restructuredtext_lint]
     -   repo: https://github.com/myint/rstcheck
-        rev: ''  # Use the sha / tag you want to point at
+        rev: '3f92957478422df87bd730abde66f089cc1ee19b'
         hooks:
         -   id: rstcheck
