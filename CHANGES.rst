@@ -9,6 +9,11 @@ Change log for gocept.pytestlayer
 
 - Add support for Python 3.9.
 
+- Add a workaround for
+  `#4 <https://github.com/gocept/gocept.pytestlayer/issues/4>`_: Use
+  ``gcoept.pytestlayer.doctest.DocTestSuite`` instead of
+  ``doctest.DocTestSuite`` to circumvent the issue.
+
 
 7.0 (2020-08-03)
 ================
