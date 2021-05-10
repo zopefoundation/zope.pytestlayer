@@ -1,11 +1,10 @@
 """Integration of zope.testrunner-style test layers into py.test framework"""
 
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 setup(
     name='gocept.pytestlayer',
-    version='6.3',
+    version='6.3.1.dev0',
 
     python_requires=', '.join([
         '>=2.7',
