@@ -2,9 +2,9 @@ name: Lint
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "6.3.x" ]
   pull_request:
-    branches: [ master ]
+    branches: [ "6.3.x" ]
     type: [ "opened", "reopened", "synchronize" ]
 
 env:
