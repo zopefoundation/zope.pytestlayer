@@ -1,9 +1,9 @@
 import os.path
-import pytest
 import re
 import subprocess
 import sys
 
+import pytest
 
 normalizers = [
     (r'\d+\.\d+ seconds', 'N.NNN seconds'),

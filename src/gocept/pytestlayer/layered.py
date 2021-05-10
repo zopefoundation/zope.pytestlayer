@@ -1,7 +1,9 @@
-from gocept.pytestlayer import fixture
 import unittest
-import pytest
+
 import _pytest
+import pytest
+
+from gocept.pytestlayer import fixture
 
 
 class LayeredTestSuite(pytest.Class):

@@ -1,8 +1,10 @@
 import types
 import unittest
+
 import pytest
-from gocept.pytestlayer import fixture
-from gocept.pytestlayer import layered
+
+from gocept.pytestlayer import fixture, layered
+
 from ._compat import getmro
 
 

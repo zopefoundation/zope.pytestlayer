@@ -1,6 +1,5 @@
 import six
 
-
 if six.PY2:
     from inspect import getmro
 else:

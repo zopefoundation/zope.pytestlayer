@@ -1,5 +1,6 @@
-from gocept.pytestlayer.testing import log_to_terminal
 import unittest
+
+from gocept.pytestlayer.testing import log_to_terminal
 
 
 class FooLayer(object):

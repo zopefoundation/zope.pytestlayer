@@ -82,5 +82,3 @@ Not supported use cases
   * Solution: Put the classes and ``test_suite()`` into different modules.
 
 * A ``doctest.DocFileSuite`` which does not have a ``layer`` is silently skipped. Use the built-in doctest abilities of py.test to run those tests.
-
-.. _`issue #5` : https://bitbucket.org/gocept/gocept.pytestlayer/issues/5

@@ -1,6 +1,8 @@
 import doctest
 import unittest
+
 from plone.testing import layered
+
 from gocept.pytestlayer.testing import log_to_terminal
 
 

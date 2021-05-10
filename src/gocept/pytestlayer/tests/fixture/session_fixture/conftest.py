@@ -1,6 +1,6 @@
 from session_fixture.test_core import FooLayer
-import gocept.pytestlayer.fixture
 
+import gocept.pytestlayer.fixture
 
 pytest_plugins = ('zopelayer', )
 
