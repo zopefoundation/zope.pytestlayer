@@ -1,7 +1,7 @@
 import doctest
 
 
-class NoOpLayer(object):
+class NoOpLayer:
     """Layer needed for gocept.pytestlayer to find and run doctests.
 
     See https://github.com/gocept/gocept.pytestlayer/issues/4
