@@ -15,26 +15,26 @@ The gocept.pytestlayer distribution
     :target: https://coveralls.io/github/gocept/gocept.pytestlayer?branch=master
 
 
-Integration of zope.testrunner-style test layers into the `py.test`_
+Integration of zope.testrunner-style test layers into the `pytest`_
 framework
 
 This package is compatible with Python versions 3.6 - 3.9 including
 PyPy3.
 
-.. _`py.test` : http://pytest.org
+.. _`pytest` : http://pytest.org
 
 Quick start
 ===========
 
-* Make sure your test files follow the `conventions of py.test's test
+* Make sure your test files follow the `conventions of pytest's test
   discovery`_
 
-  .. _`conventions of py.test's test discovery`:
+  .. _`conventions of pytest's test discovery`:
      http://pytest.org/latest/goodpractises.html#python-test-discovery
 
   In particular, a file named ``tests.py`` will not be recognised.
 
-* Add a buildout section to create the `py.test` runner::
+* Add a buildout section to create the `pytest` runner::
 
     [buildout]
     parts += pytest
@@ -45,13 +45,13 @@ Quick start
            pytest
            <YOUR PACKAGE HERE>
 
-``gocept.pytestlayer`` registers itself as a ``py.test`` plugin. This way, nothing
+``gocept.pytestlayer`` registers itself as a ``pytest`` plugin. This way, nothing
 more is needed to run an existing Zope or Plone test suite.
 
 Advanced usage
 ==============
 
-Version 2.1 reintroduced `fixture.create()` to be able to define the name of the generated to py.test fixtures. So it is possible to use them in function style tests.
+Version 2.1 reintroduced `fixture.create()` to be able to define the name of the generated to pytest fixtures. So it is possible to use them in function style tests.
 
 Example (Code has to be in `contest.py`!)::
 
@@ -76,8 +76,8 @@ Not supported use cases
 
 * Mixing classes inheriting ``unittest.TestCase`` and a ``test_suite()`` function (e. g. to create a ``DocTestSuite`` or a ``DocFileSuite``) in a single module (aka file).
 
-  * This is a limitation of the `py.test` test discovery which ignores the doctests in this case.
+  * This is a limitation of the `pytest` test discovery which ignores the doctests in this case.
 
   * Solution: Put the classes and ``test_suite()`` into different modules.
 
-* A ``doctest.DocFileSuite`` which does not have a ``layer`` is silently skipped. Use the built-in doctest abilities of py.test to run those tests.
+* A ``doctest.DocFileSuite`` which does not have a ``layer`` is silently skipped. Use the built-in doctest abilities of pytest to run those tests.

@@ -1,4 +1,4 @@
-"""Integration of zope.testrunner-style test layers into py.test framework"""
+"""Integration of zope.testrunner-style test layers into pytest framework"""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -37,7 +37,7 @@ setup(
     license='ZPL 2.1',
     url='https://github.com/gocept/gocept.pytestlayer/',
 
-    keywords='pytest py.test zope.testrunner layer fixture',
+    keywords='pytest zope.testrunner layer fixture',
     classifiers="""\
 Development Status :: 4 - Beta
 Environment :: Console
