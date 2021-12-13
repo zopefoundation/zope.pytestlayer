@@ -1,10 +1,10 @@
-include *.py
 include *.rst
 include *.txt
 include .coveragerc
 include buildout.cfg
 include pytest.ini
 include tox.ini
+include *.yaml
 
 recursive-include doc *.py
 recursive-include doc *.rst
