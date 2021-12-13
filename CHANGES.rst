@@ -7,7 +7,9 @@ Change log for gocept.pytestlayer
 
 - Use GitHub actions as CI.
 
-- Add support for Python 3.9.
+- Add support for Python 3.9 and 3.10.
+
+- Drop support for Python 3.6.
 
 - Add a workaround for
   `#4 <https://github.com/gocept/gocept.pytestlayer/issues/4>`_: Use
