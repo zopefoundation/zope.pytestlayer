@@ -11,14 +11,14 @@ The gocept.pytestlayer distribution
 .. image:: https://github.com/gocept/gocept.pytestlayer/workflows/tests/badge.svg
     :target: https://github.com/gocept/gocept.pytestlayer/actions?query=workflow%3Atests
 
-.. image:: https://coveralls.io/repos/github/gocept/gocept.pytestlayer/badge.svg?branch=master
-    :target: https://coveralls.io/github/gocept/gocept.pytestlayer?branch=master
+.. image:: https://coveralls.io/repos/github/gocept/gocept.pytestlayer/badge.svg?branch=main
+    :target: https://coveralls.io/github/gocept/gocept.pytestlayer?branch=main
 
 
 Integration of zope.testrunner-style test layers into the `pytest`_
 framework
 
-This package is compatible with Python versions 3.6 - 3.9 including
+This package is compatible with Python versions 3.7 - 3.10 including
 PyPy3.
 
 .. _`pytest` : http://pytest.org
