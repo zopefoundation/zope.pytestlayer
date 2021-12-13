@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-8.0 (unreleased)
+8.0 (2021-12-13)
 ================
 
 - Use GitHub actions as CI.

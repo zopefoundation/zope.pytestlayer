@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='gocept.pytestlayer',
-    version='8.0.dev0',
+    version='8.0',
 
     python_requires=', '.join([
         '>=3.7',
