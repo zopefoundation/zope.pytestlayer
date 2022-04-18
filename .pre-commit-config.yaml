@@ -1,7 +1,7 @@
 ---
 repos:
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.1.0
+      rev: v4.2.0
       hooks:
           - id: trailing-whitespace
           - id: end-of-file-fixer
@@ -40,6 +40,6 @@ repos:
             language: python
             additional_dependencies: [pygments, restructuredtext_lint]
     -   repo: https://github.com/myint/rstcheck
-        rev: '3f92957478422df87bd730abde66f089cc1ee19b'
+        rev: 'v5.0.0'
         hooks:
         -   id: rstcheck
