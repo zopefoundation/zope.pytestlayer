@@ -39,7 +39,8 @@ repos:
             files: ^[^(doc)].*rst
             language: python
             additional_dependencies: [pygments, restructuredtext_lint]
-    -   repo: https://github.com/myint/rstcheck
-        rev: 'v6.0.0.post1'
-        hooks:
-        -   id: rstcheck
+    - repo: https://github.com/myint/rstcheck
+      rev: 'v6.0.0.post1'
+      hooks:
+        - id: rstcheck
+          args: ["--ignore-messages", 'No directive entry for "autosummary"|No role entry for "ref"|Unknown interpreted text role "ref"|Unknown directive type "(autosummary|literalinclude|toctree)"']
