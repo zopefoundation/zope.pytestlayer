@@ -2,7 +2,7 @@
 Change log for gocept.pytestlayer
 =================================
 
-8.1 (unreleased)
+8.1 (2022-09-05)
 ================
 
 - Ensure compatibility with pytest >= 7.1.3.
