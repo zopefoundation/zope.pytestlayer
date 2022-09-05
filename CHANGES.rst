@@ -5,7 +5,9 @@ Change log for gocept.pytestlayer
 8.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- Ensure compatibility with pytest >= 7.1.3.
+  ``.layered.LayeredTestCaseInstance`` now has to inherit from
+  ``_pytest.unittest.UnitTestCase``.
 
 
 8.0 (2021-12-13)

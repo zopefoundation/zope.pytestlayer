@@ -1,5 +1,5 @@
 from gocept.pytestlayer import fixture
-import _pytest
+import _pytest.unittest
 import pytest
 import unittest
 
@@ -14,7 +14,7 @@ class LayeredTestSuite(pytest.Class):
                 parent=self, obj=item, layer=layer)
 
 
-class LayeredTestCaseInstance(pytest.Collector):
+class LayeredTestCaseInstance(_pytest.unittest.UnitTestCase):
 
     @classmethod
     def from_parent(cls, parent, obj, layer, **kw):
