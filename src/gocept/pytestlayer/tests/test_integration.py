@@ -13,19 +13,13 @@ normalizers = [
     (r'\.py::(test_suite)::/', r'.py <- \1: /'),
     (r'\.py::(test)', r'.py:NN: \1'),
     (r'\.py::(.*Test)::', r'.py:NN: \1.'),
-    # Compatibility with pytest <= 3.1.2; can be removed if no longer supported
-    ('1 items', '1 item'),
+    # Compatibility with pytest >= 7.3 which adds this line:
+    (r'configfile: pytest.ini', ''),
     # With pytest >= 3.3.0 progress is reported after a test result.
     # matches [NNN%], [ NN%] and [  N%]
     (r'PASSED \[\s*\d{1,3}%\]', 'PASSED'),
     # needed to omit all other loaded plugins.
     (r'plugins:.*(gocept.pytestlayer).*\n', 'plugins: gocept.pytestlayer\n'),
-    # can be removed when python 2.7 / pypy2 is no longer supported
-    (r"""\
-========================== deprecated python version ===========================
-You are using Python 2.7.\d{1,2}, which will no longer be supported in pytest 5.0
-For more information, please read:
-  https://docs.pytest.org/en/latest/py27-py34-deprecation.html""", ''),
 ]
 
 

@@ -5,7 +5,9 @@ Change log for gocept.pytestlayer
 8.2 (unreleased)
 ================
 
-- Nothing changed yet.
+- Make tests compatible with pytest >= 7.3.
+
+- Add support for Python 3.11.
 
 
 8.1 (2022-09-05)
