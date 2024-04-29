@@ -11,7 +11,7 @@ The zope.pytestlayer distribution
 .. image:: https://github.com/zope/zope.pytestlayer/workflows/tests/badge.svg
     :target: https://github.com/zope/zope.pytestlayer/actions?query=workflow%3Atests
 
-.. image:: https://coveralls.io/repos/github/zope/zope.pytestlayer/badge.svg?branch=main
+.. image:: https://coveralls.io/repos/github/zope/zope.pytestlayer/badge.svg?branch=master
     :target: https://coveralls.io/github/zope/zope.pytestlayer?branch=master
 
 
