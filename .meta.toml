@@ -1,0 +1,44 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/pure-python
+[meta]
+template = "pure-python"
+commit-id = "7713fd86"
+
+[python]
+with-sphinx-doctests = false
+with-docs = true
+with-future-python = false
+with-pypy = true
+with-macos = false
+with-windows = false
+
+[tox]
+use-flake8 = true
+testenv-commands = [
+    "pytest []"
+]
+testenv-deps = [
+    "pytest",
+    "pytest-cov",
+    "pytest-remove-stale-bytecode",
+]
+coverage-command = [
+    "pytest --cov=src --cov-report=html []",
+    ]
+
+[coverage]
+fail-under = 98
+
+[flake8]
+additional-config = [
+    "# E501 line too long",
+    "per-file-ignores =",
+    "    src/zope/pytestlayer/tests/test_integration.py: E501",
+    ]
+
+[manifest]
+additional-rules = [
+    "include *.yaml",
+    "include pytest.ini",
+    "recursive-include src *.txt",
+    ]
