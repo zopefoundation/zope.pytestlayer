@@ -20,6 +20,28 @@ class NoOpLayer:
 NOOP_LAYER = NoOpLayer()
 
 
+class PatchedDocTestSuite:
+
+    def __init__(self, suite):
+        self._suite = suite
+
+    def __call__(self, *args, **kw):
+        result = None
+        if args:
+            if not isinstance(args[0], str):
+                result = args[0]
+        return self.run(result)
+
+    def __getattr__(self, name):
+        return getattr(self._suite, name)
+
+    def __setattr__(self, name, value):
+        if name == '_suite':
+            self.__dict__[name] = value
+        else:
+            setattr(self._suite, name, value)
+
+
 def DocTestSuite(*args, **kw):
     """A DocTestSuite whose tests are detectable by zope.pytestlayer.
 
@@ -28,4 +50,11 @@ def DocTestSuite(*args, **kw):
     layer = kw.pop('layer', NOOP_LAYER)
     suite = doctest.DocTestSuite(*args, **kw)
     suite.layer = layer
-    return suite
+    return PatchedDocTestSuite(suite)
+
+
+def layered(suite, layer=NOOP_LAYER):
+    """XXX
+    """
+    suite.layer = layer
+    return PatchedDocTestSuite(suite)

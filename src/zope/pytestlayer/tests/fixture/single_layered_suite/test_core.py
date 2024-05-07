@@ -1,8 +1,7 @@
 import doctest
 import unittest
 
-from plone.testing import layered
-
+from zope.pytestlayer.doctest import layered
 from zope.pytestlayer.testing import log_to_terminal
 
 
