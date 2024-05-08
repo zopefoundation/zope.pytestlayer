@@ -147,7 +147,7 @@ Tear down single_layer_in_two_modules.test_core.FooLayer in N.NNN seconds.
 
 def test_single_layered_suite(where):
     lines = run_pytest('single_layered_suite')
-    assert """\
+    assert join(lines) == """\
 plugins: zope.pytestlayer
 collecting ... collected 1 item
 src/zope/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/zope/pytestlayer/tests/fixture/single_layered_suite/doctest.txt single_layered_suite.test_core.FooLayer
@@ -156,7 +156,7 @@ testSetUp foo
 src/zope/pytestlayer/tests/fixture/single_layered_suite/test_core.py <- test_suite: /src/zope/pytestlayer/tests/fixture/single_layered_suite/doctest.txt PASSED
 testTearDown foo
 Tear down single_layered_suite.test_core.FooLayer in N.NNN seconds.
-""" == join(lines)
+"""
     assert '=== 1 passed' in lines[-1]
 
 
