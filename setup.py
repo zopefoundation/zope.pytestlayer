@@ -5,12 +5,10 @@ from setuptools import setup
 
 
 setup(
-    name='gocept.pytestlayer',
+    name='zope.pytestlayer',
     version='8.2.dev0',
 
-    python_requires=', '.join([
-        '>=3.7',
-    ]),
+    python_requires='>=3.7',
     install_requires=[
         'pytest >= 6.0',
         'setuptools',
@@ -21,58 +19,57 @@ setup(
         'test': [
             'plone.testing',
         ],
+        'docs': [
+            'Sphinx',
+            'gocept.package',
+        ]
     },
 
     entry_points={
-        'console_scripts': [
-            # 'binary-name = gocept.pytestlayer.module:function'
-        ],
         'pytest11': [
-            'zopelayer = gocept.pytestlayer.plugin',
+            'zopelayer = zope.pytestlayer.plugin',
         ],
     },
 
-    author='gocept <mail@gocept.com>',
-    author_email='mail@gocept.com',
+    author='gocept',
+    author_email='zope-dev@zope.dev',
     license='ZPL 2.1',
-    url='https://github.com/gocept/gocept.pytestlayer/',
+    url='https://github.com/zope/zope.pytestlayer/',
 
     keywords='pytest zope.testrunner layer fixture',
-    classifiers="""\
-Development Status :: 4 - Beta
-Environment :: Console
-Framework :: Pytest
-Framework :: Plone
-Framework :: Zope2
-Framework :: Zope3
-Intended Audience :: Developers
-License :: OSI Approved
-License :: OSI Approved :: Zope Public License
-Natural Language :: English
-Operating System :: OS Independent
-Programming Language :: Python
-Programming Language :: Python :: 3
-Programming Language :: Python :: 3.7
-Programming Language :: Python :: 3.8
-Programming Language :: Python :: 3.9
-Programming Language :: Python :: 3.10
-Programming Language :: Python :: 3.11
-Programming Language :: Python :: 3.12
-Programming Language :: Python :: Implementation
-Programming Language :: Python :: Implementation :: CPython
-Programming Language :: Python :: Implementation :: PyPy
-Topic :: Software Development
-Topic :: Software Development :: Libraries
-Topic :: Software Development :: Libraries :: Python Modules
-Topic :: Software Development :: Testing
-"""[:-1].split('\n'),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Framework :: Pytest",
+        "Framework :: Plone",
+        "Framework :: Zope :: 3",
+        "Framework :: Zope :: 5",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Zope Public License",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: Implementation",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: Testing",
+    ],
     description=__doc__.strip(),
     long_description='\n\n'.join(open(name).read() for name in (
         'README.rst',
         'HACKING.rst',
         'CHANGES.rst',
     )),
-    namespace_packages=['gocept'],
+    namespace_packages=['zope'],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,

@@ -1,5 +1,5 @@
 =================================
-Change log for gocept.pytestlayer
+Change log for zope.pytestlayer
 =================================
 
 8.2 (unreleased)
@@ -8,6 +8,8 @@ Change log for gocept.pytestlayer
 - Make tests compatible with pytest >= 7.3.
 
 - Add support for Python 3.12.
+
+- Rename from ``gocept.pytestlayer`` to ``zope.pytestlayer``.
 
 
 8.1 (2022-09-05)
