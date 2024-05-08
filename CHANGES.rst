@@ -10,6 +10,8 @@ Change log for zope.pytestlayer
 
 - Add support for Python 3.11.
 
+- Add support for Python 3.12.
+
 - Rename from ``gocept.pytestlayer`` to ``zope.pytestlayer``.
 
 
