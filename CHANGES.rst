@@ -5,7 +5,8 @@ Change log for zope.pytestlayer
 8.2 (unreleased)
 ================
 
-- Make tests compatible with pytest >= 7.3.
+- Make tests compatible with pytest >= 7.3. (Caution: We do not yet support
+  pytest >= 8)
 
 - Add support for Python 3.12.
 
