@@ -11,8 +11,9 @@ The zope.pytestlayer distribution
 .. image:: https://github.com/zopefoundation/zope.pytestlayer/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/zopefoundation/zope.pytestlayer/actions?query=tests
 
-.. image:: https://coveralls.io/repos/github/zope/zope.pytestlayer/badge.svg?branch=master
-    :target: https://coveralls.io/github/zope/zope.pytestlayer?branch=master
+.. image:: https://coveralls.io/repos/github/zopefoundation/zope.pytestlayer/badge.svg?branch=master
+    :target: https://coveralls.io/github/zopefoundation/zope.pytestlayer?branch=master
+
 
 
 Integration of zope.testrunner-style test layers into the `pytest`_
