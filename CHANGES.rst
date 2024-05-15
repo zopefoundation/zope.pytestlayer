@@ -2,7 +2,7 @@
 Change log for zope.pytestlayer
 =================================
 
-8.2 (unreleased)
+8.2 (2024-05-15)
 ================
 
 - Make tests compatible with pytest >= 7.3. (Caution: We do not yet support
