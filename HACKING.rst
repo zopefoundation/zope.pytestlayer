@@ -10,10 +10,10 @@ Developing zope.pytestlayer
     https://pypi.org/project/zope.pytestlayer/
 
 :Issues:
-    https://github.com/gocept/zope.pytestlayer/issues
+    https://github.com/zopefoundation/zope.pytestlayer/issues
 
 :Source code:
-    https://github.com/zope/zope.pytestlayer
+    https://github.com/zopefoundation/zope.pytestlayer
 
 :Current change log:
-    https://raw.githubusercontent.com/zope/zope.pytestlayer/master/CHANGES.rst
+    https://raw.githubusercontent.com/zopefoundation/zope.pytestlayer/master/CHANGES.rst
