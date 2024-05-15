@@ -8,8 +8,8 @@ The zope.pytestlayer distribution
 .. image:: https://img.shields.io/pypi/pyversions/zope.pytestlayer.svg
     :target: https://pypi.org/project/zope.pytestlayer/
 
-.. image:: https://github.com/zope/zope.pytestlayer/workflows/tests/badge.svg
-    :target: https://github.com/zope/zope.pytestlayer/actions?query=workflow%3Atests
+.. image:: https://github.com/zopefoundation/zope.pytestlayer/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/zopefoundation/zope.pytestlayer/actions?query=tests
 
 .. image:: https://coveralls.io/repos/github/zope/zope.pytestlayer/badge.svg?branch=master
     :target: https://coveralls.io/github/zope/zope.pytestlayer?branch=master
