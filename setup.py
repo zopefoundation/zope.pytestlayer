@@ -3,48 +3,33 @@
 from setuptools import find_packages
 from setuptools import setup
 
-
 setup(
     name='gocept.pytestlayer',
     version='8.2.dev0',
-
     python_requires=', '.join([
         '>=3.7',
     ]),
     install_requires=[
-        'pytest >= 6.0',
         'setuptools',
-        'zope.dottedname',
     ],
-
-    extras_require={
-        'test': [
-            'plone.testing',
-        ],
-    },
-
+    extras_require={},
     entry_points={
-        'console_scripts': [
-            # 'binary-name = gocept.pytestlayer.module:function'
-        ],
         'pytest11': [
             'zopelayer = gocept.pytestlayer.plugin',
         ],
     },
-
     author='gocept <mail@gocept.com>',
     author_email='mail@gocept.com',
     license='ZPL 2.1',
     url='https://github.com/gocept/gocept.pytestlayer/',
-
     keywords='pytest zope.testrunner layer fixture',
     classifiers="""\
-Development Status :: 4 - Beta
+Development Status :: 7 - Inactive
 Environment :: Console
 Framework :: Pytest
 Framework :: Plone
-Framework :: Zope2
-Framework :: Zope3
+Framework :: Zope :: 3
+Framework :: Zope :: 5
 Intended Audience :: Developers
 License :: OSI Approved
 License :: OSI Approved :: Zope Public License
@@ -66,11 +51,11 @@ Topic :: Software Development :: Libraries :: Python Modules
 Topic :: Software Development :: Testing
 """[:-1].split('\n'),
     description=__doc__.strip(),
-    long_description='\n\n'.join(open(name).read() for name in (
-        'README.rst',
-        'HACKING.rst',
-        'CHANGES.rst',
-    )),
+    long_description='\n\n'.join(
+        open(name).read() for name in (
+            'README.rst',
+            'CHANGES.rst',
+        )),
     namespace_packages=['gocept'],
     packages=find_packages('src'),
     package_dir={'': 'src'},

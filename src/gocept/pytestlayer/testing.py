@@ -1,6 +1,3 @@
-def log_to_terminal(request, msg):
-    verbose = request.config.option.verbose > 0
-    if verbose:
-        reporter = request.config.pluginmanager.getplugin('terminalreporter')
-        reporter.ensure_newline()
-        reporter.write_line(msg)
+raise RuntimeError("'gocept.pytestlayer' is deprecated."
+                   " Please use 'zope.pytestlayer' instead."
+                   " They are compatible besides the name.")
