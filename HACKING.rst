@@ -1,19 +1,19 @@
-=============================
-Developing gocept.pytestlayer
-=============================
+===========================
+Developing zope.pytestlayer
+===========================
 
 :Author:
-    `gocept <http://gocept.com/>`_ <mail@gocept.com>,
+    gocept,
     Godefroid Chapelle <gotcha@bubblenet.be>
 
 :PyPI page:
-    http://pypi.python.org/pypi/gocept.pytestlayer/
+    https://pypi.org/project/zope.pytestlayer/
 
 :Issues:
-    https://github.com/gocept/gocept.pytestlayer/issues
+    https://github.com/gocept/zope.pytestlayer/issues
 
 :Source code:
-    https://github.com/gocept/gocept.pytestlayer
+    https://github.com/zope/zope.pytestlayer
 
 :Current change log:
-    https://raw.githubusercontent.com/gocept/gocept.pytestlayer/master/CHANGES.rst
+    https://raw.githubusercontent.com/zope/zope.pytestlayer/master/CHANGES.rst
