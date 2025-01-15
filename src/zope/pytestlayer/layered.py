@@ -43,7 +43,7 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
     def from_parent(cls, parent, name, **kw):
         description = get_description(parent)
         keywords = get_keywords(description)
-        function = super(LayeredTestCaseFunction, cls).from_parent(
+        function = super().from_parent(
             parent=parent,
             name=name,
             keywords=keywords,
@@ -66,7 +66,7 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
 
     def teardown(self):
         _testcase = self._testcase
-        super(LayeredTestCaseFunction, self).teardown()
+        super().teardown()
         # Do not die with a meaningless error message when rerunning doctests:
         self._testcase = _testcase
 
@@ -96,5 +96,4 @@ def walk_suite(suite):
                 fixture.raise_if_bad_layer(suite.layer)
                 yield item, suite.layer
             else:
-                for result in walk_suite(item):
-                    yield result
+                yield from walk_suite(item)

@@ -5,7 +5,9 @@ Change log for zope.pytestlayer
 8.3 (unreleased)
 ================
 
-- Nothing changed yet.
+- Add support for Python 3.13.
+
+- Drop support for Python 3.7, 3.8.
 
 
 8.2 (2024-05-15)

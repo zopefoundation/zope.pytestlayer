@@ -1,7 +1,7 @@
 from zope.pytestlayer import fixture
 
 
-class LayerClass(object):
+class LayerClass:
     pass
 
 

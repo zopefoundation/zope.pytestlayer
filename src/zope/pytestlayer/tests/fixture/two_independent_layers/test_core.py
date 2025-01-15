@@ -3,7 +3,7 @@ import unittest
 from zope.pytestlayer.testing import log_to_terminal
 
 
-class FooLayer(object):
+class FooLayer:
 
     @classmethod
     def setUp(cls):
@@ -24,7 +24,7 @@ class FooLayer(object):
         del cls.test_foo
 
 
-class BarLayer(object):
+class BarLayer:
 
     @classmethod
     def setUp(cls):
