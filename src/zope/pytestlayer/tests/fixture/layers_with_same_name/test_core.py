@@ -1,7 +1,7 @@
 import unittest
 
 
-class Layer(object):
+class Layer:
 
     def __init__(self, value, bases=()):
         self.__name__ = 'TestLayer'

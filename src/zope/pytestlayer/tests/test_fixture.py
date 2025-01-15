@@ -1,7 +1,7 @@
 from .. import fixture
 
 
-class Layer(object):
+class Layer:
     pass
 
 

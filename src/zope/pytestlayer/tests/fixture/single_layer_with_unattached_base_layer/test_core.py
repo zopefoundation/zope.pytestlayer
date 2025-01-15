@@ -3,7 +3,7 @@ import unittest
 from zope.pytestlayer.testing import log_to_terminal
 
 
-class BarLayer(object):
+class BarLayer:
 
     @classmethod
     def setUp(cls):

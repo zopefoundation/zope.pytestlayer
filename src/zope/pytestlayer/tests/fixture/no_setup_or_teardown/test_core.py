@@ -1,7 +1,7 @@
 import unittest
 
 
-class FooLayer(object):
+class FooLayer:
     pass
 
 

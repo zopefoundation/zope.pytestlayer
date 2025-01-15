@@ -7,7 +7,7 @@ import pytest
 import zope.dottedname.resolve
 
 
-class ZopeLayerState(object):
+class ZopeLayerState:
 
     def __init__(self):
         self.current = set()
@@ -104,7 +104,7 @@ def get_layer_name(layer):
         # As per zope.testrunner conventions, a layer is assumed to have a
         # __name__ even if it's not a class.
         name = layer.__name__
-    return '%s.%s' % (layer.__module__, name)
+    return f'{layer.__module__}.{name}'
 
 
 def make_identifier(string):
@@ -115,7 +115,7 @@ def make_identifier(string):
 def get_fixture_name(layer, scope):
     name = make_identifier(get_layer_name(layer))
     layerid = id(layer)
-    return 'zope_layer_{scope}_{name}_{layerid}'.format(**locals())
+    return f'zope_layer_{scope}_{name}_{layerid}'
 
 
 LAYERS = {}
