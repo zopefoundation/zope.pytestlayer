@@ -39,6 +39,8 @@ class LayeredTestCaseInstance(_pytest.unittest.UnitTestCase):
 
 class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
 
+    _instance = None
+
     @classmethod
     def from_parent(cls, parent, name, **kw):
         description = get_description(parent)
@@ -50,7 +52,7 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
         )
         function.layer = function.parent.layer
         function.tc_description = description
-        function._testcase = function.parent.obj
+        function._instance = function.parent.obj
         return function
 
     def setup(self):
@@ -65,10 +67,10 @@ class LayeredTestCaseFunction(_pytest.unittest.TestCaseFunction):
             self._request.getfixturevalue(fixture_name)
 
     def teardown(self):
-        _testcase = self._testcase
+        _instance = self._instance
         super().teardown()
         # Do not die with a meaningless error message when rerunning doctests:
-        self._testcase = _testcase
+        self._instance = _instance
 
     def reportinfo(self):
         return ('test_suite', None, self.tc_description)
