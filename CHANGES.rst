@@ -2,7 +2,7 @@
 Change log for zope.pytestlayer
 =================================
 
-8.3 (unreleased)
+8.3 (2025-05-15)
 ================
 
 - Add support for Python 3.13.

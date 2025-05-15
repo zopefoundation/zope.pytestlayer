@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='zope.pytestlayer',
-    version='8.3.dev0',
+    version='8.3',
 
     python_requires='>=3.9',
     install_requires=[
