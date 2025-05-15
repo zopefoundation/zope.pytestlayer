@@ -33,7 +33,7 @@ setup(
 
     author='gocept',
     author_email='zope-dev@zope.dev',
-    license='ZPL 2.1',
+    license='ZPL-2.1',
     url='https://github.com/zopefoundation/zope.pytestlayer/',
 
     keywords='pytest zope.testrunner layer fixture',
