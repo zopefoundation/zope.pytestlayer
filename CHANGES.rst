@@ -9,6 +9,7 @@ Change log for zope.pytestlayer
 
 - Drop support for Python 3.7, 3.8.
 
+- Add support for pytest 8
 
 8.2 (2024-05-15)
 ================
