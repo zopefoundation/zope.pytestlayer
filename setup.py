@@ -35,7 +35,7 @@ setup(
     license='ZPL-2.1',
     url='https://github.com/zopefoundation/zope.pytestlayer/',
 
-    keywords='pytest zope.testrunner >= 6.4 layer fixture',
+    keywords='pytest zope.testrunner layer fixture',
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
