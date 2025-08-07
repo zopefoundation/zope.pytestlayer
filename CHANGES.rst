@@ -2,7 +2,7 @@
 Change log for zope.pytestlayer
 =================================
 
-8.4 (unreleased)
+9.0 (unreleased)
 ================
 
 - Nothing changed yet.
