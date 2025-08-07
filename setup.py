@@ -1,6 +1,5 @@
 """Integration of zope.testrunner-style test layers into pytest framework"""
 
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -36,7 +35,7 @@ setup(
     license='ZPL-2.1',
     url='https://github.com/zopefoundation/zope.pytestlayer/',
 
-    keywords='pytest zope.testrunner layer fixture',
+    keywords='pytest zope.testrunner >= 6.4 layer fixture',
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -68,9 +67,6 @@ setup(
         'HACKING.rst',
         'CHANGES.rst',
     )),
-    namespace_packages=['zope'],
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
 )
