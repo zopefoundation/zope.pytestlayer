@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='zope.pytestlayer',
-    version='9.0',
+    version='9.1.dev0',
 
     python_requires='>=3.9',
     install_requires=[
