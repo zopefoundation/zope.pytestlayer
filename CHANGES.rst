@@ -2,10 +2,10 @@
 Change log for zope.pytestlayer
 =================================
 
-8.4 (unreleased)
+9.0 (unreleased)
 ================
 
-- Nothing changed yet.
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace.
 
 
 8.3 (2025-05-15)

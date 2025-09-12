@@ -1,12 +1,11 @@
 """Integration of zope.testrunner-style test layers into pytest framework"""
 
-from setuptools import find_packages
 from setuptools import setup
 
 
 setup(
     name='zope.pytestlayer',
-    version='8.4.dev0',
+    version='9.0.dev0',
 
     python_requires='>=3.9',
     install_requires=[
@@ -68,9 +67,6 @@ setup(
         'HACKING.rst',
         'CHANGES.rst',
     )),
-    namespace_packages=['zope'],
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
 )
