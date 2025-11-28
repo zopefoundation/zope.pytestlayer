@@ -5,7 +5,7 @@ Change log for zope.pytestlayer
 9.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- Add compatibility for ``pytest >= 9``.
 
 
 9.0 (2025-09-12)
