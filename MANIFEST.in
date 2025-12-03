@@ -12,6 +12,7 @@ recursive-include docs *.rst
 recursive-include docs Makefile
 
 recursive-include src *.py
+include *.py
 include *.yaml
 include pytest.ini
 recursive-include src *.txt

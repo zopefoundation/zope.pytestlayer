@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
 [meta]
 template = "pure-python"
-commit-id = "462fe60b"
+commit-id = "f11c758e"
 
 [python]
 with-sphinx-doctests = false
@@ -21,12 +21,21 @@ testenv-deps = [
     "pytest-cov",
     "pytest-remove-stale-bytecode",
 ]
+coverage-setenv = [
+    "COVERAGE_FILE = {toxinidir}/.coverage",
+]
 coverage-command = [
-    "pytest --cov=src --cov-report=html []",
+    "coverage erase",
+    "pytest --cov=src --cov-report= -vs []",
     ]
 
 [coverage]
 fail-under = 98
+
+[coverage-run]
+additional-config = [
+    "parallel = true",
+    ]
 
 [flake8]
 additional-config = [
@@ -37,6 +46,7 @@ additional-config = [
 
 [manifest]
 additional-rules = [
+    "include *.py",
     "include *.yaml",
     "include pytest.ini",
     "recursive-include src *.txt",
