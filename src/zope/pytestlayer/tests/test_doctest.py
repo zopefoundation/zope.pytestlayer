@@ -5,7 +5,7 @@ class Dummy:
     """This class has a doctest.
 
     It tests the workaround for
-    https://github.com/zope/zope.pytestlayer/issues/4
+    https://github.com/zopefoundation/zope.pytestlayer/issues/4
 
     >>> print('foobar.')
     foobar.

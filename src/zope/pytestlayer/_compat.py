@@ -2,10 +2,10 @@
 def _searchbases(cls, accum):
     # Simulate the "classic class" search order.
     if cls in accum:
-        return
+        return  # pragma: no cover
     accum.append(cls)
     for base in cls.__bases__:
-        _searchbases(base, accum)
+        _searchbases(base, accum)  # pragma: no cover
 
 
 def getmro(cls):

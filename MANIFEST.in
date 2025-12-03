@@ -1,5 +1,5 @@
-# Generated from:
-# https://github.com/zopefoundation/meta/tree/master/config/pure-python
+# Generated with zope.meta (https://zopemeta.readthedocs.io/) from:
+# https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
 include *.md
 include *.rst
 include *.txt
@@ -12,6 +12,7 @@ recursive-include docs *.rst
 recursive-include docs Makefile
 
 recursive-include src *.py
+include *.py
 include *.yaml
 include pytest.ini
 recursive-include src *.txt
