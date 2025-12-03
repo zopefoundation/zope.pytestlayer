@@ -7,7 +7,7 @@ Change log for zope.pytestlayer
 
 - Add compatibility for ``pytest >= 9``.
 
-- Add support for Python 3.13.
+- Add support for Python 3.13, 3.14.
 
 - Drop support for Python 3.9.
 
