@@ -207,7 +207,8 @@ def parsefactories(collector, layer):
         name = get_fixture_name(layer, scope='function')
         module = types.ModuleType(name)
         module.__dict__.update(ns)
-        collector.session._fixturemanager.parsefactories(module, '')
+        collector.session._fixturemanager.parsefactories(
+            holder=module, node=collector.session)
 
 
 def raise_if_bad_layer(layer):

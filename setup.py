@@ -9,7 +9,7 @@ setup(
 
     python_requires='>=3.10',
     install_requires=[
-        'pytest >= 8',
+        'pytest >= 9.1',
         'setuptools',
         'zope.dottedname',
     ],
