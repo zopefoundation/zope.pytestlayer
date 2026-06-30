@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
 [meta]
 template = "pure-python"
-commit-id = "f11c758e"
+commit-id = "6a771177"
 
 [python]
 with-sphinx-doctests = false
@@ -11,6 +11,7 @@ with-future-python = false
 with-pypy = true
 with-macos = false
 with-windows = false
+with-free-threaded-python = false
 
 [tox]
 testenv-commands = [
@@ -51,3 +52,6 @@ additional-rules = [
     "include pytest.ini",
     "recursive-include src *.txt",
     ]
+
+[pypi]
+trusted-publishing = true
