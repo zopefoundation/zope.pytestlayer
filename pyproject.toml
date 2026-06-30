@@ -1,15 +1,71 @@
 # Generated with zope.meta (https://zopemeta.readthedocs.io/) from:
 # https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
-#
-# Generated from:
-# https://github.com/zopefoundation/meta/tree/master/config/pure-python
-
 [build-system]
 requires = [
     "setuptools >= 78.1.1,< 82",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "zope.pytestlayer"
+version = "9.3.dev0"
+license = "ZPL-2.1"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: Pytest",
+    "Framework :: Plone",
+    "Framework :: Zope :: 3",
+    "Framework :: Zope :: 5",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+]
+dynamic = ["readme"]
+requires-python = ">=3.10"
+authors = [
+    {name = "gocept",email = "zope-dev@zope.dev"},
+]
+maintainers = [
+    {name = "Plone Foundation and contributors",email = "zope-dev@zope.dev"},
+]
+dependencies = [
+    "pytest >= 9.1",
+    "zope.dottedname",
+]
+keywords = ["pytest", "zope.testrunner", "layer", "fixture"]
+
+[project.entry-points.pytest11]
+zopelayer = "zope.pytestlayer.plugin"
+
+[project.optional-dependencies]
+test = ["plone.testing"]
+docs = [
+    "Sphinx",
+    "gocept.package",
+]
+
+[project.urls]
+Documentation = "https://zopepytestlayer.readthedocs.io/"
+Source = "https://github.com/zopefoundation/zope.pytestlayer/"
+Issues = "https://github.com/zopefoundation/zope.pytestlayer/issues"
+Changelog = "https://raw.githubusercontent.com/zopefoundation/zope.pytestlayer/master/CHANGES.rst"
+
 
 [tool.coverage.run]
 branch = true
@@ -38,3 +94,7 @@ directory = "parts/htmlcov"
 [tool.zest-releaser]
 create-wheel = false
 upload-pypi = false
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "CHANGES.rst"]}
+
