@@ -20,6 +20,7 @@
 import datetime
 import importlib.metadata
 
+
 # -- General configuration -----------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
