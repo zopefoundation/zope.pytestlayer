@@ -52,10 +52,10 @@ Advanced usage
 ==============
 
 Version 2.1 reintroduced `fixture.create()` to be able to define the name of
-the generated to pytest fixtures. So it is possible to use them in function
+the generated pytest fixtures. So it is possible to use them in function
 style tests.
 
-Example (Code has to be in `contest.py`!)::
+Example (Code has to be in `conftest.py`!)::
 
     from .testing import FUNCTIONAL_LAYER
     import zope.pytestlayer.fixture
