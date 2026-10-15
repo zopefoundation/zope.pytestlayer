@@ -5,6 +5,10 @@ Change log for zope.pytestlayer
 9.3 (unreleased)
 ================
 
+- Add support for Python 3.15.
+
+- Drop support for Python 3.10.
+
 - Move package metadata from setup.py to pyproject.toml.
 
 

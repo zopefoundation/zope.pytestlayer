@@ -83,7 +83,7 @@ def get_description(collector):
 
 
 def get_keywords(description):
-    words = [word for word in description.split()]
+    words = [*description.split()]
     keywords = {}
     for word in words:
         keywords[word] = True
